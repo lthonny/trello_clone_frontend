@@ -1,0 +1,45 @@
+<form class="card" [formGroup]="form" (ngSubmit)="submit()">
+  <h2>Registration</h2>
+
+  <div class="form-control" [ngClass]="{invalid: form.get('name')?.touched && form.get('name')?.invalid}">
+    <label for="name">Name:</label>
+    <input id="name" type="text" placeholder="name" formControlName="name">
+    <div *ngIf="form.get('name')?.touched && form.get('name')?.invalid" class="validation">
+      <small *ngIf="form.get('name')?.errors?.required">
+        Enter the name field
+      </small>
+      <small *ngIf="form.get('name')?.errors?.name">
+        Please enter a valid name
+      </small>
+    </div>
+  </div>
+
+  <div class="form-control" [ngClass]="{invalid: form.get('email')?.touched && form.get('email')?.invalid}">
+    <label for="email">Email:</label>
+    <input id="email" type="email" placeholder="email" formControlName="email">
+    <div *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="validation">
+      <small *ngIf="form.get('email')?.errors?.required">
+        Enter the email field
+      </small>
+      <small *ngIf="form.get('email')?.errors?.email">
+        Please enter a valid email
+      </small>
+    </div>
+  </div>
+
+  <div class="form-control" [ngClass]="{invalid: form.get('email')?.touched && form.get('email')?.invalid}">
+    <label for="password">Password:</label>
+    <input id="password" type="password" placeholder="password" formControlName="password">
+    <div *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="validation">
+      <small *ngIf="form.get('password')?.errors?.required">
+        A password is required
+      </small>
+      <small *ngIf="form.get('password')?.errors?.minlength">
+        Password must be at least
+        {{ form.get('password')?.errors?.minlength.requiredLength }} characters
+      </small>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="form.invalid || submitted">Enter</button>
+</form>

@@ -1,0 +1,72 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { ISingIn, ISingUp } from 'src/app/interfaces';
+import { AuthService } from 'src/app/services/auth.service';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
+})
+export class LoginComponent implements OnInit, OnDestroy {
+
+  signIpSub!: Subscription;
+  submitted: boolean = false;
+  message: string = '';
+
+  form: FormGroup = new FormGroup({
+    email: new FormControl(null, [
+      Validators.required,
+      Validators.email
+    ]),
+    password: new FormControl(null, [
+      Validators.required,
+      Validators.minLength(6)
+    ])
+  });
+
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      if (params['loginAgain']) {
+        this.message = 'Please enter data';
+      }
+    })
+  }
+
+  submit() {
+    if (this.form.invalid) {
+      return;
+    }
+
+    this.submitted = true;
+
+    const user: ISingIn = {
+      email: this.form.value.email,
+      password: this.form.value.password
+    }
+
+    this.signIpSub = this.authService.ISingIn(user).subscribe((response) => {
+      console.log('пользователь авторизован', response);
+      this.form.reset();
+
+      this.authService.setToken(response);
+      this.router.navigate(['/admin', 'dashboard']);
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.signIpSub) {
+      this.signIpSub.unsubscribe();
+    }
+  }
+
+}
