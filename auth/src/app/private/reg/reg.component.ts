@@ -53,7 +53,7 @@ export class RegComponent implements OnInit {
       password: this.form.value.password
     }
 
-    this.signUpSub = this.authService.ISingUp(user)
+    this.signUpSub = this.authService.SingUp(user)
       .subscribe(() => console.log('пользователь добавлен'));
 
     this.form.reset();

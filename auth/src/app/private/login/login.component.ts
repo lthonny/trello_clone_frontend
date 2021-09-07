@@ -54,11 +54,12 @@ export class LoginComponent implements OnInit, OnDestroy {
       password: this.form.value.password
     }
 
-    this.signIpSub = this.authService.ISingIn(user).subscribe((response) => {
+    this.signIpSub = this.authService.SingIn(user).subscribe((response) => {
       console.log('пользователь авторизован', response);
+      // this.authService.setAuth(true);
+      this.authService.SetToken(response.accessToken);
       this.form.reset();
 
-      this.authService.setToken(response);
       this.router.navigate(['/admin', 'dashboard']);
     });
   }

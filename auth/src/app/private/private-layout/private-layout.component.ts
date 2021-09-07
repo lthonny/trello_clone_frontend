@@ -9,15 +9,25 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class PrivateLayoutComponent implements OnInit {
 
+  authMenu: boolean = false;
+
   constructor(
     public router: Router,
     public auth: AuthService
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+
+  }
 
   logout() {
-    this.auth.logout();
+    this.auth.Logout().subscribe(() => {
+      this.auth.RemoveToken();
+      // this.auth.setAuth(false);
+    });
+      // console.log(response);
+      //   this.auth.RemoveToken(response.tokens.accessToken);
+      // });
     this.router.navigate(['/admin', 'login']);
   }
 

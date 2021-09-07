@@ -1,9 +1,7 @@
 <nav class="navbar bg-primary">
-  <h1>
-    <a [routerLink]="['/']">Angular admin</a>
-  </h1>
+  <h1> Angular admin </h1>
 
-  <ul *ngIf="auth.isAuthenticated()">
+  <ul *ngIf="auth.auth()">
     <li routerLinkActive="active">
       <a [routerLink]="['/admin', 'dashboard']">Home</a>
     </li>

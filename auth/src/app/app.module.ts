@@ -12,7 +12,6 @@ import { SharedModule } from './shared/shared.module';
   declarations: [
     AppComponent,
     HeaderPublicComponent,
-
     ContactFormComponent
   ],
   imports: [

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ITask } from 'src/app/interfaces';
+import {TasksService} from "../../services/tasks.service";
 
 @Component({
   selector: 'app-create-page',
@@ -20,7 +21,9 @@ export class CreatePageComponent implements OnInit {
     ]),
   });
 
-  constructor() { }
+  constructor(
+    public tasksService: TasksService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -36,12 +39,8 @@ export class CreatePageComponent implements OnInit {
       status: false
     }
 
-    // this.tasksService.create(task)
-    //   .subscribe(() => {
-    //     this.form.reset();
-    //   })
-
-    console.log(task);
+    this.tasksService.create(task)
+      .subscribe(() => this.form.reset());
   }
 
 }
