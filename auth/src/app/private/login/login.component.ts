@@ -4,6 +4,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ISingIn, ISingUp } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth.service';
+import {TokenService} from "../../services/token.service";
+import {ErrorService} from "../../services/error.service";
 
 @Component({
   selector: 'app-login',
@@ -29,7 +31,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
+    public tokenService: TokenService,
+    public errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute
   ) { }
@@ -54,13 +58,13 @@ export class LoginComponent implements OnInit, OnDestroy {
       password: this.form.value.password
     }
 
-    this.signIpSub = this.authService.SingIn(user).subscribe((response) => {
-      console.log('пользователь авторизован', response);
-      // this.authService.setAuth(true);
-      this.authService.SetToken(response.accessToken);
-      this.form.reset();
+    this.signIpSub = this.authService.singIn(user)
+      .subscribe((response) => {
+        this.tokenService.setToken(response.accessToken);
+        this.authService.setAuth(true);
 
-      this.router.navigate(['/admin', 'dashboard']);
+        this.form.reset();
+        this.router.navigate(['/admin', 'dashboard']);
     });
   }
 

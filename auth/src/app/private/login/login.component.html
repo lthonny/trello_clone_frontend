@@ -1,8 +1,12 @@
 <form class="card" [formGroup]="form" (ngSubmit)="submit()">
   <h2>Login to admin panel</h2>
 
-  <div *ngIf="message">
-    {{message}}
+  <div class="alert alert-danger" *ngIf="errorService.error$ | async as error">
+    {{ error }}
+  </div>
+
+  <div class="alert alert-info" *ngIf="message">
+    {{ message }}
   </div>
 
   <div class="form-control" [ngClass]="{invalid: form.get('email')?.touched && form.get('email')?.invalid}">

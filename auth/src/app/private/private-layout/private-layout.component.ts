@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Event, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -9,26 +9,19 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class PrivateLayoutComponent implements OnInit {
 
-  authMenu: boolean = false;
-
   constructor(
     public router: Router,
-    public auth: AuthService
+    public authService: AuthService
   ) { }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   logout() {
-    this.auth.Logout().subscribe(() => {
-      this.auth.RemoveToken();
-      // this.auth.setAuth(false);
+    this.authService.logout().subscribe(()=> {
+      console.log('Вышли из системы');
     });
-      // console.log(response);
-      //   this.auth.RemoveToken(response.tokens.accessToken);
-      // });
+    this.authService.setAuth(false);
+    localStorage.removeItem('token');
     this.router.navigate(['/admin', 'login']);
   }
-
 }

@@ -1,45 +1,45 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {IAuthResponse, ISingIn, ISingUp, IUser} from '../interfaces';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {IAuthResponse, ISingIn, ISingUp, } from '../interfaces';
+import {catchError} from "rxjs/operators";
+import {Router} from "@angular/router";
+import {ErrorService} from "./error.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  isAuth: boolean = false;
+
+  constructor(
+    public http: HttpClient,
+    public router: Router,
+    public error: ErrorService
+  ) {
+  }
+
+  setAuth(bool: boolean) {
+    this.isAuth = bool;
+  }
 
   auth() {
     return !!localStorage.getItem('token');
   }
 
-  constructor(
-    public http: HttpClient
-  ) {}
-
-  SingUp(user: ISingUp) {
+  singUp(user: ISingUp) {
     return this.http.post<IAuthResponse>(`http://localhost:3000/api/sign_up`, user);
   }
 
-  SingIn(user: ISingIn) {
-    return this.http.post<IAuthResponse>(`http://localhost:3000/api/sign_in`, user);
+  singIn(user: ISingIn) {
+    return this.http.post<IAuthResponse>(`http://localhost:3000/api/sign_in`, user)
+      .pipe(
+        catchError(err => this.error.handleError(err))
+      )
   }
 
-  Logout() {
-    return this.http.post(`http://localhost:3000/api/logout`, {});
+  logout() {
+    return this.http.post(`http://localhost:3000/api/logout`, {})
   }
 
 
-
-  RemoveToken() {
-    localStorage.removeItem('token');
-    // this.setAuth(false);
-  }
-
-  SetToken(token: any) {
-    return localStorage.setItem('token', token);
-    // this.setAuth(true);
-  }
-
-  checkAuth() {
-    // this.http
-  }
 }

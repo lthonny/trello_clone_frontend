@@ -53,10 +53,11 @@ export class RegComponent implements OnInit {
       password: this.form.value.password
     }
 
-    this.signUpSub = this.authService.SingUp(user)
+    this.signUpSub = this.authService.singUp(user)
       .subscribe(() => console.log('пользователь добавлен'));
 
     this.form.reset();
+    this.authService.setAuth(true);
     this.router.navigate(['/admin', 'login'])
   }
 
