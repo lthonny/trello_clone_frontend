@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ISingIn, ISingUp } from 'src/app/interfaces';
+import { ISingIn } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth.service';
 import {TokenService} from "../../services/token.service";
 import {ErrorService} from "../../services/error.service";
@@ -58,11 +58,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       password: this.form.value.password
     }
 
-    this.signIpSub = this.authService.singIn(user)
+    this.signIpSub = this.authService.singIn$(user)
       .subscribe((response) => {
         this.tokenService.setToken(response.accessToken);
         this.authService.setAuth(true);
-
         this.form.reset();
         this.router.navigate(['/admin', 'dashboard']);
     });

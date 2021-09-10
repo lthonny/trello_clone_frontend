@@ -18,10 +18,10 @@ export class TokenService {
     return localStorage.setItem('token', token);
   }
 
-  // refreshToken() {
-  //   return this.http.get(`http://localhost:3000/api/refresh`)
-  //     .subscribe((user: any) => {
-  //       this.setToken(user.accessToken);
-  //     })
-  // }
+  refreshToken() {
+    return this.http.get(`/api/refresh`)
+      .subscribe((user: any) => {
+        this.setToken(user.accessToken);
+      })
+  }
 }

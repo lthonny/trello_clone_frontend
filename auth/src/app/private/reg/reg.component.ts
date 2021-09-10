@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './reg.component.html',
   styleUrls: ['./reg.component.scss']
 })
-export class RegComponent implements OnInit {
+export class RegComponent implements OnInit, OnDestroy {
 
   signUpSub!: Subscription;
 
@@ -53,7 +53,7 @@ export class RegComponent implements OnInit {
       password: this.form.value.password
     }
 
-    this.signUpSub = this.authService.singUp(user)
+    this.signUpSub = this.authService.singUp$(user)
       .subscribe(() => console.log('пользователь добавлен'));
 
     this.form.reset();
@@ -62,9 +62,8 @@ export class RegComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    // if (this.signUpSub) {
-    //   this.signUpSub.unsubscribe();
-    // }
+    if (this.signUpSub) {
+      this.signUpSub.unsubscribe();
+    }
   }
-
 }

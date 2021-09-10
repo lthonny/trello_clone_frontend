@@ -19,6 +19,7 @@ import {AuthGuard} from "../services/auth.guard";
 import {SearchPipe} from "../pipes/search.pipe";
 import {FilterPipe} from "../pipes/filter.pipe";
 import { EditPageComponent } from './edit-page/edit-page.component';
+// import {TokenInterceptor} from "../services/token.interceptor";
 
 @NgModule({
   declarations: [
@@ -67,7 +68,7 @@ import { EditPageComponent } from './edit-page/edit-page.component';
       provide : HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi   : true,
-    },
+    }
   ]
 })
 export class PrivateModule { }

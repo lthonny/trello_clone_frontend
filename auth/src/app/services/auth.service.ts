@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {IAuthResponse, ISingIn, ISingUp, } from '../interfaces';
 import {catchError} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {ErrorService} from "./error.service";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -18,28 +19,26 @@ export class AuthService {
   ) {
   }
 
-  setAuth(bool: boolean) {
+  setAuth(bool: boolean): void {
     this.isAuth = bool;
   }
 
-  auth() {
+  auth(): boolean {
     return !!localStorage.getItem('token');
   }
 
-  singUp(user: ISingUp) {
-    return this.http.post<IAuthResponse>(`http://localhost:3000/api/sign_up`, user);
+  singUp$(user: ISingUp): Observable<IAuthResponse> {
+    return this.http.post<IAuthResponse>(`/api/sign_up`, user);
   }
 
-  singIn(user: ISingIn) {
-    return this.http.post<IAuthResponse>(`http://localhost:3000/api/sign_in`, user)
+  singIn$(user: ISingIn): Observable<IAuthResponse> {
+    return this.http.post<IAuthResponse>(`/api/sign_in`, user)
       .pipe(
         catchError(err => this.error.handleError(err))
       )
   }
 
   logout() {
-    return this.http.post(`http://localhost:3000/api/logout`, {})
+    return this.http.post(`/api/logout`, {});
   }
-
-
 }

@@ -8,6 +8,7 @@ import { HeaderPublicComponent } from './public/header-public/header-public.comp
 import { ContactFormComponent } from './public/contact-form/contact-form.component';
 import { SharedModule } from './shared/shared.module';
 
+
 @NgModule({
   declarations: [
     AppComponent,
