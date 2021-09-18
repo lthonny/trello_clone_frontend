@@ -12,6 +12,7 @@ export class DashboardPageComponent implements OnInit {
   tasks: any = [];
   searchTasks: string = '';
   filterStatus: string = 'all';
+  complete: boolean = false;
 
   constructor(
     public tasksService: TasksService,
@@ -32,5 +33,9 @@ export class DashboardPageComponent implements OnInit {
       this.tasks = this.tasks.filter((task: any) => task.id !== id);
       // this.alertService.danger('Task has been deleted');
     })
+  }
+
+  completed() {
+    this.complete = true;
   }
 }

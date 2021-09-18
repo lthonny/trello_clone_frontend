@@ -20,9 +20,11 @@ export class PrivateLayoutComponent implements OnInit {
 
   logout() {
     this.authService.logout().subscribe(() => {
-      this.authService.setAuth(false);
+      // this.authService.setAuth(false);
       localStorage.removeItem('token');
-      this.router.navigate(['/admin', 'login']);
+      this.router.navigate(['/']);
     });
   }
+
+
 }

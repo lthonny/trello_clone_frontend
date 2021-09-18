@@ -1,5 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {IAuthResponse} from "../interfaces";
+import {Observable} from "rxjs";
+import {CookieService} from "ngx-cookie-service";
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +10,8 @@ import {HttpClient} from "@angular/common/http";
 export class TokenService {
 
   constructor(
-    public http: HttpClient
+    public http: HttpClient,
+    private cookieService: CookieService
   ) {}
 
   getToken() {
@@ -18,10 +22,11 @@ export class TokenService {
     return localStorage.setItem('token', token);
   }
 
-  refreshToken() {
-    return this.http.get(`/api/refresh`)
-      .subscribe((user: any) => {
-        this.setToken(user.accessToken);
-      })
+  getRefreshToken(): string {
+    return this.cookieService.get('refreshToken');
+  }
+
+  refreshToken$(): Observable<IAuthResponse> {
+    return this.http.get<IAuthResponse>(`/api/refresh`);
   }
 }
