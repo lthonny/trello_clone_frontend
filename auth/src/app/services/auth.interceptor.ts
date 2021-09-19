@@ -10,7 +10,7 @@ import {
 import {TokenService} from "./token.service";
 import {catchError, filter, switchMap, take} from "rxjs/operators";
 import {Router} from "@angular/router";
-import {BehaviorSubject, Observable, Subject, throwError} from "rxjs";
+import {BehaviorSubject, Observable, throwError} from "rxjs";
 import {AuthService} from "./auth.service";
 import {IAuthResponse} from "../interfaces";
 
@@ -30,6 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<Object>> {
     let authReq = req;
+    console.log('authReq', authReq);
     const token = this.tokenService.getToken();
     if (token !== null) {
       authReq = this.addTokenHeader(req, token);

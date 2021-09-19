@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {TasksService} from "../../services/tasks.service";
-import {ITask} from "../../interfaces";
 
 @Component({
   selector: 'app-dashboard-page',
@@ -15,7 +14,7 @@ export class DashboardPageComponent implements OnInit {
   complete: boolean = false;
 
   constructor(
-    public tasksService: TasksService,
+    public tasksService: TasksService
   ) { }
 
   ngOnInit(): void {

@@ -1,15 +1,16 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {IAuthResponse, ISingIn, ISingUp, } from '../interfaces';
 import {catchError, tap} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {ErrorService} from "./error.service";
 import {BehaviorSubject, Observable} from "rxjs";
+import {TokenService} from "./token.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnInit {
   isAuth: boolean = false;
   private _isAuthorized = new BehaviorSubject<boolean>(false);
 
@@ -24,8 +25,26 @@ export class AuthService {
   constructor(
     public http: HttpClient,
     public router: Router,
-    public error: ErrorService
+    public error: ErrorService,
+    public tokenService: TokenService
   ) {
+
+    this.tokenService.refreshToken$().subscribe(()=> {
+      this._isAuthorized.next(true);
+    })
+    // this.isAuth$().subscribe(() => {
+    //   this._isAuthorized.next(true);
+    // });
+  }
+
+  ngOnInit() {
+  //   this.isAuth$().subscribe(() => {
+  //     this._isAuthorized.next(true);
+  //   });
+  }
+
+  isAuth$(): Observable<any> {
+    return this.http.get(`/api/isauth`);
   }
 
   setAuth(bool: boolean): void {
