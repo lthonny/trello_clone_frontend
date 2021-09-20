@@ -9,7 +9,8 @@ export interface ITask {
   text?: string,
   status?: boolean,
   createdAt?: Date,
-  updatedAt?: Date
+  updatedAt?: Date,
+  user_id?: number
 }
 
 export interface IContactForm {
@@ -37,4 +38,13 @@ export interface ISingIn {
 export interface ITokens {
   accessToken: string;
   refreshToken: string;
+}
+
+export interface IUpdateTask {
+  id: string,
+  title: string,
+  text: string,
+  status: boolean,
+  updatedAt: string,
+  user_id: any
 }

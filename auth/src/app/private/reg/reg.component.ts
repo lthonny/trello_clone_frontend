@@ -57,7 +57,7 @@ export class RegComponent implements OnInit, OnDestroy {
       .subscribe(() => console.log('пользователь добавлен'));
 
     this.form.reset();
-    this.authService.setAuth(true);
+    // this.authService.setAuth$(true);
     this.router.navigate(['/admin', 'login'])
   }
 

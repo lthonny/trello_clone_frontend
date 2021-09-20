@@ -19,7 +19,7 @@
       <p class="edit" [routerLink]="['/admin', 'task', task.id, 'edit']">edit task</p>
       <span class="btn-control">
         <button class="btn btn-red" (click)="remove(task.id)">delete</button>
-        <button class="btn btn-completed" (click)="completed()">To complete</button>
+        <button class="btn btn-completed" (click)="completed(task)">To complete</button>
       </span>
     </div>
   </div>

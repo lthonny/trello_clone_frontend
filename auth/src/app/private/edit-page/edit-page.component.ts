@@ -26,7 +26,7 @@ export class EditPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.params.pipe(
       switchMap((params: Params) => {
-        return this.tasksService.fetchOne(params['id']);
+        return this.tasksService.fetchOne$(params['id']);
       })
     )
       .subscribe((task: ITask) => {
@@ -44,14 +44,14 @@ export class EditPageComponent implements OnInit, OnDestroy {
     }
     this.submitted = true;
 
-    //  this.updateSub = this.tasksService.update(2, {
-    //   ...this.task,
-    //    title: this.form.value.title,
-    //    text: this.form.value.text
-    // })
-    //   .subscribe(() => {
-    //     this.submitted = false;
-    //   })
+    const id = this.route.snapshot.params.id;
+     this.updateSub = this.tasksService.update$(id, {
+      ...this.task,
+       title: this.form.value.title,
+       text: this.form.value.text
+    }).subscribe(() => {
+        this.submitted = false;
+      })
   }
 
   ngOnDestroy() {

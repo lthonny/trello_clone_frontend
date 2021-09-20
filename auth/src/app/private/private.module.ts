@@ -19,7 +19,7 @@ import {AuthGuard} from "../services/auth.guard";
 import {SearchPipe} from "../pipes/search.pipe";
 import {FilterPipe} from "../pipes/filter.pipe";
 import { EditPageComponent } from './edit-page/edit-page.component';
-// import {TokenInterceptor} from "../services/token.interceptor";
+
 
 @NgModule({
   declarations: [
@@ -62,7 +62,6 @@ import { EditPageComponent } from './edit-page/edit-page.component';
     SearchPipe
   ],
   providers: [
-    // AuthGuard,
     TasksService,
     {
       provide : HTTP_INTERCEPTORS,
@@ -71,4 +70,4 @@ import { EditPageComponent } from './edit-page/edit-page.component';
     }
   ]
 })
-export class PrivateModule { }
+export class PrivateModule {}

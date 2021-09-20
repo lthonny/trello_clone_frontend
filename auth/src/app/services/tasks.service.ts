@@ -6,26 +6,25 @@ import {ITask} from "../interfaces";
 export class TasksService {
   constructor(
     public http: HttpClient
-  ) {
-  }
+  ) {}
 
-  fetchOne(id: string) {
+  public fetchOne$(id: string) {
     return this.http.get(`/api/fetchOne/${id}`);
   }
 
-  fetchAll() {
+  public fetchAll$() {
     return this.http.get(`/api/fetchAll`);
   }
 
-  create(task: ITask) {
+  public create$(task: ITask) {
     return this.http.post(`/api/create`, task);
   }
 
-  update(id: string, task: any) {
+  public update$(id: string, task: ITask) {
     return this.http.put(`/api/update/${id}`, task);
   }
 
-  remove(id: string) {
+  public remove$(id: string) {
     return this.http.delete(`/api/delete/${id}`);
   }
 }

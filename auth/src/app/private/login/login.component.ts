@@ -60,8 +60,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.signIpSub = this.authService.singIn$(user)
       .subscribe((response) => {
-        this.tokenService.setToken(response.accessToken);
-        this.authService.setAuth(true);
+        this.tokenService.setToken$(response.accessToken);
         this.form.reset();
         this.router.navigate(['/admin', 'dashboard']);
     });

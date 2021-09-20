@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {TasksService} from "../../services/tasks.service";
+import {ITask, IUpdateTask} from "../../interfaces";
 
 @Component({
   selector: 'app-dashboard-page',
@@ -18,7 +19,7 @@ export class DashboardPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.tasksService.fetchAll().subscribe((tasks) => {
+    this.tasksService.fetchAll$().subscribe((tasks) => {
       this.tasks = tasks;
     });
   }
@@ -27,14 +28,15 @@ export class DashboardPageComponent implements OnInit {
     this.filterStatus = filtered;
   }
 
-  remove(id: any) {
-    this.tasksService.remove(id).subscribe(() => {
+  remove(id: string) {
+    this.tasksService.remove$(id).subscribe(() => {
       this.tasks = this.tasks.filter((task: any) => task.id !== id);
       // this.alertService.danger('Task has been deleted');
     })
   }
 
-  completed() {
-    this.complete = true;
+  completed(task: any) {
+    task.status = !task.status;
+    this.tasksService.update$(task.id, task).subscribe(()=>{});
   }
 }

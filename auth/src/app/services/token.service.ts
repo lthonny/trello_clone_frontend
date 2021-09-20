@@ -10,23 +10,23 @@ import {CookieService} from "ngx-cookie-service";
 export class TokenService {
 
   constructor(
-    public http: HttpClient,
+    private http: HttpClient,
     private cookieService: CookieService
   ) {}
 
-  getToken() {
+  public getToken$(): string | null {
     return localStorage.getItem('token');
   }
 
-  setToken(token: string) {
+  public setToken$(token: string): void {
     return localStorage.setItem('token', token);
   }
 
-  getRefreshToken(): string {
+  public getRefreshToken$(): string {
     return this.cookieService.get('refreshToken');
   }
 
-  refreshToken$(): Observable<IAuthResponse> {
+  public refreshToken$(): Observable<IAuthResponse> {
     return this.http.get<IAuthResponse>(`/api/refresh`);
   }
 }

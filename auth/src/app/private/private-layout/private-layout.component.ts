@@ -19,12 +19,8 @@ export class PrivateLayoutComponent implements OnInit {
   ngOnInit(): void {}
 
   logout() {
-    this.authService.logout().subscribe(() => {
-      // this.authService.setAuth(false);
-      localStorage.removeItem('token');
+    this.authService.logout$().subscribe(() => {
       this.router.navigate(['/']);
     });
   }
-
-
 }
