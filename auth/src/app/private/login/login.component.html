@@ -1,40 +1,31 @@
-<form class="card" [formGroup]="form" (ngSubmit)="submit()">
-  <h2>Login to admin panel</h2>
+<div class="body">
+  <h1>Trello log</h1>
 
-  <div class="alert alert-danger" *ngIf="errorService.error$ | async as error">
-    {{ error }}
-  </div>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="wrapper">
+      <h4>Log in to Trello</h4>
 
-  <div class="alert alert-info" *ngIf="message">
-    {{ message }}
-  </div>
+      <div class="mb-3" [ngClass]="{invalid: form.get('email')?.touched && form.get('email')?.invalid}">
+        <input id="email" class="form-control bg-light" type="email" placeholder="Enter email" formControlName="email">
+        <div *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="validation">
+        </div>
+      </div>
 
-  <div class="form-control" [ngClass]="{invalid: form.get('email')?.touched && form.get('email')?.invalid}">
-    <label for="email">Email:</label>
-    <input id="email" type="email" placeholder="email" formControlName="email">
-    <div *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="validation">
-      <small *ngIf="form.get('email')?.errors?.required">
-        Enter the email field
-      </small>
-      <small *ngIf="form.get('email')?.errors?.email">
-        Please enter a valid email
-      </small>
+      <div class="mb-3" [ngClass]="{invalid: form.get('password')?.touched && form.get('password')?.invalid}">
+        <input id="password" class="form-control bg-light" type="password" placeholder="Enter password" formControlName="password">
+        <div *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="validation">
+        </div>
+      </div>
+
+      <button type="submit" class="btn bg-success bg-gradient" [disabled]="form.invalid || submitted">Log in
+      </button>
+
+      <div class="or">OR</div>
+
+      <div class="google bg-light bg-gradient">
+        <img class="google-logo" src="../../../assets/google.logo.png" alt="">
+        <a href="">Continue with Google</a>
+      </div>
     </div>
-  </div>
-
-  <div class="form-control" [ngClass]="{invalid: form.get('email')?.touched && form.get('email')?.invalid}">
-    <label for="password">Password:</label>
-    <input id="password" type="password" placeholder="password" formControlName="password">
-    <div *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="validation">
-      <small *ngIf="form.get('password')?.errors?.required">
-        A password is required
-      </small>
-      <small *ngIf="form.get('password')?.errors?.minlength">
-        Password must be at least
-        {{ form.get('password')?.errors?.minlength.requiredLength }} characters
-      </small>
-    </div>
-  </div>
-
-  <button type="submit" class="btn btn-primary" [disabled]="form.invalid || submitted">Enter</button>
-</form>
+  </form>
+</div>

@@ -3,16 +3,6 @@ export interface IUser {
   password: number | string
 }
 
-export interface ITask {
-  id?: string,
-  title?: string,
-  text?: string,
-  status?: boolean,
-  createdAt?: Date,
-  updatedAt?: Date,
-  user_id?: number
-}
-
 export interface IContactForm {
   email: string,
   text: string
@@ -47,4 +37,20 @@ export interface IUpdateTask {
   status: boolean,
   updatedAt: string,
   user_id: any
+}
+
+
+export interface IBoard {
+  id: number,
+  title: string,
+  createdAt: Date,
+  updatedAt: Date,
+}
+
+export interface ITask {
+  id: number,
+  title: string,
+  description: string,
+  createdAt: Date,
+  updatedAt: Date,
 }

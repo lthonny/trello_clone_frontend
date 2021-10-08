@@ -14,11 +14,11 @@ export class TokenService {
     private cookieService: CookieService
   ) {}
 
-  public getToken$(): string | null {
+  public getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  public setToken$(token: string): void {
+  public setToken(token: string): void {
     return localStorage.setItem('token', token);
   }
 
@@ -27,6 +27,6 @@ export class TokenService {
   }
 
   public refreshToken$(): Observable<IAuthResponse> {
-    return this.http.get<IAuthResponse>(`/api/refresh`);
+    return this.http.get<IAuthResponse>(`/refresh`);
   }
 }

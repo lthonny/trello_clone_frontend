@@ -8,30 +8,26 @@ import { RegComponent } from './reg/reg.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
-import { CreatePageComponent } from './create-page/create-page.component';
-import { TasksService } from '../services/tasks.service';
 import {AuthInterceptor} from "../services/auth.interceptor";
 
 import {QuillModule} from "ngx-quill";
 
 import {AuthGuard} from "../services/auth.guard";
 
-import {SearchPipe} from "../pipes/search.pipe";
-import {FilterPipe} from "../pipes/filter.pipe";
-import { EditPageComponent } from './edit-page/edit-page.component';
-
+import {BoardService} from "../services/board.service";
+import { BoardsComponent } from './boards/boards.component';
+import {TaskService} from "../services/task.service";
+import { TaskListComponent } from './task-list/task-list.component';
 
 @NgModule({
   declarations: [
     PrivateLayoutComponent,
     LoginComponent,
     RegComponent,
-    CreatePageComponent,
     DashboardPageComponent,
-    EditPageComponent,
 
-    FilterPipe,
-    SearchPipe
+    BoardsComponent,
+    TaskListComponent
   ],
   imports: [
     CommonModule,
@@ -46,9 +42,8 @@ import { EditPageComponent } from './edit-page/edit-page.component';
           { path: '', redirectTo: '/admin/login', pathMatch: 'full' },
           { path: 'login', component: LoginComponent },
           { path: 'reg', component: RegComponent },
-          { path: 'create', component: CreatePageComponent, canActivate: [AuthGuard] },
-          { path: 'dashboard', component: DashboardPageComponent, canActivate: [AuthGuard] },
-          { path: 'task/:id/edit', component: EditPageComponent, canActivate: [AuthGuard] },
+          { path: 'boards', component: BoardsComponent, canActivate: [AuthGuard] },
+          { path: 'boards/:id', component: DashboardPageComponent, canActivate: [AuthGuard] }
         ]
       }
     ])
@@ -56,13 +51,11 @@ import { EditPageComponent } from './edit-page/edit-page.component';
   exports: [
     RouterModule,
     HttpClientModule,
-    QuillModule,
-
-    FilterPipe,
-    SearchPipe
+    QuillModule
   ],
   providers: [
-    TasksService,
+    BoardService,
+    TaskService,
     {
       provide : HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

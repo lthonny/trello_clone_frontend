@@ -34,32 +34,41 @@ export class AuthService {
     })
   }
 
-  public isAuth$(): Observable<any> {
-    const accessToken = this.tokenService.getToken$();
-    return this.http.get(`/api/isauth`, {headers: {Authorization: `Bearer ${accessToken}`}})
+  public isAuth$(): Observable<undefined> {
+    const accessToken = this.tokenService.getToken();
+    return this.http.get<undefined>(`/api/isauth`, {headers: {Authorization: `Bearer ${accessToken}`}})
   }
 
   public singUp$(user: ISingUp): Observable<IAuthResponse> {
-    return this.http.post<IAuthResponse>(`/api/sign_up`, user);
+    return this.http.post<IAuthResponse>(`/api/signup`, user);
   }
 
   public singIn$(user: ISingIn): Observable<IAuthResponse> {
-    return this.http.post<IAuthResponse>(`/api/sign_in`, user)
+    return this.http.post<IAuthResponse>(`/api/login`, user)
       .pipe(
         catchError(err => this.error.handleError(err)),
         tap((data) => this.login$(data))
       )
   }
 
-  public login$(data: IAuthResponse) {
-    const {accessToken} = data;
-    localStorage.setItem('token', accessToken);
+  public login$(data: any) {
+    this.setStorage(data.user.id, data.accessToken);
     this._isAuthorized.next(true);
   }
 
-  public logout$(): Observable<any> {
-    localStorage.removeItem('token');
+  public logout$(): Observable<string> {
     this._isAuthorized.next(false);
-    return this.http.post(`/api/logout`, {});
+    this.removeStorage('id', 'token');
+    return this.http.post<string>(`/api/logout`, {});
+  }
+
+  private setStorage(id: string, token: string) {
+    localStorage.setItem('id', id);
+    localStorage.setItem('token', token);
+  }
+
+  private removeStorage(id: string, token: string) {
+    localStorage.removeItem(id);
+    localStorage.removeItem(token);
   }
 }

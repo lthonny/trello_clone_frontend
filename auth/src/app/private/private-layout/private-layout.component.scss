@@ -1,0 +1,89 @@
+header {
+  height: 4.5vh;
+  width: 100%;
+  padding: 0 10px 0 10px;
+
+  background-color: #697178;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .search {
+    color: #fff;
+
+    position: relative;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    input{
+      color: #fff;
+      background-color: #c2cbd8;
+      border-radius: 5px;
+      border: 1px solid #fff;
+      width: 15rem;
+      padding-left: 30px;
+      height: 1.8rem;
+    }
+
+    span {
+      font-size: 20px;
+      position: absolute;
+      top: 4px;
+      left: 5px;
+    }
+  }
+
+  .search-icon {
+    color: yellow;
+    width: 20px;
+    height: 5rem;
+  }
+
+  .avatar {
+    color: #172b4d;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+    border: 1px solid #dfe1e6;
+    background-color: #dfe1e6;
+    border-radius: 100%;
+    cursor: pointer;
+  }
+
+
+  span {
+    cursor: pointer;
+    color: #fff;
+  }
+
+  a {
+    text-decoration: none;
+    color: #fff;
+  }
+}
+
+
+
+.header-right {
+  display: flex;
+  align-items: center;
+  width: 5rem;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  justify-content: space-between;
+  width: 22rem;
+  align-items: center;
+}
+
+.trello {
+  font-size: 22px;
+  font-weight: 600;
+}

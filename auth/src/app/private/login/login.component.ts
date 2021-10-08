@@ -1,20 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { ISingIn } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth.service';
 import {TokenService} from "../../services/token.service";
 import {ErrorService} from "../../services/error.service";
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
 
-  signIpSub!: Subscription;
   submitted: boolean = false;
   message: string = '';
 
@@ -35,7 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     public tokenService: TokenService,
     public errorService: ErrorService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -58,18 +57,11 @@ export class LoginComponent implements OnInit, OnDestroy {
       password: this.form.value.password
     }
 
-    this.signIpSub = this.authService.singIn$(user)
+    this.authService.singIn$(user)
       .subscribe((response) => {
-        this.tokenService.setToken$(response.accessToken);
+        this.tokenService.setToken(response.accessToken);
         this.form.reset();
-        this.router.navigate(['/admin', 'dashboard']);
+        this.router.navigate(['/admin', 'boards']);
     });
   }
-
-  ngOnDestroy() {
-    if (this.signIpSub) {
-      this.signIpSub.unsubscribe();
-    }
-  }
-
 }

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {TasksService} from "../../services/tasks.service";
-import {ITask, IUpdateTask} from "../../interfaces";
+import {Component, OnInit} from '@angular/core';
+import {BoardService} from "../../services/board.service";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {TaskService} from "../../services/task.service";
+import {ITask} from "../../interfaces";
 
 @Component({
   selector: 'app-dashboard-page',
@@ -9,34 +11,21 @@ import {ITask, IUpdateTask} from "../../interfaces";
 })
 export class DashboardPageComponent implements OnInit {
 
-  tasks: any = [];
-  searchTasks: string = '';
-  filterStatus: string = 'all';
-  complete: boolean = false;
+  public pillars: any = [
+    {name: "To Do", task: "1"},
+    {name: "In Progress", task: "2"},
+    {name: "Coded", task: "3"},
+    {name: "Testing", task: "4"},
+    {name: "Done", task: "5"},
+  ]
 
   constructor(
-    public tasksService: TasksService
-  ) { }
+    private tasksService: TaskService
+  ) {}
 
-  ngOnInit(): void {
-    this.tasksService.fetchAll$().subscribe((tasks) => {
-      this.tasks = tasks;
-    });
-  }
-
-  filter(filtered: string) {
-    this.filterStatus = filtered;
-  }
-
-  remove(id: string) {
-    this.tasksService.remove$(id).subscribe(() => {
-      this.tasks = this.tasks.filter((task: any) => task.id !== id);
-      // this.alertService.danger('Task has been deleted');
+  ngOnInit() {
+    this.tasksService.getTasks$().subscribe((task: ITask[]) => {
+      console.log(task);
     })
-  }
-
-  completed(task: any) {
-    task.status = !task.status;
-    this.tasksService.update$(task.id, task).subscribe(()=>{});
   }
 }

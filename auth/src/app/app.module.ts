@@ -5,21 +5,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { HeaderPublicComponent } from './public/header-public/header-public.component';
-import { ContactFormComponent } from './public/contact-form/contact-form.component';
 import { SharedModule } from './shared/shared.module';
 
 import {CookieService} from "ngx-cookie-service";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderPublicComponent,
-    ContactFormComponent
+    HeaderPublicComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    BrowserAnimationsModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

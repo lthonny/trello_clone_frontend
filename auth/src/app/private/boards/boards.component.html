@@ -1,0 +1,21 @@
+<main class="main">
+  <div class="wrapper">
+    Ваши доски рабочего пространства
+
+    <form class="form" [formGroup]="form" (ngSubmit)="submit()">
+      <div>
+        <input type="text" class="form-control bg-light" placeholder="name board" formControlName="name">
+      </div>
+      <button class="add-board" type="submit">&#43;</button>
+    </form>
+
+    <div class="boards">
+      <div class="card" style="width: 18rem;" *ngFor="let board of boards">
+        <div class="card-body">
+          <span class="card-text" (click)="taskList()">{{board.title}}</span>
+          <span class="delete" (click)=deleteBoard(board.id)>&#x2715;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

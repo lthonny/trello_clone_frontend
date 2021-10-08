@@ -1,19 +1,27 @@
-<nav class="navbar bg-primary">
-  <h1> Angular admin </h1>
+<header>
+  <div class="header-left">
+        <span class="material-icons">
+            <a routerLink='boards'>dashboard</a>
+        </span>
 
-  <ul *ngIf="this.authService.isAuthorized">
-    <li routerLinkActive="active">
-      <a [routerLink]="['/admin', 'dashboard']">Home</a>
-    </li>
-    <li routerLinkActive="active">
-      <a [routerLink]="['/admin', 'create']">Create</a>
-    </li>
-    <li>
-      <a (click)="logout()">Exit</a>
-    </li>
-  </ul>
-</nav>
+    <span class="trello">
+            Trello
+        </span>
 
-<div class="container">
-  <router-outlet></router-outlet>
-</div>
+    <div class="search">
+      <span class="material-icons">search</span>
+      <input type="text" placeholder="Поиск">
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="avatar">
+      <!--            {{userName[0].toUpperCase() + userName[1]}}-->
+    </div>
+
+    <span class="material-icons" (click)=logout()>logout</span>
+  </div>
+</header>
+
+<router-outlet></router-outlet>
+
