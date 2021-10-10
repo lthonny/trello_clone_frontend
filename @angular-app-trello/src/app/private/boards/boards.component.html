@@ -13,7 +13,7 @@
       <div class="card" style="width: 18rem;" *ngFor="let board of boards">
         <div class="card-body">
           <span class="card-text" (click)="taskList()">{{board.title}}</span>
-          <span class="delete" (click)=deleteBoard(board.id)>&#x2715;</span>
+          <span class="delete" (click)=removeBoard(board.id)>&#x2715;</span>
         </div>
       </div>
     </div>

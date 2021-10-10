@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { ISingIn } from 'src/app/interfaces';
+
 import { AuthService } from 'src/app/services/auth.service';
 import {TokenService} from "../../services/token.service";
 import {ErrorService} from "../../services/error.service";
 
+import {IAuthResponse, ISingIn} from 'src/app/interfaces';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,6 @@ export class LoginComponent implements OnInit {
       Validators.minLength(6)
     ])
   });
-
 
   constructor(
     public authService: AuthService,
@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.authService.singIn$(user)
-      .subscribe((response) => {
+      .subscribe((response: IAuthResponse) => {
         this.tokenService.setToken(response.accessToken);
         this.form.reset();
         this.router.navigate(['/admin', 'boards']);

@@ -1,10 +1,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {IAuthResponse, ISingIn, ISingUp,} from '../interfaces';
-import {catchError, tap} from "rxjs/operators";
 import {Router} from "@angular/router";
-import {ErrorService} from "./error.service";
+
+import {catchError, tap} from "rxjs/operators";
 import {BehaviorSubject, Observable} from "rxjs";
+
+import {IAuthResponse, ISingIn, ISingUp} from '../interfaces';
+
+import {ErrorService} from "./error.service";
 import {TokenService} from "./token.service";
 
 @Injectable({
@@ -27,11 +30,12 @@ export class AuthService {
     private error: ErrorService,
     private tokenService: TokenService
   ) {
-    this.isAuth$().subscribe(() => {
-      this._isAuthorized.next(true);
-    }, () => {
-      this._isAuthorized.next(false);
-    })
+    this.isAuth$()
+      .subscribe(() => {
+        this._isAuthorized.next(true);
+      }, () => {
+        this._isAuthorized.next(false);
+      })
   }
 
   public isAuth$(): Observable<undefined> {
@@ -51,7 +55,7 @@ export class AuthService {
       )
   }
 
-  public login$(data: any) {
+  public login$(data: IAuthResponse) {
     this.setStorage(data.user.id, data.accessToken);
     this._isAuthorized.next(true);
   }

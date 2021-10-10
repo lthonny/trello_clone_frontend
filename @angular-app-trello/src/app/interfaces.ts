@@ -3,15 +3,14 @@ export interface IUser {
   password: number | string
 }
 
-export interface IContactForm {
-  email: string,
-  text: string
-}
-
 export interface IAuthResponse {
   accessToken: string;
   refreshToken: string;
-  user: IUser;
+  user: {
+    id: string,
+    name: string,
+    email: string
+  };
 }
 
 export interface ISingUp {

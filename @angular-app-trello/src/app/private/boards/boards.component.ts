@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+
 import {BoardService} from "../../services/board.service";
+
 import {IBoard} from "../../interfaces";
 
 @Component({
@@ -20,33 +22,34 @@ export class BoardsComponent implements OnInit {
 
   constructor(
     public boardService: BoardService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.boardService.getBoards$().subscribe((board: IBoard[]) => {
-      this.boards = board;
-    })
+    this.boardService.getBoards$()
+      .subscribe((board: IBoard[]) => {
+        this.boards = board;
+      })
   }
 
   taskList() {
     console.log('tasklist');
   }
 
-  update(id: any) {
-
+  update(id: number) {
     // this.boardService.updateBoard(id, name).subscribe(() => {});
   }
 
-  deleteBoard(id: number) {
-    this.boardService.deleteBoard$(id).subscribe(() => {
-      this.boards = this.boards.filter((board: any) => board.id !== id);
+  removeBoard(id: number) {
+    this.boardService.removeBoard$(id).subscribe(() => {
+      this.boards = this.boards.filter((board: IBoard) => board.id !== id);
     });
   }
+
   submit() {
-    const board: string = this.form.value.name;
-    this.boardService.createBoard$(board).subscribe((board: any)=> {
-      this.form.reset();
-      this.boards.push(board);
-    })
+    this.boardService.createBoard$(this.form.value.name)
+      .subscribe((board: IBoard) => {
+        this.form.reset();
+        this.boards.push(board);
+      })
   }
 }

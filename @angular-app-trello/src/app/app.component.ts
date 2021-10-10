@@ -12,7 +12,7 @@ export class AppComponent {
     public auth: AuthService
   ) {
     // if (localStorage.getItem('token')) {
-    //   auth.refresh();
+    //   @angular-app-trello.refresh();
     // }
   }
 }

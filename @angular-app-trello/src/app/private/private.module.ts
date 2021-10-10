@@ -37,11 +37,11 @@ import { TaskListComponent } from './task-list/task-list.component';
     QuillModule.forRoot(),
 
     RouterModule.forChild([
+      { path: 'login', component: LoginComponent },
+      { path: 'reg', component: RegComponent },
       {
         path: '', component: PrivateLayoutComponent, children: [
           { path: '', redirectTo: '/admin/login', pathMatch: 'full' },
-          { path: 'login', component: LoginComponent },
-          { path: 'reg', component: RegComponent },
           { path: 'boards', component: BoardsComponent, canActivate: [AuthGuard] },
           { path: 'boards/:id', component: DashboardPageComponent, canActivate: [AuthGuard] }
         ]

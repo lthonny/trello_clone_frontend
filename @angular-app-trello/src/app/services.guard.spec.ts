@@ -1,5 +1,5 @@
 // import { TestBed } from '@angular/core/testing';
-// // import { ServicesGuard } from './services/auth.guard';
+// // import { ServicesGuard } from './services/@angular-app-trello.guard';
 //
 // describe('ServicesGuard', () => {
 //   let guard: ServicesGuard;

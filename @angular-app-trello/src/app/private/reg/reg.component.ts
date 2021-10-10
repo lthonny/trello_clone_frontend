@@ -1,19 +1,16 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { ISingUp } from 'src/app/interfaces';
-import { AuthService } from 'src/app/services/auth.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {IAuthResponse, ISingUp} from 'src/app/interfaces';
+import {AuthService} from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-reg',
   templateUrl: './reg.component.html',
   styleUrls: ['./reg.component.scss']
 })
-export class RegComponent implements OnInit, OnDestroy {
-
-  signUpSub!: Subscription;
-
+export class RegComponent implements OnInit {
   submitted: boolean = false;
   message: string = '';
 
@@ -35,10 +32,9 @@ export class RegComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router
-  ) { }
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   submit() {
     if (this.form.invalid) {
@@ -53,17 +49,10 @@ export class RegComponent implements OnInit, OnDestroy {
       password: this.form.value.password
     }
 
-    this.signUpSub = this.authService.singUp$(user)
-      .subscribe(() => console.log('пользователь добавлен'));
-
-    this.form.reset();
-    // this.authService.setAuth$(true);
-    this.router.navigate(['/admin', 'login'])
-  }
-
-  ngOnDestroy() {
-    if (this.signUpSub) {
-      this.signUpSub.unsubscribe();
-    }
+    this.authService.singUp$(user)
+      .subscribe((user: IAuthResponse) => {
+        this.form.reset();
+        this.router.navigate(['/admin', 'login']);
+      });
   }
 }
