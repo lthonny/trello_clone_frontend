@@ -1,129 +1,66 @@
 <div class="body">
   <div class="menu">
-    <span class="title-board">Стажировка</span>
-    <div class="avatar">SH</div>
+    <span class="title-board" (dblclick)="updateTitleBoard()">{{nameBoard}}</span>
+    <div class="avatar">{{ authService.nameUser }}</div>
     <span class="invite">Пригласить</span>
   </div>
 
   <main>
 
-    <div class="column" *ngFor="let pillar of pillars">
-      <h4>{{pillar.name}}</h4>
-      <div class="card">
-        <div class="card-body">{{pillar.task}}</div>
+    <div cdkDropList class="column" (cdkDropListDropped)="drop($event)">
+      <h4>To Do</h4>
+<!--            <app-task></app-task>-->
+      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+      <div class="card" *ngFor="let task of taskListToDo" cdkDrag>
+        <div class="card-body">{{task.title}}
+          <span class="delete" (click)="deleteTask(task.id)">&#x2715;</span>
+        </div>
       </div>
+      <form class="form" [formGroup]="form" (ngSubmit)="submit('TO DO')">
+        <div>
+          <input type="text" class="form-control bg-light" placeholder="name task" formControlName="name">
+          <div class="enter"></div>
+          <input type="text" class="form-control bg-light" placeholder="description task" formControlName="description">
+        </div>
+        <button type="submit" class="btn btn-dark">add task</button>
+      </form>
     </div>
 
-<!--    <div class="column">-->
-<!--      <h4>To Do</h4>-->
+    <div cdkDropList class="column" (cdkDropListDropped)="drop($event)">
+      <h4>In Progress</h4>
+      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+      <div class="card" *ngFor="let task of taskListInProgress" cdkDrag>
+        <div class="card-body">{{task.title}}
+          <span class="delete" (click)="deleteTask(task.id)">&#x2715;</span>
+        </div>
+      </div>
+      <form class="form" [formGroup]="form" (ngSubmit)="submit('In Progress')">
+        <div>
+          <input type="text" class="form-control bg-light" placeholder="name task" formControlName="name">
+          <div class="enter"></div>
+          <input type="text" class="form-control bg-light" placeholder="description task" formControlName="description">
+        </div>
+        <button type="submit" class="btn btn-dark">add task</button>
+      </form>
+    </div>
 
-<!--      <div class="tasks">-->
-
-<!--        <div class="card">-->
-<!--          <div class="card-body">task1</div>-->
-<!--          <span>edit</span>-->
-<!--        </div>-->
-
-<!--        <div class="card">-->
-<!--          <div class="card-body">task2</div>-->
-<!--          <span>edit</span>-->
-<!--        </div>-->
-
-<!--        <div class="card">-->
-<!--          <div class="card-body">task3</div>-->
-<!--          <span>edit</span>-->
-<!--        </div>-->
-
-<!--        <div class="card">-->
-<!--          <div class="card-body">task4</div>-->
-<!--          <span>edit</span>-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--      <div class="add-card">-->
-<!--        + Добавить карточку-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="column">-->
-<!--      <h4>In Progress</h4>-->
-
-<!--      <div class="tasks">-->
-<!--        <div class="card">-->
-<!--          <div class="card-body">task1</div>-->
-<!--        </div>-->
-
-<!--        <div class="card">-->
-<!--          <div class="card-body">task2</div>-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--      <div class="add-card">-->
-<!--        + Добавить карточку-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="column">-->
-<!--      <h4>Coded</h4>-->
-
-<!--      <div class="tasks">-->
-<!--        <div class="card">-->
-<!--          <div class="card-body">task1</div>-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--      <div class="add-card">-->
-<!--        + Добавить карточку-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="column">-->
-<!--      <h4>Testing</h4>-->
-
-<!--      <div class="tasks">-->
-<!--        <div class="card">-->
-<!--          <div class="card-body">task1</div>-->
-<!--        </div>-->
-
-<!--        <div class="card">-->
-<!--          <div class="card-body">task2</div>-->
-<!--        </div>-->
-
-<!--        <div class="card">-->
-<!--          <div class="card-body">task3</div>-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--      <div class="add-card">-->
-<!--        + Добавить карточку-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="column">-->
-<!--      <h4>Done</h4>-->
-
-<!--      <div class="tasks">-->
-<!--        <div class="card">-->
-<!--          <div class="card-body">task1</div>-->
-<!--        </div>-->
-
-<!--        <div class="card">-->
-<!--          <div class="card-body">task2</div>-->
-<!--        </div>-->
-
-<!--        <div class="card">-->
-<!--          <div class="card-body">task3</div>-->
-<!--        </div>-->
-
-<!--        <div class="card">-->
-<!--          <div class="card-body">task4</div>-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--      <div class="add-card">-->
-<!--        + Добавить карточку-->
-<!--      </div>-->
-<!--    </div>-->
+    <div cdkDropList class="column" (cdkDropListDropped)="drop($event)">
+      <h4>Coded</h4>
+      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+      <div class="card" *ngFor="let task of taskListCoded" cdkDrag>
+        <div class="card-body">{{task.title}}
+          <span class="delete" (click)="deleteTask(task.id)">&#x2715;</span>
+        </div>
+      </div>
+      <form class="form" [formGroup]="form" (ngSubmit)="submit('Coded')">
+        <div>
+          <input type="text" class="form-control bg-light" placeholder="name task" formControlName="name">
+          <div class="enter"></div>
+          <input type="text" class="form-control bg-light" placeholder="description task" formControlName="description">
+        </div>
+        <button type="submit" class="btn btn-dark">add task</button>
+      </form>
+    </div>
 
   </main>
 </div>

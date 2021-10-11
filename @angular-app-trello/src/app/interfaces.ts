@@ -49,7 +49,16 @@ export interface IBoard {
 export interface ITask {
   id: number,
   title: string,
+  board_id: number,
   description: string,
+  nameTaskList: string,
   createdAt: Date,
   updatedAt: Date,
+}
+
+export interface ICreateTask {
+  title: string,
+  description: string,
+  nameTaskList: string,
+  board_id: number
 }

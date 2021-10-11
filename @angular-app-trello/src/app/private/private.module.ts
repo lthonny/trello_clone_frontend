@@ -11,6 +11,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthInterceptor} from "../services/auth.interceptor";
 
 import {QuillModule} from "ngx-quill";
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 import {AuthGuard} from "../services/auth.guard";
 
@@ -18,6 +19,8 @@ import {BoardService} from "../services/board.service";
 import { BoardsComponent } from './boards/boards.component';
 import {TaskService} from "../services/task.service";
 import { TaskListComponent } from './task-list/task-list.component';
+import { TaskComponent } from './task/task.component';
+import { BoardComponent } from './board/board.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,9 @@ import { TaskListComponent } from './task-list/task-list.component';
     DashboardPageComponent,
 
     BoardsComponent,
-    TaskListComponent
+    TaskListComponent,
+    TaskComponent,
+    BoardComponent
   ],
   imports: [
     CommonModule,
@@ -35,6 +40,7 @@ import { TaskListComponent } from './task-list/task-list.component';
     ReactiveFormsModule,
     HttpClientModule,
     QuillModule.forRoot(),
+    DragDropModule,
 
     RouterModule.forChild([
       { path: 'login', component: LoginComponent },

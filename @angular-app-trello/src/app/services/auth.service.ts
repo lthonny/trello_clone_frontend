@@ -14,6 +14,7 @@ import {TokenService} from "./token.service";
   providedIn: 'root'
 })
 export class AuthService {
+  public nameUser: string = '';
   private _isAuthorized = new BehaviorSubject<boolean>(false);
 
   get isAuthorized$(): Observable<boolean> {
@@ -56,6 +57,7 @@ export class AuthService {
   }
 
   public login$(data: IAuthResponse) {
+    this.nameUser = data.user.name;
     this.setStorage(data.user.id, data.accessToken);
     this._isAuthorized.next(true);
   }

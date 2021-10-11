@@ -4,6 +4,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {BoardService} from "../../services/board.service";
 
 import {IBoard} from "../../interfaces";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-boards',
@@ -21,7 +22,8 @@ export class BoardsComponent implements OnInit {
   });
 
   constructor(
-    public boardService: BoardService
+    public boardService: BoardService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
