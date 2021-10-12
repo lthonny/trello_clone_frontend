@@ -21,6 +21,9 @@ import {TaskService} from "../services/task.service";
 import { TaskListComponent } from './task-list/task-list.component';
 import { TaskComponent } from './task/task.component';
 import { BoardComponent } from './board/board.component';
+import {MatCardModule} from "@angular/material/card";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -43,16 +46,19 @@ import { BoardComponent } from './board/board.component';
     DragDropModule,
 
     RouterModule.forChild([
-      { path: 'login', component: LoginComponent },
-      { path: 'reg', component: RegComponent },
+      {path: 'login', component: LoginComponent},
+      {path: 'reg', component: RegComponent},
       {
         path: '', component: PrivateLayoutComponent, children: [
-          { path: '', redirectTo: '/admin/login', pathMatch: 'full' },
-          { path: 'boards', component: BoardsComponent, canActivate: [AuthGuard] },
-          { path: 'boards/:id', component: DashboardPageComponent, canActivate: [AuthGuard] }
+          {path: '', redirectTo: '/admin/login', pathMatch: 'full'},
+          {path: 'boards', component: BoardsComponent, canActivate: [AuthGuard]},
+          {path: 'boards/:id', component: DashboardPageComponent, canActivate: [AuthGuard]}
         ]
       }
-    ])
+    ]),
+    MatCardModule,
+    MatFormFieldModule,
+    MatIconModule
   ],
   exports: [
     RouterModule,

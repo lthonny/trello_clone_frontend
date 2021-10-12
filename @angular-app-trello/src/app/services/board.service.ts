@@ -32,7 +32,7 @@ export class BoardService {
     return this.http.delete(`/api/board/${id}`);
   }
 
-  // public updateBoard(id: string, name: string): Observable<IBoard> {
-  //   return this.http.post<IBoard>(`/api/board/update/${id}`, name);
-  // }
+  public updateBoard$(id: any, name: any): Observable<any> {
+    return this.http.post<any>(`/api/board/update/${id}`, {name});
+  }
 }

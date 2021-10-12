@@ -1,0 +1,125 @@
+.body {
+  height: 95vh;
+  width: 100%;
+  // background-image: url("https://trello-backgrounds.s3.amazonaws.com/SharedBackground/2400x1600/2e1fb0a799f60366577d27f34f98aed8/photo-1627719736178-dfadf8f370d9.jpg");
+
+  main {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    .column {
+      text-align: center;
+      border: 1px solid #ebecf0;
+      background-color: #ebecf0;
+      border-radius: 5px;
+      height: 100%;
+
+      cursor: pointer;
+      margin: 5px;
+      width: 23rem;
+
+      h4 {
+        font-weight: 500;
+        padding: 15px 0 0 0;
+      }
+    }
+  }
+}
+
+.add-card {
+  margin: 15px 0px;
+}
+
+.logout {
+  cursor: pointer;
+}
+
+
+.menu {
+  display: flex;
+  margin: 1rem 5px;
+
+  .title-board {
+    display: flex;
+    align-items: center;
+    color: #172b4d;
+    font-weight: 800;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 5px;
+
+    font-size: 18px;
+
+    &:hover {
+      background-color: #a5afb7;
+    }
+  }
+
+  .avatar {
+    color: #172b4d;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+    border: 1px solid #dfe1e6;
+    background-color: #dfe1e6;
+    border-radius: 100%;
+    cursor: pointer;
+
+    margin: 0 20px;
+  }
+
+  .invite {
+    color: #172b4d;
+    font-weight: 500;
+    display: flex;
+    background-color: #dfe1e6;
+    align-items: center;
+    border-radius: 5px;
+    padding: 0 6px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #a5afb7;
+    }
+  }
+}
+
+.card {
+  display: flex;
+  width: 95%;
+  margin: 0 auto;
+
+  .card-body {
+    display: flex;
+    //border: 1px solid #697178;
+    border-radius: 5px;
+    justify-content: space-between;
+  }
+}
+
+form {
+  margin-top: 15px;
+
+  input {
+    width: 95%;
+    margin: 0 auto;
+  }
+
+  .enter {
+    padding: 5px 0px;
+  }
+
+  .btn {
+    margin: 10px 0 15px 0;
+    width: 95%;
+  }
+}
+
+task-list {
+  display: flex;
+}

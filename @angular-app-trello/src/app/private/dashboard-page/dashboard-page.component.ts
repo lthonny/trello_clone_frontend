@@ -1,11 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {TaskService} from "../../services/task.service";
 import {ICreateTask, ITask} from "../../interfaces";
 import {ActivatedRoute, Params} from "@angular/router";
 import {switchMap} from "rxjs/operators";
-import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
+import {BoardService} from "../../services/board.service";
+
+import {Board} from "./board.model";
+import {Column} from "./column.model";
 
 @Component({
   selector: 'app-dashboard-page',
@@ -14,8 +18,35 @@ import {AuthService} from "../../services/auth.service";
 })
 export class DashboardPageComponent implements OnInit {
 
+  board: Board = new Board('Test Board', [
+    new Column('Ideas', [
+      "Some random idea",
+      "This is another random idea",
+      "build an awesome application"
+    ]),
+    new Column('Research', [
+      "Lorem ipsum",
+      "foo",
+      "This was in the 'Research' column"
+    ]),
+    new Column('Todo', [
+      'Get to work',
+      'Pick up groceries',
+      'Go home',
+      'Fall asleep'
+    ]),
+    new Column('Done', [
+      'Get up',
+      'Brush teeth',
+      'Take a shower',
+      'Check e-mail',
+      'Walk dog'
+    ])
+  ]);
+
   private _id: any = '';
   public nameBoard: string = '';
+  public idBoard: any = '';
 
   public taskListToDo: ITask[] = [];
   public taskListInProgress: any = [];
@@ -39,12 +70,20 @@ export class DashboardPageComponent implements OnInit {
   constructor(
     private tasksService: TaskService,
     private route: ActivatedRoute,
-    public authService: AuthService
+    public authService: AuthService,
+    private boardService: BoardService
   ) {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+    }
   }
 
   createTask(name: string) {
@@ -52,25 +91,55 @@ export class DashboardPageComponent implements OnInit {
     // this.tasksService.create$(name)
   }
 
-  deleteTask(id: number) {
+  deleteTask(id: number, name: string) {
     this.tasksService.delete$(id)
       .subscribe(() => {
-        console.log('задача удалена');
-        // if (name === 'TO DO') {
-        //   this.taskListToDo = this.taskListToDo.filter((task: any) => task.id !== id);
-        // }
-        // if (name === 'In Progress') {
-        //   this.taskListInProgress = this.taskListInProgress.filter((task: any) => task.id !== id);
-        // }
-        // if (name === 'Coded') {
-        //   this.taskListCoded = this.taskListCoded.filter((task: any) => task.id !== id);
-        // }
+        // console.log('задача удалена');
+        if (name === 'TO DO') {
+          this.taskListToDo = this.taskListToDo.filter((task: any) => task.id !== id);
+        }
+        if (name === 'In Progress') {
+          this.taskListInProgress = this.taskListInProgress.filter((task: any) => task.id !== id);
+        }
+        if (name === 'Coded') {
+          this.taskListCoded = this.taskListCoded.filter((task: any) => task.id !== id);
+        }
       })
   }
 
-  updateTitleBoard() {
-    this.modalTitle = true;
-    console.log('dbClick');
+  updateTitleBoard(id: number) {
+    const titleBoard = document.querySelector('.title-board');
+
+    if (titleBoard !== null) {
+      const childNode = titleBoard.firstChild;
+
+      if (childNode !== null) {
+        titleBoard.removeChild(childNode);
+        const input = document.createElement('input');
+        input.value = this.nameBoard;
+        titleBoard.append(input);
+
+        input.focus();
+
+        input.addEventListener('blur', (event: FocusEvent) => {
+          titleBoard.innerHTML = input.value;
+          this.nameBoard = input.value;
+
+          this.boardService.updateBoard$(this.idBoard, this.nameBoard)
+            .subscribe((date: any) => this.nameBoard = date.title);
+        });
+
+        input.addEventListener('keydown', (event: KeyboardEvent) => {
+          if (event.keyCode === 13) {
+            titleBoard.innerHTML = input.value;
+            this.nameBoard = input.value;
+
+            this.boardService.updateBoard$(this.idBoard, this.nameBoard)
+              .subscribe((date: any) => this.nameBoard = date.title);
+          }
+        });
+      }
+    }
   }
 
   ngOnInit() {
@@ -82,6 +151,7 @@ export class DashboardPageComponent implements OnInit {
       })).subscribe((tasks: any) => {
       this.tasks = tasks.tasks;
       this.nameBoard = tasks.title;
+      this.idBoard = tasks.id;
 
       this.tasks.forEach((task: ITask) => {
         if (task.nameTaskList === 'TO DO') {

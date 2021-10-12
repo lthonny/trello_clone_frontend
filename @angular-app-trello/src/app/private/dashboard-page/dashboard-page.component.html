@@ -1,66 +1,132 @@
 <div class="body">
   <div class="menu">
-    <span class="title-board" (dblclick)="updateTitleBoard()">{{nameBoard}}</span>
+    <span class="title-board" (dblclick)="updateTitleBoard(idBoard)">{{nameBoard}}</span>
     <div class="avatar">{{ authService.nameUser }}</div>
     <span class="invite">Пригласить</span>
   </div>
 
   <main>
 
-    <div cdkDropList class="column" (cdkDropListDropped)="drop($event)">
-      <h4>To Do</h4>
-<!--            <app-task></app-task>-->
-      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-      <div class="card" *ngFor="let task of taskListToDo" cdkDrag>
-        <div class="card-body">{{task.title}}
-          <span class="delete" (click)="deleteTask(task.id)">&#x2715;</span>
-        </div>
-      </div>
-      <form class="form" [formGroup]="form" (ngSubmit)="submit('TO DO')">
-        <div>
-          <input type="text" class="form-control bg-light" placeholder="name task" formControlName="name">
-          <div class="enter"></div>
-          <input type="text" class="form-control bg-light" placeholder="description task" formControlName="description">
-        </div>
-        <button type="submit" class="btn btn-dark">add task</button>
-      </form>
-    </div>
 
-    <div cdkDropList class="column" (cdkDropListDropped)="drop($event)">
-      <h4>In Progress</h4>
-      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-      <div class="card" *ngFor="let task of taskListInProgress" cdkDrag>
-        <div class="card-body">{{task.title}}
-          <span class="delete" (click)="deleteTask(task.id)">&#x2715;</span>
-        </div>
-      </div>
-      <form class="form" [formGroup]="form" (ngSubmit)="submit('In Progress')">
-        <div>
-          <input type="text" class="form-control bg-light" placeholder="name task" formControlName="name">
-          <div class="enter"></div>
-          <input type="text" class="form-control bg-light" placeholder="description task" formControlName="description">
-        </div>
-        <button type="submit" class="btn btn-dark">add task</button>
-      </form>
-    </div>
+<!--    <app-task-list></app-task-list>-->
 
-    <div cdkDropList class="column" (cdkDropListDropped)="drop($event)">
-      <h4>Coded</h4>
-      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-      <div class="card" *ngFor="let task of taskListCoded" cdkDrag>
-        <div class="card-body">{{task.title}}
-          <span class="delete" (click)="deleteTask(task.id)">&#x2715;</span>
+<!--    <div-->
+<!--      cdkDropList-->
+<!--      #todoList="cdkDropList"-->
+<!--      [cdkDropListData]="todo"-->
+<!--      [cdkDropListConnectedTo]="[doneList]"-->
+<!--      class="example-list"-->
+<!--      (cdkDropListDropped)="drop($event)">-->
+<!--      <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>-->
+<!--    </div>-->
+
+<!--    <div-->
+<!--      cdkDropList-->
+<!--      #todoList="cdkDropList"-->
+<!--      [cdkDropListData]="[taskListToDo]"-->
+<!--      class="column"-->
+<!--      (cdkDropListDropped)="drop($event)">-->
+<!--      <div class="example-box" *ngFor="let item of taskListToDo" cdkDrag>{{item}}</div>-->
+
+<!--      <h4>To Do</h4>-->
+<!--      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>-->
+<!--      <div class="card" *ngFor="let task of tasks" cdkDrag>-->
+<!--        <div class="card-body">{{task.title}}-->
+<!--          <span class="delete" (click)="deleteTask(task.id, task.nameTaskList)">&#x2715;</span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <form class="form" [formGroup]="form" (ngSubmit)="submit('TO DO')">-->
+<!--        <div>-->
+<!--          <input type="text" class="form-control bg-light" placeholder="name task" formControlName="name">-->
+<!--          <div class="enter"></div>-->
+<!--          <input type="text" class="form-control bg-light" placeholder="description task" formControlName="description">-->
+<!--        </div>-->
+<!--        <button type="submit" class="btn btn-dark">add task</button>-->
+<!--      </form>-->
+<!--    </div>-->
+
+<!--    <div cdkDropList class="column" (cdkDropListDropped)="drop($event)">-->
+<!--      <h4>In Progress</h4>-->
+<!--      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>-->
+<!--      <div class="card" *ngFor="let task of taskListInProgress" cdkDrag>-->
+<!--        <div class="card-body">{{task.title}}-->
+<!--          <span class="delete" (click)="deleteTask(task.id, task.nameTaskList)">&#x2715;</span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <form class="form" [formGroup]="form" (ngSubmit)="submit('In Progress')">-->
+<!--        <div>-->
+<!--          <input type="text" class="form-control bg-light" placeholder="name task" formControlName="name">-->
+<!--          <div class="enter"></div>-->
+<!--          <input type="text" class="form-control bg-light" placeholder="description task" formControlName="description">-->
+<!--        </div>-->
+<!--        <button type="submit" class="btn btn-dark">add task</button>-->
+<!--      </form>-->
+<!--    </div>-->
+
+<!--    <div cdkDropList class="column" (cdkDropListDropped)="drop($event)">-->
+<!--      <h4>Coded</h4>-->
+<!--      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>-->
+<!--      <div class="card" *ngFor="let task of taskListCoded" cdkDrag>-->
+<!--        <div class="card-body">{{task.title}}-->
+<!--          <span class="delete" (click)="deleteTask(task.id, task.nameTaskList)">&#x2715;</span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <form class="form" [formGroup]="form" (ngSubmit)="submit('Coded')">-->
+<!--        <div>-->
+<!--          <input type="text" class="form-control bg-light" placeholder="name task" formControlName="name">-->
+<!--          <div class="enter"></div>-->
+<!--          <input type="text" class="form-control bg-light" placeholder="description task" formControlName="description">-->
+<!--        </div>-->
+<!--        <button type="submit" class="btn btn-dark">add task</button>-->
+<!--      </form>-->
+<!--    </div>-->
+
+    <div class="board-wrapper">
+      <div class="board-columns" cdkDropListGroup>
+        <div class="board-column" *ngFor="let column of board.columns">
+          <div class="column-title">
+            {{ column.name }}
+          </div>
+          <div class="tasks-container"
+               cdkDropList
+               [cdkDropListData]="column.tasks"
+               (cdkDropListDropped)="drop($event)">
+            <div class="task" *ngFor="let item of column.tasks" cdkDrag>
+              {{ item }}
+            </div>
+          </div>
         </div>
       </div>
-      <form class="form" [formGroup]="form" (ngSubmit)="submit('Coded')">
-        <div>
-          <input type="text" class="form-control bg-light" placeholder="name task" formControlName="name">
-          <div class="enter"></div>
-          <input type="text" class="form-control bg-light" placeholder="description task" formControlName="description">
-        </div>
-        <button type="submit" class="btn btn-dark">add task</button>
-      </form>
     </div>
 
   </main>
 </div>
+
+
+<!--<div class="example-container">-->
+<!--  <h2>To do</h2>-->
+
+<!--  <div-->
+<!--    cdkDropList-->
+<!--    #todoList="cdkDropList"-->
+<!--    [cdkDropListData]="todo"-->
+<!--    [cdkDropListConnectedTo]="[doneList]"-->
+<!--    class="example-list"-->
+<!--    (cdkDropListDropped)="drop($event)">-->
+<!--    <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class="example-container">-->
+<!--  <h2>Done</h2>-->
+
+<!--  <div-->
+<!--    cdkDropList-->
+<!--    #doneList="cdkDropList"-->
+<!--    [cdkDropListData]="done"-->
+<!--    [cdkDropListConnectedTo]="[todoList]"-->
+<!--    class="example-list"-->
+<!--    (cdkDropListDropped)="drop($event)">-->
+<!--    <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>-->
+<!--  </div>-->
+<!--</div>-->
