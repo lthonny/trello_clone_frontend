@@ -1,15 +1,18 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {TaskService} from "../../services/task.service";
-import {ICreateTask, ITask} from "../../interfaces";
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router";
-import {switchMap} from "rxjs/operators";
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
+
+import {switchMap} from "rxjs/operators";
+
+import {TaskService} from "../../services/task.service";
 import {AuthService} from "../../services/auth.service";
 import {BoardService} from "../../services/board.service";
 
-import {Board} from "./board.model";
-import {Column} from "./column.model";
+import {ICreateTask, ITask} from "../../interfaces";
+
+import {Board} from "../../models/board.model";
+import {Column} from "../../models/column.model";
 
 @Component({
   selector: 'app-dashboard-page',
@@ -18,45 +21,25 @@ import {Column} from "./column.model";
 })
 export class DashboardPageComponent implements OnInit {
 
-  board: Board = new Board('Test Board', [
-    new Column('Ideas', [
-      "Some random idea",
-      "This is another random idea",
-      "build an awesome application"
-    ]),
-    new Column('Research', [
-      "Lorem ipsum",
-      "foo",
-      "This was in the 'Research' column"
-    ]),
-    new Column('Todo', [
-      'Get to work',
-      'Pick up groceries',
-      'Go home',
-      'Fall asleep'
-    ]),
-    new Column('Done', [
-      'Get up',
-      'Brush teeth',
-      'Take a shower',
-      'Check e-mail',
-      'Walk dog'
-    ])
-  ]);
-
-  private _id: any = '';
+  public _id!: number;
   public nameBoard: string = '';
-  public idBoard: any = '';
-
-  public taskListToDo: ITask[] = [];
-  public taskListInProgress: any = [];
-  public taskListCoded: any = [];
-  // public taskListTesting: [] = [];
-  // public taskListDone: [] = [];
+  public nameUser: string | null = localStorage.getItem('name');
 
   public tasks: ITask[] = [];
 
-  public modalTitle: boolean = false;
+  private taskListToDo: ITask[] = [];
+  private taskListInProgress: ITask[] = [];
+  private taskListCoded: ITask[] = [];
+  private taskListTesting: ITask[] = [];
+  private taskListDone: ITask[] = [];
+
+  board: Board = new Board('tasks', [
+    new Column('To Do', this.taskListToDo),
+    new Column('In Progress', this.taskListInProgress),
+    new Column('Coded', this.taskListCoded),
+    new Column('Testing', this.taskListTesting),
+    new Column('Done', this.taskListDone)
+  ]);
 
   form: FormGroup = new FormGroup({
     name: new FormControl(null, [
@@ -68,12 +51,11 @@ export class DashboardPageComponent implements OnInit {
   });
 
   constructor(
+    private boardService: BoardService,
     private tasksService: TaskService,
-    private route: ActivatedRoute,
     public authService: AuthService,
-    private boardService: BoardService
-  ) {
-  }
+    private route: ActivatedRoute
+  ) {}
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
@@ -84,17 +66,13 @@ export class DashboardPageComponent implements OnInit {
         event.previousIndex,
         event.currentIndex);
     }
-  }
 
-  createTask(name: string) {
-    console.log(name)
-    // this.tasksService.create$(name)
+    console.log(this.board)
   }
 
   deleteTask(id: number, name: string) {
     this.tasksService.delete$(id)
       .subscribe(() => {
-        // console.log('задача удалена');
         if (name === 'TO DO') {
           this.taskListToDo = this.taskListToDo.filter((task: any) => task.id !== id);
         }
@@ -104,10 +82,16 @@ export class DashboardPageComponent implements OnInit {
         if (name === 'Coded') {
           this.taskListCoded = this.taskListCoded.filter((task: any) => task.id !== id);
         }
+        if (name === 'Testing') {
+          this.taskListTesting = this.taskListTesting.filter((task: any) => task.id !== id);
+        }
+        if (name === 'Done') {
+          this.taskListDone = this.taskListDone.filter((task: any) => task.id !== id);
+        }
       })
   }
 
-  updateTitleBoard(id: number) {
+  updateTitleBoard() {
     const titleBoard = document.querySelector('.title-board');
 
     if (titleBoard !== null) {
@@ -125,7 +109,7 @@ export class DashboardPageComponent implements OnInit {
           titleBoard.innerHTML = input.value;
           this.nameBoard = input.value;
 
-          this.boardService.updateBoard$(this.idBoard, this.nameBoard)
+          this.boardService.updateBoard$(this._id, this.nameBoard)
             .subscribe((date: any) => this.nameBoard = date.title);
         });
 
@@ -134,7 +118,7 @@ export class DashboardPageComponent implements OnInit {
             titleBoard.innerHTML = input.value;
             this.nameBoard = input.value;
 
-            this.boardService.updateBoard$(this.idBoard, this.nameBoard)
+            this.boardService.updateBoard$(this._id, this.nameBoard)
               .subscribe((date: any) => this.nameBoard = date.title);
           }
         });
@@ -151,7 +135,6 @@ export class DashboardPageComponent implements OnInit {
       })).subscribe((tasks: any) => {
       this.tasks = tasks.tasks;
       this.nameBoard = tasks.title;
-      this.idBoard = tasks.id;
 
       this.tasks.forEach((task: ITask) => {
         if (task.nameTaskList === 'TO DO') {
@@ -163,17 +146,23 @@ export class DashboardPageComponent implements OnInit {
         if (task.nameTaskList === 'Coded') {
           this.taskListCoded.push(task);
         }
+        if (task.nameTaskList === 'Testing') {
+          this.taskListTesting.push(task);
+        }
+        if (task.nameTaskList === 'Done') {
+          this.taskListDone.push(task);
+        }
       })
 
       console.log('tasks', this.tasks);
     })
   }
 
-  submit(name: string) {
+  submit(nameTaskList: string) {
     const task: ICreateTask = {
       title: this.form.value.name,
       description: this.form.value.description,
-      nameTaskList: name,
+      nameTaskList: nameTaskList,
       board_id: this._id
     }
 
@@ -189,8 +178,12 @@ export class DashboardPageComponent implements OnInit {
       if (task.nameTaskList === 'Coded') {
         this.taskListCoded.push(task);
       }
-
-      console.log(task);
+      if (task.nameTaskList === 'Testing') {
+        this.taskListTesting.push(task);
+      }
+      if (task.nameTaskList === 'Done') {
+        this.taskListDone.push(task);
+      }
     })
   }
 }

@@ -14,7 +14,7 @@ import {TokenService} from "./token.service";
   providedIn: 'root'
 })
 export class AuthService {
-  public nameUser: string = '';
+  private nameUser: string = '';
   private _isAuthorized = new BehaviorSubject<boolean>(false);
 
   get isAuthorized$(): Observable<boolean> {
@@ -57,24 +57,25 @@ export class AuthService {
   }
 
   public login$(data: IAuthResponse) {
-    this.nameUser = data.user.name;
-    this.setStorage(data.user.id, data.accessToken);
+    this.setStorage(data.user.id, data.user.name, data.accessToken);
     this._isAuthorized.next(true);
   }
 
   public logout$(): Observable<string> {
     this._isAuthorized.next(false);
-    this.removeStorage('id', 'token');
+    this.removeStorage('id', this.nameUser, 'token');
     return this.http.post<string>(`/api/logout`, {});
   }
 
-  private setStorage(id: string, token: string) {
+  private setStorage(id: string, name: string, token: string) {
     localStorage.setItem('id', id);
+    localStorage.setItem('name', name);
     localStorage.setItem('token', token);
   }
 
-  private removeStorage(id: string, token: string) {
+  private removeStorage(id: string, name: string, token: string) {
     localStorage.removeItem(id);
+    localStorage.removeItem(name);
     localStorage.removeItem(token);
   }
 }

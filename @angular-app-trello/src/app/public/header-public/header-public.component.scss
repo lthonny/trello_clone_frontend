@@ -1,0 +1,49 @@
+body {
+  color: #fff;
+  background-color: #172b4d;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .entrance {
+    display: flex;
+    justify-content: space-between;
+    width: 22rem;
+  }
+
+  .log, .reg {
+    width: 10rem;
+    height: 3.5rem;
+
+    font-size: 18px;
+    font-weight: 500;
+    border: 1px solid #fff;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    position: relative;
+    top: 0;
+    left: 0;
+    bottom: 0;
+  }
+
+  .log:before, .reg:before {
+    content:'';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: rgba(255,255,255,0.3);
+    transition: all 2s ease;
+  }
+  .log:hover:before, .reg:hover:before {
+    width: 100%;
+  }
+
+}
