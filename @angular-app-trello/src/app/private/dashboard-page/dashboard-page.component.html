@@ -1,6 +1,6 @@
 <div class="body">
   <div class="menu">
-    <span class="title-board" (dblclick)="updateTitleBoard()">{{nameBoard}}</span>
+    <span class="title-board" (click)="updateTitleBoard()">{{nameBoard}}</span>
     <div class="avatar">{{ nameUser.charAt(0) | uppercase}}</div>
     <span class="invite">Пригласить</span>
     <span class="full-menu" (click)="fullMenu()">Меню
@@ -8,15 +8,24 @@
     </span>
   </div>
 
+  <ng-template #popover_content>
+    <a href="/">home</a>
+  </ng-template>
+
   <main>
     <div class="board-wrapper">
       <div class="board-columns" cdkDropListGroup>
         <div class="board-column column" *ngFor="let column of board.columns">
           <div class="column-title">
-            <span class="title">
+            <span class="title" (click)="updateTitleTask()">
               <h4>{{ column.name }}</h4>
             </span>
-            <span class="icon">
+            <span
+                  class="icon mr-2"
+                  placement="bottom"
+                  ngbPopover="{{popover_content}}"
+                  popoverTitle="Actions tasks"
+            >
               <mat-icon class="material-icons-outlined" aria-hidden="false" aria-label="Example home icon">more_horiz</mat-icon>
             </span>
           </div>
@@ -46,14 +55,4 @@
   </main>
 </div>
 
-
-<button
-  type="button"
-  class="btn btn-outline-secondary mr-2"
-  placement="bottom"
-  ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-  popoverTitle="Popover on bottom"
->
-  Popover on bottom
-</button>
 

@@ -26,6 +26,7 @@ import {TaskComponent} from './task/task.component';
 import {BoardComponent} from './board/board.component';
 import {MaterialModule} from "../material.module";
 import {MatButtonModule} from "@angular/material/button";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import {MatButtonModule} from "@angular/material/button";
     TaskListComponent,
     TaskComponent,
     BoardComponent,
-    DialogDataExampleDialog
+    DialogDataExampleDialog,
   ],
   imports: [
     CommonModule,
@@ -47,6 +48,7 @@ import {MatButtonModule} from "@angular/material/button";
     HttpClientModule,
     QuillModule.forRoot(),
     DragDropModule,
+    NgbModule,
 
     RouterModule.forChild([
       {path: 'login', component: LoginComponent},
@@ -65,7 +67,8 @@ import {MatButtonModule} from "@angular/material/button";
   exports: [
     RouterModule,
     HttpClientModule,
-    QuillModule
+    QuillModule,
+    NgbModule
   ],
   providers: [
     BoardService,

@@ -34,6 +34,8 @@ export class DashboardPageComponent implements OnInit {
   private taskListTesting: ITask[] = [];
   private taskListDone: ITask[] = [];
 
+  public popover: string = 'Архивировать список';
+
   board: Board = new Board('tasks', [
     new Column('To Do', this.taskListToDo),
     new Column('In Progress', this.taskListInProgress),
@@ -241,6 +243,9 @@ export class DashboardPageComponent implements OnInit {
     }
   }
 
+  updateTitleTask() {
+    console.log('title')
+  }
   fullMenu() {
     console.log('full menu');
   }
