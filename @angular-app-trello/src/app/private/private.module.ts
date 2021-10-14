@@ -1,29 +1,31 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PrivateLayoutComponent } from './private-layout/private-layout.component';
-import { RouterModule } from '@angular/router';
-import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
-import { LoginComponent } from './login/login.component';
-import { RegComponent } from './reg/reg.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {PrivateLayoutComponent} from './private-layout/private-layout.component';
+import {RouterModule} from '@angular/router';
+import {
+  DashboardPageComponent,
+  DialogDataExampleDialog
+} from './dashboard-page/dashboard-page.component';
+import {LoginComponent} from './login/login.component';
+import {RegComponent} from './reg/reg.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import {AuthInterceptor} from "../services/auth.interceptor";
 
 import {QuillModule} from "ngx-quill";
-import { DragDropModule } from "@angular/cdk/drag-drop";
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 import {AuthGuard} from "../services/auth.guard";
 
 import {BoardService} from "../services/board.service";
-import { BoardsComponent } from './boards/boards.component';
+import {BoardsComponent} from './boards/boards.component';
 import {TaskService} from "../services/task.service";
-import { TaskListComponent } from './task-list/task-list.component';
-import { TaskComponent } from './task/task.component';
-import { BoardComponent } from './board/board.component';
-import {MatCardModule} from "@angular/material/card";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatIconModule} from "@angular/material/icon";
+import {TaskListComponent} from './task-list/task-list.component';
+import {TaskComponent} from './task/task.component';
+import {BoardComponent} from './board/board.component';
+import {MaterialModule} from "../material.module";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import {MatIconModule} from "@angular/material/icon";
     BoardsComponent,
     TaskListComponent,
     TaskComponent,
-    BoardComponent
+    BoardComponent,
+    DialogDataExampleDialog
   ],
   imports: [
     CommonModule,
@@ -56,9 +59,8 @@ import {MatIconModule} from "@angular/material/icon";
         ]
       }
     ]),
-    MatCardModule,
-    MatFormFieldModule,
-    MatIconModule
+    MaterialModule,
+    MatButtonModule
   ],
   exports: [
     RouterModule,
@@ -69,10 +71,11 @@ import {MatIconModule} from "@angular/material/icon";
     BoardService,
     TaskService,
     {
-      provide : HTTP_INTERCEPTORS,
+      provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi   : true,
+      multi: true,
     }
   ]
 })
-export class PrivateModule {}
+export class PrivateModule {
+}

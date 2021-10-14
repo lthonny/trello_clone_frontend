@@ -5,11 +5,11 @@
 
   main {
     display: flex;
-    justify-content: space-around;
+    //justify-content: space-around;
     flex-wrap: wrap;
 
     .column {
-      text-align: center;
+      //text-align: center;
       border: 1px solid #ebecf0;
       background-color: #ebecf0;
       border-radius: 5px;
@@ -17,12 +17,8 @@
 
       cursor: pointer;
       margin: 5px;
-      width: 23rem;
+      width: 16rem;
 
-      h4 {
-        font-weight: 500;
-        padding: 15px 0 0 0;
-      }
     }
   }
 }
@@ -38,6 +34,7 @@
 
 .menu {
   display: flex;
+  //justify-content: space-between;
   margin: 1rem 5px;
 
   .title-board {
@@ -50,6 +47,24 @@
     padding: 5px;
 
     font-size: 18px;
+
+    &:hover {
+      background-color: #a5afb7;
+    }
+  }
+
+  .full-menu {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+
+    padding: .3rem;
+    border-radius: 5px;
+    background-color: #dfe1e6;
+
+    cursor: pointer;
+
+    margin-left: 20px;
 
     &:hover {
       background-color: #a5afb7;
@@ -121,14 +136,6 @@ form {
 }
 
 
-
-
-
-
-
-
-
-
 .root {
   display: flex;
   flex-direction: column;
@@ -197,19 +204,49 @@ form {
         }
 
         .column-title {
-          font-size: 20px;
-          font-weight: 800;
-          font-family: 'Lato', sans-serif;
-          text-transform: uppercase;
-          margin-bottom: 20px;
+          display: flex;
+          justify-content: space-between;
+
+          //font-size: 20px;
+          //font-weight: 800;
+          //font-family: 'Lato', sans-serif;
+          //text-transform: uppercase;
+          //margin-bottom: 20px;
         }
       }
     }
   }
 }
 
+.column-title {
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 20px;
+  font-weight: 500;
+  width: 95%;
+
+  margin: 0 auto;
+  padding: 15px 0 0 0;
+
+  .title {
+    width: 100%;
+    white-space: nowrap;
+  }
+
+  .icon {
+
+    mat-icon:hover {
+      color: #fff;
+      background-color: #a5afb7;
+      border-radius: 3px;
+    }
+  }
+}
+
 
 .tasks-container {
+  min-height: 60px;
   flex-grow: 1;
   overflow-y: auto;
 }
@@ -251,22 +288,12 @@ form {
 .tasks-container.cdk-drop-list-dragging .task:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
 .board-columns {
+  //text-align: center;
+
   display: flex;
-  justify-content: space-between;
+  //justify-content: space-between;
 
   flex-wrap: wrap;
-}
-
-main {
-  //display: flex;
-  //justify-content: space-around;
-  //
-  //flex-wrap: wrap;
-}
-
-.board-column {
-  text-align: center;
-  border: 1px solid red;
-  margin-left: 50px;
 }

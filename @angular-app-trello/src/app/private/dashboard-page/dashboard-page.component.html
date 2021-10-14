@@ -1,8 +1,11 @@
 <div class="body">
   <div class="menu">
     <span class="title-board" (dblclick)="updateTitleBoard()">{{nameBoard}}</span>
-    <div class="avatar">{{ nameUser }}</div>
+    <div class="avatar">{{ nameUser.charAt(0) | uppercase}}</div>
     <span class="invite">Пригласить</span>
+    <span class="full-menu" (click)="fullMenu()">Меню
+      <mat-icon class="material-icons-outlined" aria-hidden="false" aria-label="Example home icon">more_horiz</mat-icon>
+    </span>
   </div>
 
   <main>
@@ -10,14 +13,19 @@
       <div class="board-columns" cdkDropListGroup>
         <div class="board-column column" *ngFor="let column of board.columns">
           <div class="column-title">
-            <h4>{{ column.name }}</h4>
+            <span class="title">
+              <h4>{{ column.name }}</h4>
+            </span>
+            <span class="icon">
+              <mat-icon class="material-icons-outlined" aria-hidden="false" aria-label="Example home icon">more_horiz</mat-icon>
+            </span>
           </div>
           <div class="tasks-container"
                cdkDropList
                [cdkDropListData]="column.tasks"
-               (cdkDropListDropped)="drop($event)">
+               (cdkDropListDropped)="drop($event, column)">
             <div class="task card-body" *ngFor="let item of column.tasks" cdkDrag>
-              <span>{{ item.title }}</span>
+              <span (click)="openDialog()">{{ item.title }}</span>
               <span class="delete" (click)="deleteTask(item.id, item.nameTaskList)">&#x2715;</span>
             </div>
           </div>
@@ -37,3 +45,15 @@
     </div>
   </main>
 </div>
+
+
+<button
+  type="button"
+  class="btn btn-outline-secondary mr-2"
+  placement="bottom"
+  ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+  popoverTitle="Popover on bottom"
+>
+  Popover on bottom
+</button>
+

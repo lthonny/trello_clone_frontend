@@ -6,6 +6,8 @@ import {BoardService} from "../../services/board.service";
 import {IBoard} from "../../interfaces";
 import {Router} from "@angular/router";
 
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 @Component({
   selector: 'app-boards',
   templateUrl: './boards.component.html',

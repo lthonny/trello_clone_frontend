@@ -23,12 +23,16 @@ export class TaskService {
     return this.http.get<ITask[]>(`/api/tasks/${this._id}`);
   }
 
-  public create$(date: any): Observable<ITask> {
-    return this.http.post<ITask>(`/api/task/create/${this._id}`, date);
+  public create$(data: any): Observable<ITask> {
+    return this.http.post<ITask>(`/api/task/create/${this._id}`, data);
   }
 
-  public updateOrder$(date: any): Observable<any> {
-    return this.http.post<any>(`/api/tasks/updateOrder${this._id}`, date)
+  public updateOrder$(data: any): Observable<any> {
+    return this.http.post<any>(`/api/tasks/updateOrder/${this._id}`, data)
+  }
+
+  public update$(data: any, nameList: string): Observable<any> {
+    return this.http.post<any>(`/api/task/update`, {data, nameList})
   }
 
   public delete$(id: number): Observable<undefined> {

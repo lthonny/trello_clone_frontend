@@ -54,11 +54,13 @@ export interface ITask {
   nameTaskList: string,
   createdAt: Date,
   updatedAt: Date,
+  order?: number
 }
 
 export interface ICreateTask {
   title: string,
   description: string,
   nameTaskList: string,
-  board_id: number
+  board_id: number,
+  order: number
 }
