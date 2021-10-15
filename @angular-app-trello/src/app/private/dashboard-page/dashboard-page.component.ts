@@ -13,7 +13,9 @@ import {ICreateTask, ITask} from "../../interfaces";
 import {Board} from "../../models/board.model";
 import {Column} from "../../models/column.model";
 
-import { MAT_DIALOG_DATA, MatDialog } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
+import {DialogDataExampleDialog} from "./dialog-data-example-dialog";
+import {ArchiveTasksService} from "../../services/archive.tasks.service";
 
 @Component({
   selector: 'app-dashboard-page',
@@ -22,9 +24,12 @@ import { MAT_DIALOG_DATA, MatDialog } from "@angular/material/dialog";
 })
 export class DashboardPageComponent implements OnInit {
 
+  public showFiller: boolean = false;
+
   public _id!: number;
   public nameBoard: string = '';
   public nameUser: any = localStorage.getItem('name');
+  public nameTask: string = '';
 
   public tasks: ITask[] = [];
 
@@ -57,14 +62,15 @@ export class DashboardPageComponent implements OnInit {
     private boardService: BoardService,
     private tasksService: TaskService,
     private route: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public fetchAllArchive: ArchiveTasksService
   ) {
   }
 
-  openDialog(): void {
+  openDialog(item: any): void {
     this.dialog.open(DialogDataExampleDialog, {
       data: {
-        animal: 'panda'
+        item
       },
       height: '800px',
       width: '600px',
@@ -288,6 +294,8 @@ export class DashboardPageComponent implements OnInit {
 
       console.log('this.board', this.board);
     })
+
+    this.fetchAllArchive.fetchAllArchive$(this._id).subscribe(() => {});
   }
 
   submit(nameTaskList: string) {
@@ -348,15 +356,3 @@ export class DashboardPageComponent implements OnInit {
   }
 }
 
-
-export interface DialogData {
-  animal: 'panda' | 'unicorn' | 'lion';
-}
-
-@Component({
-  selector: 'dialog-data-example-dialog',
-  templateUrl: 'dialog-data-example-dialog.html',
-})
-export class DialogDataExampleDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-}

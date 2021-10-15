@@ -1,58 +1,77 @@
-<div class="body">
-  <div class="menu">
-    <span class="title-board" (click)="updateTitleBoard()">{{nameBoard}}</span>
-    <div class="avatar">{{ nameUser.charAt(0) | uppercase}}</div>
-    <span class="invite">Пригласить</span>
-    <span class="full-menu" (click)="fullMenu()">Меню
-      <mat-icon class="material-icons-outlined" aria-hidden="false" aria-label="Example home icon">more_horiz</mat-icon>
-    </span>
-  </div>
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
+    <!--        <button (click)="showFiller = !showFiller" mat-raised-button>-->
+    <!--          Toggle extra text-->
+    <!--        </button>-->
+    <div class="sidenav">
+      <div class="sidenav-body">
+        <div class="sidenav-menu">Меню</div>
+<!--        <div class="line"></div>-->
+        <div>О доске</div>
+        <div>Действия</div>
+      </div>
+    </div>
+  </mat-drawer>
 
-  <ng-template #popover_content>
-    <a href="/">home</a>
-  </ng-template>
+  <div class="body">
+    <div class="menu">
+      <span class="title-board" (click)="updateTitleBoard()">{{nameBoard}}</span>
+      <div class="avatar">{{ nameUser.charAt(0) | uppercase}}</div>
+      <span class="invite">Пригласить</span>
 
-  <main>
-    <div class="board-wrapper">
-      <div class="board-columns" cdkDropListGroup>
-        <div class="board-column column" *ngFor="let column of board.columns">
-          <div class="column-title">
+      <div class="example-sidenav-content">
+        <span class="full-menu" (click)="fullMenu()">
+          <button type="button" mat-button (click)="drawer.toggle()">
+            Меню
+            <mat-icon class="material-icons-outlined" aria-hidden="false"
+                      aria-label="Example home icon">more_horiz</mat-icon>
+          </button>
+        </span>
+      </div>
+    </div>
+
+    <main>
+      <div class="board-wrapper">
+        <div class="board-columns" cdkDropListGroup>
+          <div class="board-column column" *ngFor="let column of board.columns">
+            <div class="column-title">
             <span class="title" (click)="updateTitleTask()">
               <h4>{{ column.name }}</h4>
             </span>
-            <span
-                  class="icon mr-2"
-                  placement="bottom"
-                  ngbPopover="{{popover_content}}"
-                  popoverTitle="Actions tasks"
-            >
-              <mat-icon class="material-icons-outlined" aria-hidden="false" aria-label="Example home icon">more_horiz</mat-icon>
+              <span
+                class="icon mr-2"
+              >
+<!--              <app-popover class="icon" buttonText="...">Добавить карточку... Копировать список... Переместить список... Архивировать список</app-popover>-->
+              <mat-icon class="material-icons-outlined" aria-hidden="false"
+                        aria-label="Example home icon">more_horiz</mat-icon>
             </span>
-          </div>
-          <div class="tasks-container"
-               cdkDropList
-               [cdkDropListData]="column.tasks"
-               (cdkDropListDropped)="drop($event, column)">
-            <div class="task card-body" *ngFor="let item of column.tasks" cdkDrag>
-              <span (click)="openDialog()">{{ item.title }}</span>
-              <span class="delete" (click)="deleteTask(item.id, item.nameTaskList)">&#x2715;</span>
             </div>
-          </div>
-          <form class="form" [formGroup]="form" (ngSubmit)="submit(column.name)">
-            <div>
-              <input type="text"
-                     class="form-control bg-light"
-                     placeholder="name task" formControlName="name">
-              <div class="enter"></div>
-              <input type="text" class="form-control bg-light" placeholder="description task"
-                     formControlName="description">
+            <div class="tasks-container"
+                 cdkDropList
+                 [cdkDropListData]="column.tasks"
+                 (cdkDropListDropped)="drop($event, column)">
+              <div class="task card-body" *ngFor="let item of column.tasks" cdkDrag>
+                <span (click)="openDialog(item)">{{ item.title }}</span>
+                <span class="delete" (click)="deleteTask(item.id, item.nameTaskList)">&#x2715;</span>
+              </div>
             </div>
-            <button type="submit" class="btn btn-dark">add task</button>
-          </form>
+            <form class="form" [formGroup]="form" (ngSubmit)="submit(column.name)">
+              <div>
+                <input type="text"
+                       class="form-control bg-light"
+                       placeholder="name task" formControlName="name">
+                <div class="enter"></div>
+                <input type="text" class="form-control bg-light" placeholder="description task"
+                       formControlName="description">
+              </div>
+              <button type="submit" class="btn btn-dark">add task</button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
-</div>
+    </main>
+  </div>
+</mat-drawer-container>
 
 

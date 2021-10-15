@@ -4,7 +4,6 @@ import {PrivateLayoutComponent} from './private-layout/private-layout.component'
 import {RouterModule} from '@angular/router';
 import {
   DashboardPageComponent,
-  DialogDataExampleDialog
 } from './dashboard-page/dashboard-page.component';
 import {LoginComponent} from './login/login.component';
 import {RegComponent} from './reg/reg.component';
@@ -27,6 +26,12 @@ import {BoardComponent} from './board/board.component';
 import {MaterialModule} from "../material.module";
 import {MatButtonModule} from "@angular/material/button";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {PopoverComponent} from "../popovers/popever/popover.component";
+import {DialogDataExampleDialog} from "./dashboard-page/dialog-data-example-dialog";
+import {SidenavAutosizeComponent} from "../popovers/sidenav-autosize/sidenav-autosize.component";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {ArchiveTasksService} from "../services/archive.tasks.service";
+
 
 @NgModule({
   declarations: [
@@ -39,7 +44,9 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     TaskListComponent,
     TaskComponent,
     BoardComponent,
+    PopoverComponent,
     DialogDataExampleDialog,
+    SidenavAutosizeComponent
   ],
   imports: [
     CommonModule,
@@ -62,7 +69,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
       }
     ]),
     MaterialModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSidenavModule
   ],
   exports: [
     RouterModule,
@@ -73,6 +81,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
   providers: [
     BoardService,
     TaskService,
+    ArchiveTasksService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

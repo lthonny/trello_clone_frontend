@@ -1,0 +1,67 @@
+.mat-dialog-title {
+  color: #172b4d;
+  font-weight: 500;
+}
+
+.column-title {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+h4 {
+  color: #172b4d;
+  font-weight: 500;
+
+  margin-top: 20px;
+}
+
+.description {
+  color: #172b4d;
+  font-weight: 500;
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  margin-top: 1rem;
+}
+
+.dialog-column-description {
+
+}
+
+textarea {
+
+}
+
+.mat-form-field {
+  width: 80%;
+}
+
+.archiving {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  .archiving-title {
+    margin-left: 0.2rem;
+  }
+}
+
+.details {
+  display: flex;
+  align-items: center;
+
+  .details-title {
+    cursor: pointer;
+    margin-left: 0.2rem;
+
+    //&:hover {
+      //color: #697178;
+      //background-color: #697178;
+    //}
+  }
+}
+
+

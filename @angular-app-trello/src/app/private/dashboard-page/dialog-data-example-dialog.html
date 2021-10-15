@@ -1,11 +1,43 @@
-<h1 mat-dialog-title> Info task</h1>
+<h1 mat-dialog-title>
+  <!--  <span class="dialog-column-title" (click)="updateTitle()">-->
+  {{title}}
+  <!--  </span>-->
+</h1>
+<div class="column">
+  в колонке <span class="column-title">{{ data.item.nameTaskList }}</span>
+</div>
 <div mat-dialog-content>
-<!--  ...-->
-  title
-  <br>
-  Описание
-  <br>
-  Архивация
-  <br>
-  показать подробности
+
+  <form [formGroup]="form" (click)="submit()">
+    <div class="form">
+      <div class="form-header">
+        <span>
+          <mat-icon class="material-icons-outlined">description</mat-icon>
+        </span>
+          <span class="description">Описание</span>
+      </div>
+      <span class="dialog-column-description" (click)="updateDescription()">
+      <mat-form-field appearance="fill">
+        <mat-label>описание</mat-label>
+        <textarea
+          matInput cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+        >{{description}}</textarea>
+      </mat-form-field>
+    </span>
+    </div>
+
+    <button mat-raised-button type="submit">Submit</button>
+  </form>
+
+  <div class="archiving">
+    <mat-icon class="material-icons-outlined">send_and_archive</mat-icon>
+    <h4 class="archiving-title" (click)="archiveState()">Архивация</h4>
+  </div>
+
+  <div class="details">
+    <mat-icon class="material-icons-outlined">loupe</mat-icon>
+    <h4 class="details-title" (click)="showDetails()">показать подробности</h4>
+  </div>
 </div>

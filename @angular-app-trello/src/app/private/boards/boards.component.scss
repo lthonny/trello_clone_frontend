@@ -6,13 +6,12 @@
 
 .boards {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   text-align: center;
   align-items: center;
   flex-wrap: wrap;
 
   .board {
-    // border: 1px solid red;
     width: 250px;
     height: 10rem;
     background-color: yellow;
@@ -21,6 +20,15 @@
 
 .delete {
   cursor: pointer;
+}
+
+.card {
+  margin-left: 20px;
+
+}
+
+.card:first-child {
+  margin-left: 0;
 }
 
 .card-body {

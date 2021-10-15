@@ -65,6 +65,7 @@
     cursor: pointer;
 
     margin-left: 20px;
+    height: 35px;
 
     &:hover {
       background-color: #a5afb7;
@@ -244,7 +245,6 @@ form {
   }
 }
 
-
 .tasks-container {
   min-height: 60px;
   flex-grow: 1;
@@ -296,4 +296,37 @@ form {
   //justify-content: space-between;
 
   flex-wrap: wrap;
+
+  position: relative;
+  top: 0;
+  left: 0;
 }
+
+.example-container {
+}
+
+.example-sidenav {
+  width: 20%;
+  background-color: #f4f5f7;
+}
+
+.sidenav {
+  display: flex;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.sidenav-menu {
+  font-size: 16px;
+  color: #172b4d;
+  font-weight: 500;
+  margin: 20px 0px;
+}
+
+//.line {
+//  width: 100%;
+//  height: 1px;
+//  border-top: 1px solid rgba(gray, 0.5);
+//  position: absolute;
+//}
