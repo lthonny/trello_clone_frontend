@@ -1,9 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {Subscription} from 'rxjs';
 import {IAuthResponse, ISingUp} from 'src/app/interfaces';
 import {AuthService} from 'src/app/services/auth.service';
+import {GoogleLoginProvider, SocialAuthService, SocialUser} from "angularx-social-login";
 
 @Component({
   selector: 'app-reg',
@@ -31,6 +31,7 @@ export class RegComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private authServiceGoogle: SocialAuthService,
     private router: Router
   ) {}
 
@@ -54,5 +55,24 @@ export class RegComponent implements OnInit {
         this.form.reset();
         this.router.navigate(['/admin', 'login']);
       });
+  }
+
+  signInHandler() {
+    this.authServiceGoogle.signIn(GoogleLoginProvider.PROVIDER_ID).then((data: SocialUser) => {
+      const user: ISingUp = {
+        name: data.name,
+        email: data.email
+      }
+
+      console.log('google data', data);
+      console.log('google user', user);
+
+      this.authService.singUp$(user).subscribe(() => {
+        console.log('данные отправлены');
+      })
+
+      // localStorage.setItem('google_auth', JSON.stringify(data));
+      // this.router.navigateByUrl('/admin/boards').then();
+    })
   }
 }

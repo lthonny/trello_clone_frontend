@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
@@ -8,7 +8,7 @@ import {switchMap} from "rxjs/operators";
 import {TaskService} from "../../services/task.service";
 import {BoardService} from "../../services/board.service";
 
-import {ICreateTask, ITask} from "../../interfaces";
+import {IArchive, ICreateTask, ITask} from "../../interfaces";
 
 import {Board} from "../../models/board.model";
 import {Column} from "../../models/column.model";
@@ -39,6 +39,8 @@ export class DashboardPageComponent implements OnInit {
   private taskListTesting: ITask[] = [];
   private taskListDone: ITask[] = [];
 
+  public archivedTasks: any = [];
+
   public popover: string = 'Архивировать список';
 
   board: Board = new Board('tasks', [
@@ -63,9 +65,8 @@ export class DashboardPageComponent implements OnInit {
     private tasksService: TaskService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    public fetchAllArchive: ArchiveTasksService
-  ) {
-  }
+    public archiveService: ArchiveTasksService
+  ) {}
 
   openDialog(item: any): void {
     this.dialog.open(DialogDataExampleDialog, {
@@ -252,8 +253,19 @@ export class DashboardPageComponent implements OnInit {
   updateTitleTask() {
     console.log('title')
   }
+
   fullMenu() {
-    console.log('full menu');
+    this.archiveService.getArchive$(this._id).subscribe((tasks: any) => {
+      this.archivedTasks.push(tasks.tasks);
+      console.log('заархивированные задачи', this.archivedTasks);
+    })
+  }
+
+  unzip(task: IArchive) {
+    this.archiveService.setArchive$(task).subscribe(() => {
+      // this.archivedTasks.filter((data: IArchive) => data.id === task.id)
+      console.log('задача разархивированна', task);
+    })
   }
 
   ngOnInit() {
@@ -269,33 +281,33 @@ export class DashboardPageComponent implements OnInit {
 
       this.tasks.forEach((task: ITask) => {
         // this.tasks.push(task);
-        task.nameTaskList === 'To Do' ? this.taskListToDo.push(task) : undefined;
-        task.nameTaskList === 'In Progress' ? this.taskListInProgress.push(task) : undefined;
-        task.nameTaskList === 'Coded' ? this.taskListCoded.push(task) : undefined;
-        task.nameTaskList === 'Testing' ? this.taskListTesting.push(task) : undefined;
-        task.nameTaskList === 'Done' ? this.taskListDone.push(task) : undefined;
+        // task.nameTaskList === 'To Do' ? this.taskListToDo.push(task) : undefined;
+        // task.nameTaskList === 'In Progress' ? this.taskListInProgress.push(task) : undefined;
+        // task.nameTaskList === 'Coded' ? this.taskListCoded.push(task) : undefined;
+        // task.nameTaskList === 'Testing' ? this.taskListTesting.push(task) : undefined;
+        // task.nameTaskList === 'Done' ? this.taskListDone.push(task) : undefined;
 
-        // if (task.nameTaskList === 'To Do') {
-        //   this.taskListToDo.push(task);
-        // }
-        // if (task.nameTaskList === 'In Progress') {
-        //   this.taskListInProgress.push(task);
-        // }
-        // if (task.nameTaskList === 'Coded') {
-        //   this.taskListCoded.push(task);
-        // }
-        // if (task.nameTaskList === 'Testing') {
-        //   this.taskListTesting.push(task);
-        // }
-        // if (task.nameTaskList === 'Done') {
-        //   this.taskListDone.push(task);
-        // }
+        if (task.nameTaskList === 'To Do' && task.archive !== true) {
+          this.taskListToDo.push(task);
+        }
+        if (task.nameTaskList === 'In Progress' && task.archive !== true) {
+          this.taskListInProgress.push(task);
+        }
+        if (task.nameTaskList === 'Coded' && task.archive !== true) {
+          this.taskListCoded.push(task);
+        }
+        if (task.nameTaskList === 'Testing' && task.archive !== true) {
+          this.taskListTesting.push(task);
+        }
+        if (task.nameTaskList === 'Done' && task.archive !== true) {
+          this.taskListDone.push(task);
+        }
       })
 
       console.log('this.board', this.board);
     })
 
-    this.fetchAllArchive.fetchAllArchive$(this._id).subscribe(() => {});
+    // this.fetchAllArchive.getArchive$(this._id).subscribe(() => {});
   }
 
   submit(nameTaskList: string) {

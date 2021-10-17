@@ -2,6 +2,8 @@ import {Component, Inject, OnInit} from "@angular/core";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {TaskService} from "../../services/task.service";
+import {ArchiveTasksService} from "../../services/archive.tasks.service";
+import {IArchive} from "../../interfaces";
 
 export interface DialogData {
   item: {
@@ -12,7 +14,8 @@ export interface DialogData {
     board_id: number,
     createdAt: any,
     updatedAt: any,
-    order: number
+    order: number,
+    archive: boolean
   }
 }
 
@@ -39,7 +42,8 @@ export class DialogDataExampleDialog implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: DialogData,
-    public taskService: TaskService
+    public taskService: TaskService,
+    public archiveService: ArchiveTasksService,
   ) {
     this.title = data.item.title;
     this.description = data.item.description;
@@ -97,7 +101,14 @@ export class DialogDataExampleDialog implements OnInit {
   }
 
   archiveState() {
-    console.log('archive');
+    const task: IArchive = this.data.item;
+    this.archiveService.setArchive$(task).subscribe(() =>  {
+      console.log('задача заархивированна');
+      // this.dashboard.archivedTasks.filter((data: IArchive) => data.id !== task.id);
+      // this.taskListToDo = this.taskListToDo.filter((task: any) => task.id !== id);
+
+      // this.taskListToDo = this.taskListToDo.filter((task: any) => task.id !== id);
+    })
   }
 
   submit() {

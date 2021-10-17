@@ -16,7 +16,7 @@ export interface IAuthResponse {
 export interface ISingUp {
   name: string,
   email: string,
-  password: string
+  password?: string
 }
 
 export interface ISingIn {
@@ -55,6 +55,7 @@ export interface ITask {
   createdAt: Date,
   updatedAt: Date,
   order?: number
+  archive?: boolean
 }
 
 export interface ICreateTask {
@@ -63,4 +64,16 @@ export interface ICreateTask {
   nameTaskList: string,
   board_id: number,
   order: number
+}
+
+export interface IArchive {
+  id: any,
+  title: any,
+  description: any,
+  board_id: any,
+  nameTaskList: any,
+  createdAt: any,
+  updatedAt: any,
+  order: any,
+  archive: any
 }

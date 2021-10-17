@@ -10,6 +10,15 @@
 <!--        <div class="line"></div>-->
         <div>О доске</div>
         <div>Действия</div>
+
+        <h4>Архив задач</h4>
+
+        <div class="task" *ngFor="let task of archivedTasks[0]">
+            <div class="task-title">title: {{task.title}}</div><br>
+            <div class="task-description">descr: {{task.description}}</div>
+            <div class="task-unzip" (click)="unzip(task)">Разархивировать</div>
+        </div>
+
       </div>
     </div>
   </mat-drawer>

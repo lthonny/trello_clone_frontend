@@ -31,6 +31,7 @@ import {DialogDataExampleDialog} from "./dashboard-page/dialog-data-example-dial
 import {SidenavAutosizeComponent} from "../popovers/sidenav-autosize/sidenav-autosize.component";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {ArchiveTasksService} from "../services/archive.tasks.service";
+import {SocialLoginModule} from "angularx-social-login";
 
 
 @NgModule({
