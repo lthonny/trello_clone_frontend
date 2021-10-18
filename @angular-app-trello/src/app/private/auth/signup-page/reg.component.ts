@@ -53,7 +53,7 @@ export class RegComponent implements OnInit {
     this.authService.singUp$(user)
       .subscribe((user: IAuthResponse) => {
         this.form.reset();
-        this.router.navigate(['/admin', 'login']);
+        this.router.navigate(['/admin', 'login-page']);
       });
   }
 
@@ -72,7 +72,7 @@ export class RegComponent implements OnInit {
       })
 
       // localStorage.setItem('google_auth', JSON.stringify(data));
-      // this.router.navigateByUrl('/admin/boards').then();
+      // this.router.navigateByUrl('/admin/boards-page').then();
     })
   }
 }

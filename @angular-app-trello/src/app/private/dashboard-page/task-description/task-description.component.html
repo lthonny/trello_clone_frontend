@@ -8,7 +8,7 @@
 </div>
 <div mat-dialog-content>
 
-  <form [formGroup]="form" (click)="submit()">
+  <form (click)="submit()">
     <div class="form">
       <div class="form-header">
         <span>
@@ -20,10 +20,10 @@
       <mat-form-field appearance="fill">
         <mat-label>описание</mat-label>
         <textarea
-          matInput cdkTextareaAutosize
-          #autosize="cdkTextareaAutosize"
-          cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
-        >{{data.item.description}}</textarea>
+          matInput
+          cdkTextareaAutosize
+          [formControl]="description"
+        ></textarea>
       </mat-form-field>
     </span>
     </div>

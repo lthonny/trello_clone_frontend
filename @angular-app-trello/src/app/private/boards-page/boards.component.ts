@@ -4,9 +4,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {BoardService} from "../../services/board.service";
 
 import {IBoard} from "../../interfaces";
-import {Router} from "@angular/router";
 
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-boards',
@@ -24,8 +22,7 @@ export class BoardsComponent implements OnInit {
   });
 
   constructor(
-    public boardService: BoardService,
-    private router: Router
+    public boardService: BoardService
   ) {}
 
   ngOnInit(): void {
@@ -33,14 +30,6 @@ export class BoardsComponent implements OnInit {
       .subscribe((board: IBoard[]) => {
         this.boards = board;
       })
-  }
-
-  taskList() {
-    console.log('tasklist');
-  }
-
-  update(id: number) {
-    // this.boardService.updateBoard(id, name).subscribe(() => {});
   }
 
   removeBoard(id: number) {

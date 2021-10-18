@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {ITask} from "../interfaces";
-import {IDescriptionUpdate} from "../private/dashboard-page/dialog-data-example-dialog";
+import {IDescriptionUpdate, ITask} from "../interfaces";
 
 @Injectable({
   providedIn: 'root'

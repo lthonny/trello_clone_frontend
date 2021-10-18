@@ -54,8 +54,8 @@ export interface ITask {
   nameTaskList: string,
   createdAt: Date,
   updatedAt: Date,
-  order?: number
-  archive?: boolean
+  order: number
+  archive: boolean
 }
 
 export interface ICreateTask {
@@ -76,4 +76,23 @@ export interface IArchive {
   updatedAt: any,
   order: any,
   archive: any
+}
+
+export interface DialogData {
+  item: {
+    id: number,
+    title: string,
+    description: string,
+    nameTaskList: string,
+    board_id: number,
+    createdAt: any,
+    updatedAt: any,
+    order: number,
+    archive: boolean
+  }
+}
+
+export interface IDescriptionUpdate {
+  id: number,
+  description: string
 }

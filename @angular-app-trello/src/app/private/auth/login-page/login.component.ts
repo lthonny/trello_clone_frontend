@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { AuthService } from 'src/app/services/auth.service';
-import {TokenService} from "../../services/token.service";
-import {ErrorService} from "../../services/error.service";
+import {TokenService} from "../../../services/token.service";
+import {ErrorService} from "../../../services/error.service";
 
 import {IAuthResponse, ISingIn} from 'src/app/interfaces';
 

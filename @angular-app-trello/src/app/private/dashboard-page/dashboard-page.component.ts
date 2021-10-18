@@ -14,7 +14,7 @@ import {Board} from "../../models/board.model";
 import {Column} from "../../models/column.model";
 
 import { MatDialog } from "@angular/material/dialog";
-import {DialogDataExampleDialog} from "./dialog-data-example-dialog";
+import {TaskDescriptionComponent} from "./task-description/task-description.component";
 import {ArchiveTasksService} from "../../services/archive.tasks.service";
 
 @Component({
@@ -41,8 +41,6 @@ export class DashboardPageComponent implements OnInit {
 
   public archivedTasks: any = [];
 
-  public popover: string = 'Архивировать список';
-
   board: Board = new Board('tasks', [
     new Column('To Do', this.taskListToDo),
     new Column('In Progress', this.taskListInProgress),
@@ -68,16 +66,16 @@ export class DashboardPageComponent implements OnInit {
     public archiveService: ArchiveTasksService
   ) {}
 
-  openDialog(item: any): void {
-    this.dialog.open(DialogDataExampleDialog, {
+  openDialog(item: ITask): void {
+    this.dialog.open(TaskDescriptionComponent, {
       data: {
-        item
+        item,
+        // tasks: []
       },
       height: '800px',
       width: '600px',
     });
   }
-
 
   drop(event: CdkDragDrop<string[]>, column: any) {
     const nameColumn = column.name;
@@ -185,32 +183,25 @@ export class DashboardPageComponent implements OnInit {
   deleteTask(id: number, name: string) {
     this.tasksService.delete$(id)
       .subscribe(() => {
-        // for (let i = 0; i < 5; i++) {
-        //   if (this.board.columns[i].name === name) {
-        //     console.log(this.taskListToDo)
-        //     this.board.columns[i].tasks = this.taskListToDo.filter((task: any) => task.id !== id);
-        //   }
-        // }
-
         if (this.board.columns[0].name === name) {
-          this.taskListToDo = this.taskListToDo.filter((task: any) => task.id !== id);
-          this.board.columns[0].tasks = this.taskListToDo.filter((task: any) => task.id !== id);
+          this.taskListToDo = this.taskListToDo.filter((task: ITask) => task.id !== id);
+          this.board.columns[0].tasks = this.taskListToDo.filter((task: ITask) => task.id !== id);
         }
         if (this.board.columns[1].name === name) {
-          this.taskListInProgress = this.taskListInProgress.filter((task: any) => task.id !== id);
-          this.board.columns[1].tasks = this.taskListInProgress.filter((task: any) => task.id !== id);
+          this.taskListInProgress = this.taskListInProgress.filter((task: ITask) => task.id !== id);
+          this.board.columns[1].tasks = this.taskListInProgress.filter((task: ITask) => task.id !== id);
         }
         if (this.board.columns[2].name === name) {
-          this.taskListCoded = this.taskListCoded.filter((task: any) => task.id !== id);
-          this.board.columns[2].tasks = this.taskListCoded.filter((task: any) => task.id !== id);
+          this.taskListCoded = this.taskListCoded.filter((task: ITask) => task.id !== id);
+          this.board.columns[2].tasks = this.taskListCoded.filter((task: ITask) => task.id !== id);
         }
         if (this.board.columns[3].name === name) {
-          this.taskListTesting = this.taskListTesting.filter((task: any) => task.id !== id);
-          this.board.columns[3].tasks = this.taskListTesting.filter((task: any) => task.id !== id);
+          this.taskListTesting = this.taskListTesting.filter((task: ITask) => task.id !== id);
+          this.board.columns[3].tasks = this.taskListTesting.filter((task: ITask) => task.id !== id);
         }
         if (this.board.columns[4].name === name) {
-          this.taskListDone = this.taskListDone.filter((task: any) => task.id !== id);
-          this.board.columns[4].tasks = this.taskListDone.filter((task: any) => task.id !== id);
+          this.taskListDone = this.taskListDone.filter((task: ITask) => task.id !== id);
+          this.board.columns[4].tasks = this.taskListDone.filter((task: ITask) => task.id !== id);
         }
       })
   }
@@ -250,10 +241,6 @@ export class DashboardPageComponent implements OnInit {
     }
   }
 
-  updateTitleTask() {
-    console.log('title')
-  }
-
   fullMenu() {
     this.archiveService.getArchive$(this._id).subscribe((tasks: any) => {
       this.archivedTasks.push(tasks.tasks);
@@ -269,7 +256,6 @@ export class DashboardPageComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.route.params.subscribe(params => this._id = params['id']);
 
     this.route.params
@@ -280,13 +266,6 @@ export class DashboardPageComponent implements OnInit {
       this.nameBoard = tasks.title;
 
       this.tasks.forEach((task: ITask) => {
-        // this.tasks.push(task);
-        // task.nameTaskList === 'To Do' ? this.taskListToDo.push(task) : undefined;
-        // task.nameTaskList === 'In Progress' ? this.taskListInProgress.push(task) : undefined;
-        // task.nameTaskList === 'Coded' ? this.taskListCoded.push(task) : undefined;
-        // task.nameTaskList === 'Testing' ? this.taskListTesting.push(task) : undefined;
-        // task.nameTaskList === 'Done' ? this.taskListDone.push(task) : undefined;
-
         if (task.nameTaskList === 'To Do' && task.archive !== true) {
           this.taskListToDo.push(task);
         }
@@ -311,10 +290,7 @@ export class DashboardPageComponent implements OnInit {
   }
 
   submit(nameTaskList: string) {
-
-    let order: any = 1;
-    console.log(this.tasks.length);
-    console.log(this.taskListToDo.length);
+    let order: number = 1;
     let orderSum =
       this.taskListToDo.length +
       this.taskListCoded.length +
@@ -322,14 +298,8 @@ export class DashboardPageComponent implements OnInit {
       this.taskListTesting.length +
       this.taskListDone.length;
 
-    console.log('lenght', orderSum);
-
     if (orderSum) {
-      console.log(this.tasks.length);
       order = orderSum + 1;
-      // order = this.tasks.reduce((acc: any, curr: any) => {
-      //     return acc > curr.order ? acc : curr.order;
-      //   }, 1) + 1;
     }
 
     const task: ICreateTask = {
@@ -340,15 +310,8 @@ export class DashboardPageComponent implements OnInit {
       order: order
     }
 
-    console.log('new task', task);
-
-    this.tasksService.create$(task).subscribe((task) => {
+    this.tasksService.create$(task).subscribe((task: ITask) => {
       this.form.reset();
-
-      // if (this.board.columns[0].name === name) {
-      //   this.board.columns[0].tasks = this.taskListToDo.filter((task: any) => task.id !== id);
-      // }
-
       if (task.nameTaskList === 'To Do') {
         this.taskListToDo.push(task);
       }

@@ -15,7 +15,7 @@
         <div class="card-body">
           <span
             class="card-text"
-            [routerLink]="['/admin', 'boards', board.id]"
+            [routerLink]="['/admin', 'boards-page', board.id]"
           >{{board.title}}</span>
           <span class="delete" (click)=removeBoard(board.id)>&#x2715;</span>
         </div>
