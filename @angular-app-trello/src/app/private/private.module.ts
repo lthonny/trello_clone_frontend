@@ -29,6 +29,7 @@ import {SidenavAutosizeComponent} from "../popovers/sidenav-autosize/sidenav-aut
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {ArchiveTasksService} from "../services/archive.tasks.service";
 import {SocialLoginModule} from "angularx-social-login";
+import {InviteService} from "../services/invite.service";
 
 
 @NgModule({
@@ -77,6 +78,7 @@ import {SocialLoginModule} from "angularx-social-login";
     BoardService,
     TaskService,
     ArchiveTasksService,
+    InviteService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

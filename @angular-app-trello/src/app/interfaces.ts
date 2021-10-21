@@ -96,3 +96,7 @@ export interface IDescriptionUpdate {
   id: number,
   description: string
 }
+
+export interface IInviteKey {
+  key: string,
+}

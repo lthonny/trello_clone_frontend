@@ -64,8 +64,7 @@ export class TaskDescriptionComponent implements OnInit {
     const task: IArchive = this.data.item;
     this.archiveService.setArchive$(task).subscribe(() => {
       // console.log('задача зархивированна');
-
-    console.log('data', this.data)
+      console.log('data', this.data);
       // this.dashboard.archivedTasks.filter((data: IArchive) => data.id !== task.id);
       // this.taskListToDo = this.taskListToDo.filter((task: any) => task.id !== id);
       // this.taskListToDo = this.taskListToDo.filter((task: any) => task.id !== id);

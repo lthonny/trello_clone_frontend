@@ -269,6 +269,20 @@ form {
   0 3px 14px 2px rgba(0, 0, 0, 0.05);
 }
 
+.task-archive {
+  //width: 90%;
+  padding: 10px 100px;
+  //display: flex;
+  //justify-content: space-between;
+}
+
+.task-archive-view {
+  display: flex;
+  justify-content: flex-end;
+}
+.task-title {}
+
+
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
@@ -334,3 +348,4 @@ form {
 .task-unzip {
   cursor: pointer;
 }
+

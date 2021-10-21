@@ -7,7 +7,7 @@ import {ErrorComponent} from "./shared/error/error.component";
 const routes: Routes = [
   {
     path: '', component: HeaderPublicComponent, children: [
-      {path: '', redirectTo: '/', pathMatch: 'full'}
+      { path: '', redirectTo: '/', pathMatch: 'full' }
     ]
   },
   {

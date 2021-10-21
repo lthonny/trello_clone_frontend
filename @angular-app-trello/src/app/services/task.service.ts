@@ -12,15 +12,10 @@ export class TaskService {
 
   constructor(
     private http: HttpClient
-  ) {
-  }
+  ) {}
 
-  public getById(id: string): Observable<ITask[]> {
-    return this.http.get<ITask[]>(`/api/board/${id}`);
-  }
-
-  public getTasks$(): Observable<ITask[]> {
-    return this.http.get<ITask[]>(`/api/tasks/${this._id}`);
+  public getTasks$(id: string): Observable<ITask[]> {
+    return this.http.get<ITask[]>(`/api/tasks/board/${id}`);
   }
 
   public create$(data: any): Observable<ITask> {

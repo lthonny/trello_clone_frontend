@@ -7,15 +7,18 @@ import {switchMap} from "rxjs/operators";
 
 import {TaskService} from "../../services/task.service";
 import {BoardService} from "../../services/board.service";
+import {ArchiveTasksService} from "../../services/archive.tasks.service";
 
-import {IArchive, ICreateTask, ITask} from "../../interfaces";
+import {IArchive, ICreateTask, IInviteKey, ITask} from "../../interfaces";
 
 import {Board} from "../../models/board.model";
 import {Column} from "../../models/column.model";
 
 import { MatDialog } from "@angular/material/dialog";
+
 import {TaskDescriptionComponent} from "./task-description/task-description.component";
-import {ArchiveTasksService} from "../../services/archive.tasks.service";
+import {InviteService} from "../../services/invite.service";
+
 
 @Component({
   selector: 'app-dashboard-page',
@@ -63,18 +66,56 @@ export class DashboardPageComponent implements OnInit {
     private tasksService: TaskService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    public archiveService: ArchiveTasksService
+    public archiveService: ArchiveTasksService,
+    public inviteService: InviteService
   ) {}
 
   openDialog(item: ITask): void {
     this.dialog.open(TaskDescriptionComponent, {
-      data: {
-        item,
-        // tasks: []
-      },
+      data: { item },
       height: '800px',
       width: '600px',
     });
+
+    // const id = item.id;
+
+    // this.tasksService.getById(id).subscribe((task) => {
+      // console.log(task);
+    // })
+
+    // const  dialogRef = this.dialog.open(TaskDescriptionComponent, {
+    //     height: '800px',
+    //     width: '600px',
+    //     data: {
+    //       item
+    //     }
+    // })
+
+    // dialogRef.afterClosed().subscribe((data) => {
+      // console.log('data', data);
+      // if (data) {
+        // console.log(data);
+      //   if (!data.isArchive){
+      //     if (data.activity) {
+      //       this.updateTask(data.task, { activity: data.activity})
+      //     }
+      //   } else {
+      //     const index = this.taskList.Tasks.findIndex((t: Task) => t.id === data.task.id)
+      //     if (index !== -1){
+      //       this.taskList.Tasks.splice(index, 1)
+      //       this.archiveTask.emit(data.task)
+      //     }
+      //   }
+      //
+      //   if (data.isDelete) {
+      //     this.deleteTasks([data.task.id]).subscribe(() => {
+      //       const idx = this.taskList.Tasks.findIndex( (task: any) => task.id === data.task.id);
+      //       this.taskList.Tasks.splice(idx, 1);
+      //     })
+      //   }
+      // }
+    // });
+
   }
 
   drop(event: CdkDragDrop<string[]>, column: any) {
@@ -243,16 +284,20 @@ export class DashboardPageComponent implements OnInit {
 
   fullMenu() {
     this.archiveService.getArchive$(this._id).subscribe((tasks: any) => {
+      // console.log('tasks.tasks', tasks);
       this.archivedTasks.push(tasks.tasks);
-      console.log('заархивированные задачи', this.archivedTasks);
+      // console.log('заархивированные задачи', this.archivedTasks);
     })
   }
 
   unzip(task: IArchive) {
     this.archiveService.setArchive$(task).subscribe(() => {
-      // this.archivedTasks.filter((data: IArchive) => data.id === task.id)
-      console.log('задача разархивированна', task);
+      this.archivedTasks[0] = this.archivedTasks[0].filter((data: IArchive) => data.id !== task.id);
     })
+  }
+
+  onCloseClick() {
+
   }
 
   ngOnInit() {
@@ -260,7 +305,7 @@ export class DashboardPageComponent implements OnInit {
 
     this.route.params
       .pipe(switchMap((params: Params) => {
-        return this.tasksService.getById(params['id']);
+        return this.tasksService.getTasks$(params['id']);
       })).subscribe((tasks: any) => {
       this.tasks = tasks.tasks;
       this.nameBoard = tasks.title;
@@ -282,11 +327,16 @@ export class DashboardPageComponent implements OnInit {
           this.taskListDone.push(task);
         }
       })
-
-      console.log('this.board', this.board);
     })
+  }
 
-    // this.fetchAllArchive.getArchive$(this._id).subscribe(() => {});
+  inviteKey() {
+
+    this.inviteService.InviteKey$(this._id).subscribe((key: IInviteKey) => {
+      const link = `http://localhost/invite/${this._id}/${key.key}`;
+
+      console.log('invite key', link);
+    })
   }
 
   submit(nameTaskList: string) {
@@ -330,4 +380,3 @@ export class DashboardPageComponent implements OnInit {
     })
   }
 }
-
