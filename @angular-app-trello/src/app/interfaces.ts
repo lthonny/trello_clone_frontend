@@ -100,3 +100,7 @@ export interface IDescriptionUpdate {
 export interface IInviteKey {
   key: string,
 }
+
+export interface IInvitedUsersName {
+  name: string
+}

@@ -38,6 +38,8 @@ export class InvitePageComponent implements OnInit {
 
         this.inviteService._key = this._key;
       })
+
+
   }
 
   joinBoard() {

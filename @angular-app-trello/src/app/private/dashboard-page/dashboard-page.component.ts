@@ -9,7 +9,7 @@ import {TaskService} from "../../services/task.service";
 import {BoardService} from "../../services/board.service";
 import {ArchiveTasksService} from "../../services/archive.tasks.service";
 
-import {IArchive, ICreateTask, IInviteKey, ITask} from "../../interfaces";
+import {IArchive, ICreateTask, IInvitedUsersName, IInviteKey, ITask} from "../../interfaces";
 
 import {Board} from "../../models/board.model";
 import {Column} from "../../models/column.model";
@@ -44,6 +44,8 @@ export class DashboardPageComponent implements OnInit {
 
   public archivedTasks: any = [];
   public _key: any;
+
+  public invitedUsers: any = [];
 
   board: Board = new Board('tasks', [
     new Column('To Do', this.taskListToDo),
@@ -329,6 +331,14 @@ export class DashboardPageComponent implements OnInit {
         }
       })
     })
+
+    this.inviteService.InvitedUsers(this._id, this.nameUser)
+      .subscribe((users: IInvitedUsersName[]) => {
+        users.forEach((name: IInvitedUsersName) => {
+          this.invitedUsers.push(name);
+        })
+        console.log('invited users', users);
+      })
   }
 
 

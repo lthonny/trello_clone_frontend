@@ -37,7 +37,7 @@ export class BoardsComponent implements OnInit {
     this.inviteService.InviteBoard$(this._id, this.inviteService._key)
       .subscribe((board: IBoard) => {
         this.boards.push(board);
-        // console.log('board', board);
+        console.log('board', board);
       })
   }
 
