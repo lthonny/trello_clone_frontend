@@ -4,6 +4,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {BoardService} from "../../services/board.service";
 
 import {IBoard} from "../../interfaces";
+import {InviteService} from "../../services/invite.service";
 
 
 @Component({
@@ -13,6 +14,7 @@ import {IBoard} from "../../interfaces";
 })
 export class BoardsComponent implements OnInit {
 
+  private _id: string | null = localStorage.getItem('id');
   boards: IBoard[] = [];
 
   form: FormGroup = new FormGroup({
@@ -22,13 +24,20 @@ export class BoardsComponent implements OnInit {
   });
 
   constructor(
-    public boardService: BoardService
+    public boardService: BoardService,
+    private inviteService: InviteService
   ) {}
 
   ngOnInit(): void {
     this.boardService.getBoards$()
       .subscribe((board: IBoard[]) => {
         this.boards = board;
+      })
+
+    this.inviteService.InviteBoard$(this._id, this.inviteService._key)
+      .subscribe((board: IBoard) => {
+        this.boards.push(board);
+        // console.log('board', board);
       })
   }
 

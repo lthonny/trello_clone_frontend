@@ -43,6 +43,7 @@ export class DashboardPageComponent implements OnInit {
   private taskListDone: ITask[] = [];
 
   public archivedTasks: any = [];
+  public _key: any;
 
   board: Board = new Board('tasks', [
     new Column('To Do', this.taskListToDo),
@@ -330,13 +331,28 @@ export class DashboardPageComponent implements OnInit {
     })
   }
 
-  inviteKey() {
 
+  inviteKey() {
     this.inviteService.InviteKey$(this._id).subscribe((key: IInviteKey) => {
-      const link = `http://localhost/invite/${this._id}/${key.key}`;
+      this._key = key.key;
+      // console.log(key.key)
+      const link = `http://localhost:4200/admin/invite/${this._id}/${key.key}`;
+
+      this.inviteService.InviteUsers$(this._key)
+        .subscribe((data: any) => {
+          console.log(data);
+        })
 
       console.log('invite key', link);
     })
+    // console.log(this._key);
+
+    // this.inviteService.InviteUsers$(_key)
+    //   .subscribe((data: any) => {
+    //     console.log(_key);
+    //   })
+
+    // записать ключ для работы с ним
   }
 
   submit(nameTaskList: string) {

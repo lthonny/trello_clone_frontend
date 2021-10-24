@@ -30,6 +30,7 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {ArchiveTasksService} from "../services/archive.tasks.service";
 import {SocialLoginModule} from "angularx-social-login";
 import {InviteService} from "../services/invite.service";
+import { InvitePageComponent } from './invite-page/invite-page.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import {InviteService} from "../services/invite.service";
     BoardsComponent,
     PopoverComponent,
     TaskDescriptionComponent,
-    SidenavAutosizeComponent
+    SidenavAutosizeComponent,
+    InvitePageComponent
   ],
   imports: [
     CommonModule,
@@ -56,6 +58,7 @@ import {InviteService} from "../services/invite.service";
     RouterModule.forChild([
       {path: 'login-page', component: LoginComponent},
       {path: 'signup-page', component: RegComponent},
+      {path: 'invite/:id/:key', component: InvitePageComponent, canActivate: [AuthGuard]},
       {
         path: '', component: PrivateLayoutComponent, children: [
           {path: '', redirectTo: '/admin/login-page', pathMatch: 'full'},

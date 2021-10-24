@@ -10,6 +10,7 @@ import {IBoard} from "../interfaces";
 })
 export class BoardService {
   private _id: string | null = localStorage.getItem('id');
+  public _key: string = '';
 
   constructor(
     private http: HttpClient
