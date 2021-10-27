@@ -25,8 +25,8 @@ export class BoardService {
     return this.http.post<IBoard>(`/api/board/create/${this._id}`, {name: title});
   }
 
-  public updateBoard$(id: number, name: string): Observable<any> {
-    return this.http.post<any>(`/api/board/update/${id}`, {name});
+  public updateBoard$(idBoard: number, title: string, idUser: string | null): Observable<any> {
+    return this.http.post<any>(`/api/board/update/${idBoard}`, {title, idUser});
   }
 
   public removeBoard$(id: number): Observable<any> {

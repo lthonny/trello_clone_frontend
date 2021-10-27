@@ -31,21 +31,25 @@ export class InvitePageComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => this._key = params['key']);
 
-    this.inviteService.InviteBoard$(this._userId, this._key)
-      .subscribe((data) => {
-        this.boardName = data.title;
-        this._boardId = data.id;
-
-        this.inviteService._key = this._key;
-      })
+    // this.inviteService.InviteBoard$(this._userId, this._key)
+    //   .subscribe((data) => {
+    //     this.boardName = data.title;
+    //     this._boardId = data.id;
+    //
+    //     this.inviteService._key = this._key;
+    //   })
 
 
   }
 
   joinBoard() {
-    console.log('join Board');
+    console.log('join Board', this._userId, this._key);
     this.inviteService.InviteBoard$(this._userId, this._key)
       .subscribe((board: IBoard)=> {
+            this.boardName = board.title;
+            this._boardId = board.id;
+            this.inviteService._key = this._key;
+
         this.router.navigate(['/admin', `boards-page`, this._boardId])
       })
   }

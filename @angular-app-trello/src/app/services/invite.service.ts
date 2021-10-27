@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {IInvitedUsersName, IInviteKey} from "../interfaces";
+import {IInitOwner, IInvitedUsersName, IInviteKey, IOwner} from "../interfaces";
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,11 @@ export class InviteService {
     return this.http.post<any>(`/api/invite`, {id, key});
   }
 
-  public InvitedUsers(boardId: number, userName: string): Observable<IInvitedUsersName[]> {
-    return this.http.post<IInvitedUsersName[]>(`/api/invited/users/${boardId}`, {name: userName});
+  public InvitedUsers(boardId: number, userId: string | null, name: string): Observable<IInvitedUsersName> {
+    return this.http.post<IInvitedUsersName>(`/api/invited/users/${boardId}`, {userId, name});
+  }
+
+  public Owner$(data: IOwner): Observable<IInitOwner> {
+    return this.http.post<IInitOwner>(`/api/invite/owner`, {data});
   }
 }

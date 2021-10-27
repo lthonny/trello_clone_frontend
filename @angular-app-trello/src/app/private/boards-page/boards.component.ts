@@ -5,6 +5,7 @@ import {BoardService} from "../../services/board.service";
 
 import {IBoard} from "../../interfaces";
 import {InviteService} from "../../services/invite.service";
+import {createLogErrorHandler} from "@angular/compiler-cli/ngcc/src/execution/tasks/completion";
 
 
 @Component({

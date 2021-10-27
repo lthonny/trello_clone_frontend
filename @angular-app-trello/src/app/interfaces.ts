@@ -102,5 +102,26 @@ export interface IInviteKey {
 }
 
 export interface IInvitedUsersName {
-  name: string
+  owner: [
+    {
+      id: number,
+      name: string,
+      owner: boolean
+    }
+  ],
+  names: [
+    id: number,
+    name: string,
+    owner: boolean
+  ]
+}
+
+export interface IOwner {
+  userId: string | null,
+  boardId: number
+}
+
+export interface IInitOwner {
+  userId: number,
+  owner: boolean
 }

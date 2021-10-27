@@ -26,7 +26,10 @@
 
   <div class="body">
     <div class="menu">
-      <span class="title-board" (click)="updateTitleBoard()">{{nameBoard}}</span>
+      <span
+        class="title-board"
+        (click)="updateTitleBoard()"
+      >{{nameBoard}}</span>
       <div class="avatar">{{ nameUser.charAt(0) | uppercase}}</div>
       <div class="invited-users" *ngFor="let user of invitedUsers">{{user.name.charAt(0) | uppercase}}</div>
       <span class="invite" (click)="inviteKey()">Пригласить</span>
@@ -67,7 +70,11 @@
                 <span class="delete" (click)="deleteTask(item.id, item.nameTaskList)">&#x2715;</span>
               </div>
             </div>
-            <form class="form" [formGroup]="form" (ngSubmit)="submit(column.name)">
+            <form
+              *ngIf="owner"
+              class="form"
+              [formGroup]="form"
+              (ngSubmit)="submit(column.name)">
               <div>
                 <input type="text"
                        class="form-control bg-light"
