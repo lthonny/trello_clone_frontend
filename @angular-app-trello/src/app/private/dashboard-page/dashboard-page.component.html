@@ -1,9 +1,9 @@
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side">
     <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
-    <!--        <button (click)="showFiller = !showFiller" mat-raised-button>-->
-    <!--          Toggle extra text-->
-    <!--        </button>-->
+<!--            <button (click)="showFiller = !showFiller" mat-raised-button>-->
+<!--              Toggle extra text-->
+<!--            </button>-->
     <div class="sidenav">
       <div class="sidenav-body">
         <div class="sidenav-menu">Меню</div>
@@ -67,7 +67,7 @@
                  (cdkDropListDropped)="drop($event, column)">
               <div class="task card-body" *ngFor="let item of column.tasks" cdkDrag>
                 <span (click)="openDialog(item)">{{ item.title }}</span>
-                <span class="delete" (click)="deleteTask(item.id, item.nameTaskList)">&#x2715;</span>
+                <span *ngIf="owner" class="delete" (click)="deleteTask(item.id, item.nameTaskList)">&#x2715;</span>
               </div>
             </div>
             <form

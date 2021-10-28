@@ -36,6 +36,19 @@
     <h4 class="archiving-title" (click)="archiveState()">Архивация</h4>
   </div>
 
+  <div class="invited">
+    <h4 class="users" *ngIf="users.length !== 0">Выбор пользователей на эту задачу:</h4>
+    <div class="invited-users" *ngFor="let user of users">
+      {{ user.name }}
+      <span class="btn-add" (click)="addUser(user.id)">+</span>
+    </div>
+    <h4 class="archiving-title" *ngIf="assignedUsers.length !== 0">на эту задачу назначены пользователи:</h4>
+    <div class="assigned-users" *ngFor="let user of assignedUsers">
+      {{ user.name }}
+      <span class="btn-remove" (click)="deleteUser(user.id)">&#x2715;</span>
+    </div>
+  </div>
+
   <div class="details">
     <mat-icon class="material-icons-outlined">loupe</mat-icon>
     <h4 class="details-title" (click)="showDetails()">показать подробности</h4>

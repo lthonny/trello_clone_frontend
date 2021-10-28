@@ -79,6 +79,10 @@ export interface IArchive {
 }
 
 export interface DialogData {
+  invited: [{
+    name: string,
+    owner: boolean
+  }],
   item: {
     id: number,
     title: string,
@@ -123,5 +127,11 @@ export interface IOwner {
 
 export interface IInitOwner {
   userId: number,
+  owner: boolean
+}
+
+export interface IAssignedUser {
+  id: number,
+  name: string,
   owner: boolean
 }

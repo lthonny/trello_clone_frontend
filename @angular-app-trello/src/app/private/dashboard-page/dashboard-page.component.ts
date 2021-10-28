@@ -77,138 +77,142 @@ export class DashboardPageComponent implements OnInit {
   }
 
   openDialog(item: ITask): void {
-    this.dialog.open(TaskDescriptionComponent, {
-      data: {item},
-      height: '800px',
-      width: '600px',
-    });
+    if(this.owner) {
+      this.dialog.open(TaskDescriptionComponent, {
+        data: {item, invited: this.invitedUsers},
+        height: '800px',
+        width: '600px',
+      });
 
-    // const id = item.id;
+      // const id = item.id;
 
-    // this.tasksService.getById(id).subscribe((task) => {
-    // console.log(task);
-    // })
+      // this.tasksService.getById(id).subscribe((task) => {
+      // console.log(task);
+      // })
 
-    // const  dialogRef = this.dialog.open(TaskDescriptionComponent, {
-    //     height: '800px',
-    //     width: '600px',
-    //     data: {
-    //       item
-    //     }
-    // })
+      // const  dialogRef = this.dialog.open(TaskDescriptionComponent, {
+      //     height: '800px',
+      //     width: '600px',
+      //     data: {
+      //       item
+      //     }
+      // })
 
-    // dialogRef.afterClosed().subscribe((data) => {
-    // console.log('data', data);
-    // if (data) {
-    // console.log(data);
-    //   if (!data.isArchive){
-    //     if (data.activity) {
-    //       this.updateTask(data.task, { activity: data.activity})
-    //     }
-    //   } else {
-    //     const index = this.taskList.Tasks.findIndex((t: Task) => t.id === data.task.id)
-    //     if (index !== -1){
-    //       this.taskList.Tasks.splice(index, 1)
-    //       this.archiveTask.emit(data.task)
-    //     }
-    //   }
-    //
-    //   if (data.isDelete) {
-    //     this.deleteTasks([data.task.id]).subscribe(() => {
-    //       const idx = this.taskList.Tasks.findIndex( (task: any) => task.id === data.task.id);
-    //       this.taskList.Tasks.splice(idx, 1);
-    //     })
-    //   }
-    // }
-    // });
+      // dialogRef.afterClosed().subscribe((data) => {
+      // console.log('data', data);
+      // if (data) {
+      // console.log(data);
+      //   if (!data.isArchive){
+      //     if (data.activity) {
+      //       this.updateTask(data.task, { activity: data.activity})
+      //     }
+      //   } else {
+      //     const index = this.taskList.Tasks.findIndex((t: Task) => t.id === data.task.id)
+      //     if (index !== -1){
+      //       this.taskList.Tasks.splice(index, 1)
+      //       this.archiveTask.emit(data.task)
+      //     }
+      //   }
+      //
+      //   if (data.isDelete) {
+      //     this.deleteTasks([data.task.id]).subscribe(() => {
+      //       const idx = this.taskList.Tasks.findIndex( (task: any) => task.id === data.task.id);
+      //       this.taskList.Tasks.splice(idx, 1);
+      //     })
+      //   }
+      // }
+      // });
 
+    }
   }
 
   drop(event: CdkDragDrop<string[]>, column: any) {
-    const nameColumn = column.name;
+    if (this.owner) {
+      const nameColumn = column.name;
 
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      // this.updatePositionDrops(this.tasks);
-      // console.log('this.tasks', this.tasks);
-      // this.tasks.forEach((task, index) => {
-      //   console.log('update tasks');
-      //   const idx = index + 1
-      //   if (task.order !== index + 1) {
-      //     task.order = idx;
-      //     this.tasksService.updateOrder$(this.tasks)
-      //       .subscribe((tasks) => {
-      //         this.tasks = tasks;
-      // console.log('updateOrder', tasks)
-      // })
-      // }
-      // })
-    } else {
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-    }
-
-    if (event.container.data.length >= 0) {
-      let newTaskList: any = [];
-
-      event.container.data.forEach((task: any, index) => {
-        newTaskList.push(task);
-
-        if (task.nameTaskList !== nameColumn || task.order !== undefined) {
-          console.log('asd')
-          this.tasksService.update$(task, nameColumn).subscribe(() => {
-          })
-        }
-        return;
-      })
-
-      const ggArray: any = []
-
-      for (let i = 0; i < newTaskList.length; i++) {
-        let gg = {
-          id: newTaskList[i].id,
-          title: newTaskList[i].title,
-          description: newTaskList[i].description,
-          nameTaskList: newTaskList[i].nameTaskList,
-          createdAt: newTaskList[i].createdAt,
-          updatedAt: newTaskList[i].updatedAt,
-          order: i
-        }
-        ggArray.push(gg);
+      if (event.previousContainer === event.container) {
+        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+        // this.updatePositionDrops(this.tasks);
+        // console.log('this.tasks', this.tasks);
+        // this.tasks.forEach((task, index) => {
+        //   console.log('update tasks');
+        //   const idx = index + 1
+        //   if (task.order !== index + 1) {
+        //     task.order = idx;
+        //     this.tasksService.updateOrder$(this.tasks)
+        //       .subscribe((tasks) => {
+        //         this.tasks = tasks;
+        // console.log('updateOrder', tasks)
+        // })
+        // }
+        // })
+      } else {
+        transferArrayItem(event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex);
       }
 
-      // //
-      console.log('ggArray', ggArray);
+      if (event.container.data.length >= 0) {
+        let newTaskList: any = [];
 
-      //   if (orderSum) {
-      //     order = orderSum + 1;
-      //     // order = this.tasks.reduce((acc: any, curr: any) => {
-      //     //     return acc > curr.order ? acc : curr.order;
-      //     //   }, 1) + 1;
-      //   }
+        event.container.data.forEach((task: any, index) => {
+          newTaskList.push(task);
 
-      //   // task.order
-      //   console.log(task)
-      //   return task.order = ;
-      // })
+          if (task.nameTaskList !== nameColumn || task.order !== undefined) {
+            console.log('asd')
+            this.tasksService.update$(task, nameColumn).subscribe(() => {
+            })
+          }
+          return;
+        })
 
-      ggArray.forEach((task: any, index: number) => {
-        console.log(task);
-        // const idx = index + 1
-        // if (task.position === idx && task.taskListId === this.taskList.id) {
-        //   return
-        // }
-        // if (task.position !== idx) {
-        //   task.position = idx
-        // }
-      });
+        const ggArray: any = []
+
+        for (let i = 0; i < newTaskList.length; i++) {
+          let gg = {
+            id: newTaskList[i].id,
+            title: newTaskList[i].title,
+            description: newTaskList[i].description,
+            nameTaskList: newTaskList[i].nameTaskList,
+            createdAt: newTaskList[i].createdAt,
+            updatedAt: newTaskList[i].updatedAt,
+            order: i
+          }
+          ggArray.push(gg);
+        }
+
+        // //
+        console.log('ggArray', ggArray);
+
+        //   if (orderSum) {
+        //     order = orderSum + 1;
+        //     // order = this.tasks.reduce((acc: any, curr: any) => {
+        //     //     return acc > curr.order ? acc : curr.order;
+        //     //   }, 1) + 1;
+        //   }
+
+        //   // task.order
+        //   console.log(task)
+        //   return task.order = ;
+        // })
+
+        ggArray.forEach((task: any, index: number) => {
+          console.log(task);
+          // const idx = index + 1
+          // if (task.position === idx && task.taskListId === this.taskList.id) {
+          //   return
+          // }
+          // if (task.position !== idx) {
+          //   task.position = idx
+          // }
+        });
 
 
+      }
+
+      console.log('this.tasks', this.tasks);
     }
-
-    console.log('this.tasks', this.tasks);
   }
 
   sortTasks(tasks: any) {
@@ -229,29 +233,31 @@ export class DashboardPageComponent implements OnInit {
   }
 
   deleteTask(id: number, name: string) {
-    this.tasksService.delete$(id)
-      .subscribe(() => {
-        if (this.board.columns[0].name === name) {
-          this.taskListToDo = this.taskListToDo.filter((task: ITask) => task.id !== id);
-          this.board.columns[0].tasks = this.taskListToDo.filter((task: ITask) => task.id !== id);
-        }
-        if (this.board.columns[1].name === name) {
-          this.taskListInProgress = this.taskListInProgress.filter((task: ITask) => task.id !== id);
-          this.board.columns[1].tasks = this.taskListInProgress.filter((task: ITask) => task.id !== id);
-        }
-        if (this.board.columns[2].name === name) {
-          this.taskListCoded = this.taskListCoded.filter((task: ITask) => task.id !== id);
-          this.board.columns[2].tasks = this.taskListCoded.filter((task: ITask) => task.id !== id);
-        }
-        if (this.board.columns[3].name === name) {
-          this.taskListTesting = this.taskListTesting.filter((task: ITask) => task.id !== id);
-          this.board.columns[3].tasks = this.taskListTesting.filter((task: ITask) => task.id !== id);
-        }
-        if (this.board.columns[4].name === name) {
-          this.taskListDone = this.taskListDone.filter((task: ITask) => task.id !== id);
-          this.board.columns[4].tasks = this.taskListDone.filter((task: ITask) => task.id !== id);
-        }
-      })
+    if (this.owner) {
+      this.tasksService.delete$(id)
+        .subscribe(() => {
+          if (this.board.columns[0].name === name) {
+            this.taskListToDo = this.taskListToDo.filter((task: ITask) => task.id !== id);
+            this.board.columns[0].tasks = this.taskListToDo.filter((task: ITask) => task.id !== id);
+          }
+          if (this.board.columns[1].name === name) {
+            this.taskListInProgress = this.taskListInProgress.filter((task: ITask) => task.id !== id);
+            this.board.columns[1].tasks = this.taskListInProgress.filter((task: ITask) => task.id !== id);
+          }
+          if (this.board.columns[2].name === name) {
+            this.taskListCoded = this.taskListCoded.filter((task: ITask) => task.id !== id);
+            this.board.columns[2].tasks = this.taskListCoded.filter((task: ITask) => task.id !== id);
+          }
+          if (this.board.columns[3].name === name) {
+            this.taskListTesting = this.taskListTesting.filter((task: ITask) => task.id !== id);
+            this.board.columns[3].tasks = this.taskListTesting.filter((task: ITask) => task.id !== id);
+          }
+          if (this.board.columns[4].name === name) {
+            this.taskListDone = this.taskListDone.filter((task: ITask) => task.id !== id);
+            this.board.columns[4].tasks = this.taskListDone.filter((task: ITask) => task.id !== id);
+          }
+        })
+    }
   }
 
   updateTitleBoard() {
@@ -373,7 +379,7 @@ export class DashboardPageComponent implements OnInit {
     this.inviteService.InvitedUsers(this._id, this.userId, this.nameUser)
       .subscribe(({names, owner}) => {
         names.forEach((data: any) => {
-          this.invitedUsers.push({name: data.name, owner: data.owner});
+          this.invitedUsers.push({id: data.id, name: data.name, owner: data.owner});
         })
 
         // если name_thonny_montana_ нет в массиве invetedUsers[],

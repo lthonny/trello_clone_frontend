@@ -6,7 +6,8 @@ import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {TaskService} from "../../../services/task.service";
 import {ArchiveTasksService} from "../../../services/archive.tasks.service";
 
-import {DialogData, IArchive, IDescriptionUpdate} from "../../../interfaces";
+import {DialogData, IArchive, IAssignedUser, IDescriptionUpdate, ITask} from "../../../interfaces";
+import {AssignedService} from "../../../services/assigned.service";
 
 @Component({
   selector: 'dialog-data-example-dialog',
@@ -19,11 +20,15 @@ export class TaskDescriptionComponent implements OnInit {
   public title: string = '';
   public description!: FormControl;
 
+  public users: IAssignedUser[] = [{id: 1, name: 'Alex', owner: false}, {id: 2, name: 'Oleg', owner: false}, {id: 3, name: 'Sasha', owner: false}];
+  public assignedUsers: IAssignedUser[] = [];
+
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: DialogData,
     public taskService: TaskService,
     public archiveService: ArchiveTasksService,
+    private assignedService: AssignedService
   ) {
     this._id = data.item.id;
     this.title = data.item.title;
@@ -31,6 +36,10 @@ export class TaskDescriptionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // this.data.invited.forEach((user: any) => {
+    //   this.users.push(user);
+    // })
+    // console.log('this.data.invited', this.data.invited);
   }
 
   updateTitle() {
@@ -69,6 +78,31 @@ export class TaskDescriptionComponent implements OnInit {
       // this.taskListToDo = this.taskListToDo.filter((task: any) => task.id !== id);
       // this.taskListToDo = this.taskListToDo.filter((task: any) => task.id !== id);
     })
+  }
+
+  addUser(id: number) {
+    this.users = this.users.filter((user: any) => {
+      if(user.id !== id) {
+        return user;
+      } else {
+        this.assignedUsers.push(user);
+      }
+    });
+  }
+
+  deleteUser(id: number) {
+    this.assignedUsers = this.assignedUsers.filter((user: any) => {
+      if(user.id !== id) {
+        return user;
+      } else {
+        this.users.push(user);
+      }
+    });
+
+    this.assignedService.remove$(id)
+      .subscribe((data: any) => {
+        console.log('assignedService.remove ->', data);
+      })
   }
 
   submit() {

@@ -64,4 +64,45 @@ textarea {
   }
 }
 
+.assigned-users {
+  color: #fff;
+  font-size: 16px;
 
+  background-color: #697178;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+
+  width: 20%;
+  text-align: center;
+  padding: 0.2rem 0.3rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .btn-remove {
+    cursor: pointer;
+  }
+}
+
+.invited-users {
+  color: #fff;
+  font-size: 16px;
+
+  background-color: #697178;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+
+  width: 20%;
+  text-align: center;
+  padding: 0.2rem 0.3rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .btn-add {
+    font-weight: bold;
+    cursor: pointer;
+  }
+}

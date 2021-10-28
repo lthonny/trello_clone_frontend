@@ -31,6 +31,7 @@ import {ArchiveTasksService} from "../services/archive.tasks.service";
 import {SocialLoginModule} from "angularx-social-login";
 import {InviteService} from "../services/invite.service";
 import { InvitePageComponent } from './invite-page/invite-page.component';
+import {AssignedService} from "../services/assigned.service";
 
 
 @NgModule({
@@ -82,6 +83,7 @@ import { InvitePageComponent } from './invite-page/invite-page.component';
     TaskService,
     ArchiveTasksService,
     InviteService,
+    AssignedService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
