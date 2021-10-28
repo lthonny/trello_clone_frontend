@@ -31,7 +31,9 @@
         (click)="updateTitleBoard()"
       >{{nameBoard}}</span>
       <div class="avatar">{{ nameUser.charAt(0) | uppercase}}</div>
-      <div class="invited-users" *ngFor="let user of invitedUsers">{{user.name.charAt(0) | uppercase}}</div>
+      <ng-container *ngIf="owner">
+        <div class="invited-users" *ngFor="let user of invitedUsers">{{user.name.charAt(0) | uppercase}}</div>
+      </ng-container>
       <span class="invite" (click)="inviteKey()">Пригласить</span>
 
       <div class="example-sidenav-content">

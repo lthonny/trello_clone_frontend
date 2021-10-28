@@ -20,7 +20,7 @@ export class TaskDescriptionComponent implements OnInit {
   public title: string = '';
   public description!: FormControl;
 
-  public users: IAssignedUser[] = [{id: 1, name: 'Alex', owner: false}, {id: 2, name: 'Oleg', owner: false}, {id: 3, name: 'Sasha', owner: false}];
+  public users: IAssignedUser[] = [];
   public assignedUsers: IAssignedUser[] = [];
 
   constructor(
@@ -36,9 +36,29 @@ export class TaskDescriptionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.data.invited.forEach((user: any) => {
-    //   this.users.push(user);
-    // })
+    this.assignedService.fetch$(this._id)
+      .subscribe((data: any) => {
+        data.forEach((user: any) => {
+          if(user.assigned === true) {
+            this.assignedUsers.push(user);
+          } else {
+            this.users.push(user);
+          }
+        })
+        console.log('fetch$ users', data);
+      })
+
+
+    this.data.invited.forEach((user: any) => {
+      // if (user.) {
+      //
+      // }
+
+      // this.users.filter((user) => user.id !== )
+
+      // this.users.push(user);
+      console.log(user)
+    })
     // console.log('this.data.invited', this.data.invited);
   }
 
@@ -80,19 +100,23 @@ export class TaskDescriptionComponent implements OnInit {
     })
   }
 
-  addUser(id: number) {
-    this.users = this.users.filter((user: any) => {
-      if(user.id !== id) {
-        return user;
-      } else {
-        this.assignedUsers.push(user);
-      }
-    });
+  addUser(userId: number) {
+    this.assignedService.add$(this._id, userId)
+      .subscribe((data) => {
+        console.log('add', data)
+      })
+    // this.users = this.users.filter((user: any) => {
+    //   if(user.id !== userId) {
+    //     return user;
+    //   } else {
+    //     this.assignedUsers.push(user);
+    //   }
+    // });
   }
 
   deleteUser(id: number) {
     this.assignedUsers = this.assignedUsers.filter((user: any) => {
-      if(user.id !== id) {
+      if (user.id !== id) {
         return user;
       } else {
         this.users.push(user);
