@@ -333,10 +333,6 @@ export class DashboardPageComponent implements OnInit {
     })
   }
 
-  onCloseClick() {
-
-  }
-
   ngOnInit() {
     console.log('userId', localStorage.getItem("name"));
 

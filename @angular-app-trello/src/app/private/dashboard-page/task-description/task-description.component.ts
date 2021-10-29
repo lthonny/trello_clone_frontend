@@ -20,8 +20,8 @@ export class TaskDescriptionComponent implements OnInit {
   public title: string = '';
   public description!: FormControl;
 
-  public users: IAssignedUser[] = [];
-  public assignedUsers: IAssignedUser[] = [];
+  public users: any = [];
+  public assignedUsers: any = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -39,50 +39,27 @@ export class TaskDescriptionComponent implements OnInit {
     this.assignedService.fetch$(this._id)
       .subscribe((data: any) => {
         data.forEach((user: any) => {
+          // console.log('data.forEach', user);
           if(user.assigned === true) {
             this.assignedUsers.push(user);
           } else {
             this.users.push(user);
           }
         })
-        console.log('fetch$ users', data);
+        console.log('assigned users', data);
       })
 
-
     this.data.invited.forEach((user: any) => {
-      // if (user.) {
-      //
-      // }
-
-      // this.users.filter((user) => user.id !== )
-
-      // this.users.push(user);
-      console.log(user)
+      if(user.assigned === true) {
+        this.assignedUsers.push(user);
+      } else {
+        this.users.push(user);
+      }
     })
-    // console.log('this.data.invited', this.data.invited);
   }
 
   updateTitle() {
-  }
-
-  updateDescription() {
-    // if(description !== null) {
-    //   const childNode = description.firstChild;
-    //
-    //   if(childNode !== null) {
-    //     description.removeChild(childNode);
-    //     const input = document.createElement('textarea');
-    //     input.value = this.description;
-    //     description.append(input);
-    //
-    //     input.focus();
-    //
-    //     input.addEventListener('blur', (event: FocusEvent) => {
-    //       description.innerHTML = input.value;
-    //       this.description = input.value;
-    //     })
-    //   }
-    // }
+    // title task
   }
 
   showDetails() {
@@ -100,33 +77,75 @@ export class TaskDescriptionComponent implements OnInit {
     })
   }
 
-  addUser(userId: number) {
-    this.assignedService.add$(this._id, userId)
+  assigned(user: any) {
+    this.assignedService.add$(this._id, user.id)
       .subscribe((data) => {
+        if (data.error) {
+          this.users = this.users.filter((user: any) => user.id !== user.id);
+          console.log('dd')
+        } else {
+          // console.log('пользователь добавлен', data, user.id);
+
+          // this.assignedUsers = this.assignedUsers.filter((user: any) => user.id !== data.id);
+
+          // const index = this.assignedUsers.indexOf(this.assignedUsers.length);
+          // if (index > -1) {
+          // this.assignedUsers.forEach((user: any, index: number) => {
+          //   this.assignedUsers.splice(index, 1);
+          // })
+          // }
+
+          // const index = this.assignedUsers.findIndex((element: any) => element.id === user.id);
+          // if (index === -1) {
+          // this.assignedUsers.forEach((user: any, index: number) => {
+          //   this.assignedUsers.splice(index, 1);
+          //   this.assignedUsers = this.assignedUsers.filter((user: any) => user.id !== data.id);
+          // })
+          //   this.assignedUsers = this.assignedUsers.filter((user: any))
+          // }
+
+          // console.log(index)
+
+          // this.assignedUsers.push(data);
+
+          // this.assignedUsers = this.assignedUsers.filter((user: any) => {
+          //   console.log(user)
+          //   // if (user.assigned !== data.assigned) {
+          //   //   console.log('user gg')
+          //   //   return user;
+          //   // } else {
+          //   //   this.users.push(user);
+          //   // }
+          // });
+
+          if(data.assigned === true) {
+            this.assignedUsers.push(user);
+            // return this.assignedUsers = this.assignedUsers.filter((user: any) => user.assigned !== data.assigned);
+          } else {
+            this.users.push(user);
+          }
+
+        }
         console.log('add', data)
       })
-    // this.users = this.users.filter((user: any) => {
-    //   if(user.id !== userId) {
-    //     return user;
-    //   } else {
-    //     this.assignedUsers.push(user);
-    //   }
-    // });
   }
 
-  deleteUser(id: number) {
-    this.assignedUsers = this.assignedUsers.filter((user: any) => {
-      if (user.id !== id) {
-        return user;
-      } else {
-        this.users.push(user);
-      }
-    });
+  updateAssigned(user: any) {
+    // this.assignedUsers = this.assignedUsers.filter((user: any) => {
+    //   if (user.id !== id) {
+    //     return user;
+    //   } else {
+    //     this.users.push(user);
+    //   }
+    // });
 
-    this.assignedService.remove$(id)
-      .subscribe((data: any) => {
-        console.log('assignedService.remove ->', data);
+    this.assignedService.update$(this._id, user.id, user.assigned)
+      .subscribe((data): any => {
+        console.log('update data', data);
+        // console.log('assignedService.remove ->', data.message);
       })
+
+
   }
 
   submit() {

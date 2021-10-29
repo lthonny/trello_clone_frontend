@@ -15,7 +15,7 @@ import {createLogErrorHandler} from "@angular/compiler-cli/ngcc/src/execution/ta
 })
 export class BoardsComponent implements OnInit {
 
-  private _id: string | null = localStorage.getItem('id');
+  private readonly _id: string | null = localStorage.getItem('id');
   boards: IBoard[] = [];
 
   form: FormGroup = new FormGroup({
@@ -25,7 +25,7 @@ export class BoardsComponent implements OnInit {
   });
 
   constructor(
-    public boardService: BoardService,
+    private boardService: BoardService,
     private inviteService: InviteService
   ) {}
 
@@ -38,7 +38,6 @@ export class BoardsComponent implements OnInit {
     this.inviteService.InviteBoard$(this._id, this.inviteService._key)
       .subscribe((board: IBoard) => {
         this.boards.push(board);
-        console.log('board', board);
       })
   }
 
@@ -49,10 +48,15 @@ export class BoardsComponent implements OnInit {
   }
 
   submit() {
-    this.boardService.createBoard$(this.form.value.name)
-      .subscribe((board: IBoard) => {
-        this.form.reset();
-        this.boards.push(board);
-      })
+    if(this.form.value.name === null) {
+      console.log('поле не должно быть пустым!');
+    }
+    else {
+      this.boardService.createBoard$(this.form.value.name)
+        .subscribe((board: IBoard) => {
+          this.form.reset();
+          this.boards.push(board);
+        })
+    }
   }
 }

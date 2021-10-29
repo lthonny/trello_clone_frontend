@@ -18,6 +18,10 @@ export class AssignedService {
     return this.http.post<any>(`/api/assigned/users/${id}`, {userId});
   }
 
+  update$(id: number, userId: number, assigned: boolean) {
+    return this.http.put<any>(`/api/assigned/users/${id}`, {userId, assigned});
+  }
+
   remove$(id: number): Observable<any> {
     return this.http.delete<any>(`/api/assigned/users/${id}`);
   }

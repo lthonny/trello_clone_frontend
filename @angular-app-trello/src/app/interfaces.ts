@@ -133,5 +133,6 @@ export interface IInitOwner {
 export interface IAssignedUser {
   id: number,
   name: string,
-  owner: boolean
+  owner: boolean,
+  assigned?: boolean
 }

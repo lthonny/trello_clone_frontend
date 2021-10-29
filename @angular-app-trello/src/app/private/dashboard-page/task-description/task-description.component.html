@@ -16,7 +16,7 @@
         </span>
           <span class="description">Описание</span>
       </div>
-      <span class="dialog-column-description" (click)="updateDescription()">
+      <span class="dialog-column-description">
       <mat-form-field appearance="fill">
         <mat-label>описание</mat-label>
         <textarea
@@ -40,12 +40,12 @@
     <h4 class="users" *ngIf="users.length !== 0">Выбор пользователей на эту задачу:</h4>
     <div class="invited-users" *ngFor="let user of users">
       {{ user.name }}
-      <span class="btn-add" (click)="addUser(user.id)">+</span>
+      <span class="btn-add" (click)="assigned(user)">+</span>
     </div>
     <h4 class="archiving-title" *ngIf="assignedUsers.length !== 0">на эту задачу назначены пользователи:</h4>
     <div class="assigned-users" *ngFor="let user of assignedUsers">
       {{ user.name }}
-      <span class="btn-remove" (click)="deleteUser(user.id)">&#x2715;</span>
+      <span class="btn-remove" (click)="updateAssigned(user)">&#x2715;</span>
     </div>
   </div>
 
