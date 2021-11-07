@@ -1,32 +1,22 @@
 <main class="main">
   <div class="wrapper">
-    Ваши доски рабочего пространства
-
-    <form class="form" [formGroup]="form" (ngSubmit)="submit()">
-      <div>
-        <input type="text" class="form-control bg-light" placeholder="name board" formControlName="name">
-      </div>
-      <button class="add-board" type="submit">&#43;</button>
-    </form>
-
-
-    <div class="boards">
-      <div class="card" style="width: 18rem;" *ngFor="let board of boards">
-        <div class="card-body">
-          <span
-            class="card-text"
-            [routerLink]="['/admin', 'boards-page', board.id]"
-          >{{board.title}}</span>
-          <span class="delete" (click)=removeBoard(board.id)>&#x2715;</span>
-        </div>
-      </div>
+    <div>
+      <ul class="board-list">
+        <li *ngFor="let board of boards" class="board-list-item">
+          <a [routerLink]="['/admin', 'boards-page', board.id]" class="board-list-item-ref">
+            <div class="title">
+              {{board.title}}
+            </div>
+          </a>
+          <span class="delete" (click)=remove(board.id)>&#x2715;</span>
+        </li>
+        <li class="board-list-item board-add">
+          <button mat-button (click)="addBoardDialog()" class="board-add-btn">
+            Create new board
+          </button>
+        </li>
+      </ul>
     </div>
   </div>
 </main>
 
-<!--<div mat-dialog-content>-->
-<!--  <mat-form-field appearance="fill">-->
-<!--    <mat-label>Add board title</mat-label>-->
-<!--    &lt;!&ndash;    <input matInput [(ngModel)]="data.name">&ndash;&gt;-->
-<!--  </mat-form-field>-->
-<!--</div>-->

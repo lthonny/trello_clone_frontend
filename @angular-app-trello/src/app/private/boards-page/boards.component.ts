@@ -1,12 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {BoardService} from "../../services/board.service";
-
-import {IBoard} from "../../interfaces";
 import {InviteService} from "../../services/invite.service";
-import {createLogErrorHandler} from "@angular/compiler-cli/ngcc/src/execution/tasks/completion";
-
+import {IBoard} from "../../interfaces";
 
 @Component({
   selector: 'app-boards',
@@ -14,49 +10,78 @@ import {createLogErrorHandler} from "@angular/compiler-cli/ngcc/src/execution/ta
   styleUrls: ['./boards.component.scss']
 })
 export class BoardsComponent implements OnInit {
-
-  private readonly _id: string | null = localStorage.getItem('id');
   boards: IBoard[] = [];
-
-  form: FormGroup = new FormGroup({
-    name: new FormControl(null, [
-      Validators.required
-    ])
-  });
+  boardName: string = '';
 
   constructor(
     private boardService: BoardService,
-    private inviteService: InviteService
-  ) {}
+    private dialog: MatDialog,
+    public inviteService: InviteService
+  ) {
+  }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.boardService.getBoards$()
       .subscribe((board: IBoard[]) => {
-        this.boards = board;
-      })
+        this.boards = board
+      });
+    this.inviteService.InviteBoard$(this.boardService.isIdBoard, this.boardService.isKeyBoard)
+      .subscribe((board: IBoard) => {
+        this.boards.push(board);
+      });
+  }
 
-    this.inviteService.InviteBoard$(this._id, this.inviteService._key)
+  addBoardDialog() {
+    const dialogRef = this.dialog.open(AddBoardComponent, {
+      height: '200px',
+      width: '300px',
+      data: {
+        title: this.boardName = ''
+      },
+    });
+
+    dialogRef.afterClosed()
+      .subscribe((result) => {
+        this.boardName = result;
+        this.submit();
+      });
+  }
+
+  remove(id: number) {
+    this.boardService.removeBoard$(id)
+      .subscribe(() => {
+        this.boards = this.boards.filter((board: IBoard) => board.id !== id);
+      });
+  }
+
+  submit() {
+    if (!this.boardName.trim()) {
+      return;
+    }
+    this.boardService.createBoard$(this.boardName)
       .subscribe((board: IBoard) => {
         this.boards.push(board);
       })
   }
+}
 
-  removeBoard(id: number) {
-    this.boardService.removeBoard$(id).subscribe(() => {
-      this.boards = this.boards.filter((board: IBoard) => board.id !== id);
-    });
+export interface DialogData {
+  title: string;
+}
+
+@Component({
+  selector: 'app-add-board',
+  templateUrl: './add-board.component.html',
+  styleUrls: ['./boards.component.scss']
+})
+export class AddBoardComponent {
+  constructor(
+    public dialogRef: MatDialogRef<AddBoardComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) {
   }
 
-  submit() {
-    if(this.form.value.name === null) {
-      console.log('поле не должно быть пустым!');
-    }
-    else {
-      this.boardService.createBoard$(this.form.value.name)
-        .subscribe((board: IBoard) => {
-          this.form.reset();
-          this.boards.push(board);
-        })
-    }
+  onCloseClick(): void {
+    this.dialogRef.close();
   }
 }

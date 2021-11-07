@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-
-import { AuthService } from 'src/app/services/auth.service';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {AuthService} from 'src/app/services/auth.service';
 import {TokenService} from "../../../services/token.service";
 import {ErrorService} from "../../../services/error.service";
 
@@ -14,9 +13,8 @@ import {IAuthResponse, ISingIn} from 'src/app/interfaces';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
-  submitted: boolean = false;
-  message: string = '';
+  public message: string = '';
+  public submitted: boolean = false;
 
   form: FormGroup = new FormGroup({
     email: new FormControl(null, [
@@ -30,12 +28,13 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(
-    public authService: AuthService,
-    public tokenService: TokenService,
-    public errorService: ErrorService,
+    private authService: AuthService,
+    private tokenService: TokenService,
+    private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
@@ -62,6 +61,6 @@ export class LoginComponent implements OnInit {
         this.tokenService.setToken(response.accessToken);
         this.form.reset();
         this.router.navigate(['/admin', 'boards']);
-    });
+      });
   }
 }

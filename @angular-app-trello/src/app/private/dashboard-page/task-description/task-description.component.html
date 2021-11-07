@@ -1,7 +1,21 @@
 <h1 mat-dialog-title>
-  <!--  <span class="dialog-column-title" (click)="updateTitle()">-->
-  {{title}}
-  <!--  </span>-->
+  <span class="dialog-column-title" (click)="updateTitle()" [hidden]="updateT"> {{title}}</span>
+
+  <!--      <span [hidden]="!updateT">-->
+  <!--        <mat-form-field appearance="fill" class="update-title">-->
+  <!--          <textarea matInput cdkTextareaAutosize class="title">ddd</textarea>-->
+  <!--        </mat-form-field>-->
+  <!--      </span>-->
+
+  <!--       <mat-form-field appearance="fill">-->
+  <!--        <mat-label>описание</mat-label>-->
+  <!--        <textarea-->
+  <!--          matInput-->
+  <!--          cdkTextareaAutosize-->
+  <!--          [formControl]="description"-->
+  <!--        ></textarea>-->
+  <!--      </mat-form-field>-->
+
 </h1>
 <div class="column">
   в колонке <span class="column-title">{{ data.item.nameTaskList }}</span>
@@ -14,7 +28,7 @@
         <span>
           <mat-icon class="material-icons-outlined">description</mat-icon>
         </span>
-          <span class="description">Описание</span>
+        <span class="description">Описание</span>
       </div>
       <span class="dialog-column-description">
       <mat-form-field appearance="fill">
@@ -33,7 +47,7 @@
 
   <div class="archiving">
     <mat-icon class="material-icons-outlined">send_and_archive</mat-icon>
-    <h4 class="archiving-title" (click)="archiveState()">Архивация</h4>
+    <h4 class="archiving-title" *ngIf="archiveService.archived" (click)="archiveState()">Архивация</h4>
   </div>
 
   <div class="invited">
@@ -43,9 +57,9 @@
       <span class="btn-add" (click)="assigned(user)">+</span>
     </div>
     <h4 class="archiving-title" *ngIf="assignedUsers.length !== 0">на эту задачу назначены пользователи:</h4>
-    <div class="assigned-users" *ngFor="let user of assignedUsers">
-      {{ user.name }}
-      <span class="btn-remove" (click)="updateAssigned(user)">&#x2715;</span>
+    <div class="assigned-users" *ngFor="let assignedUser of assignedUsers">
+      {{ assignedUser.name }}
+      <span class="btn-remove" (click)="updateAssigned(assignedUser)">&#x2715;</span>
     </div>
   </div>
 

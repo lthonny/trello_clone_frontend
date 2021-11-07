@@ -1,38 +1,34 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {PrivateLayoutComponent} from './private-layout/private-layout.component';
 import {RouterModule} from '@angular/router';
-import {
-  DashboardPageComponent,
-} from './dashboard-page/dashboard-page.component';
-import {LoginComponent} from './auth/login-page/login.component';
-import {RegComponent} from './auth/signup-page/reg.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
-import {AuthInterceptor} from "../services/auth.interceptor";
-
 import {QuillModule} from "ngx-quill";
 import {DragDropModule} from "@angular/cdk/drag-drop";
+import {MaterialModule} from "../material.module";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 import {AuthGuard} from "../services/auth.guard";
 
-import {BoardService} from "../services/board.service";
-import {BoardsComponent} from './boards-page/boards.component';
-import {TaskService} from "../services/task.service";
-import {MaterialModule} from "../material.module";
-import {MatButtonModule} from "@angular/material/button";
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import {PopoverComponent} from "../popovers/popever/popover.component";
-import {TaskDescriptionComponent} from "./dashboard-page/task-description/task-description.component";
-import {SidenavAutosizeComponent} from "../popovers/sidenav-autosize/sidenav-autosize.component";
-import {MatSidenavModule} from "@angular/material/sidenav";
-import {ArchiveTasksService} from "../services/archive.tasks.service";
-import {SocialLoginModule} from "angularx-social-login";
-import {InviteService} from "../services/invite.service";
-import { InvitePageComponent } from './invite-page/invite-page.component';
 import {AssignedService} from "../services/assigned.service";
+import {BoardService} from "../services/board.service";
+import {TaskService} from "../services/task.service";
+import {ArchiveTasksService} from "../services/archive.tasks.service";
+import {InviteService} from "../services/invite.service";
 
+import {PrivateLayoutComponent} from './private-layout/private-layout.component';
+import {TaskDescriptionComponent} from "./dashboard-page/task-description/task-description.component";
+import {DashboardPageComponent} from './dashboard-page/dashboard-page.component';
+import {AddBoardComponent, BoardsComponent} from './boards-page/boards.component';
+import {SidenavAutosizeComponent} from "../popovers/sidenav-autosize/sidenav-autosize.component";
+import {PopoverComponent} from "../popovers/popever/popover.component";
+import {InvitePageComponent} from './invite-page/invite-page.component';
+import {AuthInterceptor} from "../services/auth.interceptor";
+import {LoginComponent} from './auth/login-page/login.component';
+import {RegComponent} from './auth/signup-page/reg.component';
+import {MatDividerModule} from "@angular/material/divider";
+import {InvitePopoverComponent} from "./dashboard-page/invite-popover/invite-popover.component";
 
 @NgModule({
   declarations: [
@@ -40,12 +36,13 @@ import {AssignedService} from "../services/assigned.service";
     LoginComponent,
     RegComponent,
     DashboardPageComponent,
-
     BoardsComponent,
     PopoverComponent,
     TaskDescriptionComponent,
     SidenavAutosizeComponent,
-    InvitePageComponent
+    InvitePageComponent,
+    AddBoardComponent,
+    InvitePopoverComponent,
   ],
   imports: [
     CommonModule,
@@ -54,23 +51,44 @@ import {AssignedService} from "../services/assigned.service";
     HttpClientModule,
     QuillModule.forRoot(),
     DragDropModule,
-    NgbModule,
 
     RouterModule.forChild([
-      {path: 'login-page', component: LoginComponent},
-      {path: 'signup-page', component: RegComponent},
-      {path: 'invite/:id/:key', component: InvitePageComponent, canActivate: [AuthGuard]},
+      {
+        path: 'login-page',
+        component: LoginComponent
+      },
+      {
+        path: 'signup-page',
+        component: RegComponent
+      },
+      {
+        path: 'invite/:id/:key',
+        component: InvitePageComponent,
+        canActivate: [AuthGuard]
+      },
       {
         path: '', component: PrivateLayoutComponent, children: [
-          {path: '', redirectTo: '/admin/login-page', pathMatch: 'full'},
-          {path: 'boards', component: BoardsComponent, canActivate: [AuthGuard]},
-          {path: 'boards-page/:id', component: DashboardPageComponent, canActivate: [AuthGuard]}
+          {
+            path: '',
+            redirectTo: '/admin/login-page',
+            pathMatch: 'full'
+          },
+          {
+            path: 'boards',
+            component: BoardsComponent,
+            canActivate: [AuthGuard]
+          },
+          {
+            path: 'boards-page/:id',
+            component: DashboardPageComponent,
+            canActivate: [AuthGuard]
+          }
         ]
       }
     ]),
     MaterialModule,
-    MatButtonModule,
-    MatSidenavModule
+    MatDividerModule,
+    NgbModule
   ],
   exports: [
     RouterModule,

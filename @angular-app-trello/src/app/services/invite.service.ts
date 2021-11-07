@@ -9,6 +9,7 @@ import {IInitOwner, IInvitedUsersName, IInviteKey, IOwner} from "../interfaces";
 export class InviteService {
 
   public _key: string = '';
+  public _link: string = '';
 
   constructor(
     private http: HttpClient

@@ -1,24 +1,33 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {MatDialog} from "@angular/material/dialog";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
-
 import {switchMap} from "rxjs/operators";
-
 import {TaskService} from "../../services/task.service";
 import {BoardService} from "../../services/board.service";
+import {InviteService} from "../../services/invite.service";
 import {ArchiveTasksService} from "../../services/archive.tasks.service";
-
 import {IArchive, ICreateTask, IInviteKey, ITask} from "../../interfaces";
-
 import {Board} from "../../models/board.model";
 import {Column} from "../../models/column.model";
-
-import {MatDialog} from "@angular/material/dialog";
-
 import {TaskDescriptionComponent} from "./task-description/task-description.component";
-import {InviteService} from "../../services/invite.service";
+import {AuthService} from "../../services/auth.service";
 
+export interface IColumn {
+  name: string,
+  tasks: [{
+      id: number,
+      title: string,
+      description: string,
+      nameTaskList: string,
+      order: number,
+      archive: boolean,
+      board_id: number,
+      createdAt: any,
+      updatedAt: any
+    }]
+}
 
 @Component({
   selector: 'app-dashboard-page',
@@ -27,27 +36,28 @@ import {InviteService} from "../../services/invite.service";
 })
 export class DashboardPageComponent implements OnInit {
 
-  public showFiller: boolean = false;
+  public popoverColumnInfo: boolean = false;
+  public submitted: boolean = true;
+  public invite: boolean = true;
+  public link: string = '';
 
-  public _id!: number;
-  public nameBoard: string = '';
-  public userId: string | null = localStorage.getItem('id');
-  public nameUser: any = localStorage.getItem('name');
-  public nameTask: string = '';
+  public _boardId!: number;
+  public _boardName: string = '';
 
   public tasks: ITask[] = [];
-
   private taskListToDo: ITask[] = [];
   private taskListInProgress: ITask[] = [];
   private taskListCoded: ITask[] = [];
   private taskListTesting: ITask[] = [];
   private taskListDone: ITask[] = [];
 
-  public archivedTasks: any = [];
+  // public archivedTasks: any = [];
   public _key: any;
 
   public invitedUsers: any = [];
   public owner!: boolean;
+
+  public showFiller: boolean = false;
 
   board: Board = new Board('tasks', [
     new Column('To Do', this.taskListToDo),
@@ -67,62 +77,99 @@ export class DashboardPageComponent implements OnInit {
   });
 
   constructor(
-    private boardService: BoardService,
-    private tasksService: TaskService,
+    public authService: AuthService,
+    public boardService: BoardService,
     private route: ActivatedRoute,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
+    private tasksService: TaskService,
     public archiveService: ArchiveTasksService,
-    public inviteService: InviteService
+    private inviteService: InviteService
   ) {
+    this.route.params.subscribe(params => this._boardId = params['id']);
+    this.boardService.getBoard$(this._boardId)
+      .subscribe((board: any) => this._boardName = board.title);
+  }
+
+  ngOnInit() {
+    this.route.params
+      .pipe(switchMap((params: Params) => {
+        return this.tasksService.getTasks$(params['id']);
+      }))
+      .subscribe((tasks: any) => {
+        if (!tasks.error) {
+          this.tasks = tasks.tasks;
+          this._boardName = tasks.title;
+
+          this.tasks.forEach((task: ITask) => {
+            if (task.nameTaskList === 'To Do' && task.archive !== true) {
+              this.taskListToDo.push(task);
+            }
+            if (task.nameTaskList === 'In Progress' && task.archive !== true) {
+              this.taskListInProgress.push(task);
+            }
+            if (task.nameTaskList === 'Coded' && task.archive !== true) {
+              this.taskListCoded.push(task);
+            }
+            if (task.nameTaskList === 'Testing' && task.archive !== true) {
+              this.taskListTesting.push(task);
+            }
+            if (task.nameTaskList === 'Done' && task.archive !== true) {
+              this.taskListDone.push(task);
+            }
+          })
+        }
+      })
+
+    this.inviteService.Owner$({
+      userId: this.authService.isUserId,
+      boardId: this._boardId
+    }).subscribe(({userId, owner}) => {
+      this.owner = owner;
+      console.log(this.owner);
+    })
+
+    this.inviteService.InvitedUsers(this._boardId, this.authService.isUserId, this.authService.isNameUser)
+      .subscribe(({names, owner}) => {
+        names.forEach((data: any) => {
+          this.invitedUsers.push({id: data.id, name: data.name, owner: data.owner});
+        })
+        console.log('invited users', this.invitedUsers);
+      })
   }
 
   openDialog(item: ITask): void {
-    if(this.owner) {
+    console.log('item', item.nameTaskList);
+
+    if(this.archiveService.archived === true) {
+      console.log('true')
+      // if (this.board.columns[0].name === 'To Do') {
+      //   this.taskListToDo = this.taskListToDo.filter((task: ITask) => task.id !== item.id);
+      //   this.board.columns[0].tasks = this.taskListToDo.filter((task: ITask) => task.id !== item.id);
+      // }
+      // if (this.board.columns[1].name === 'In Progress') {
+      //   this.taskListInProgress = this.taskListInProgress.filter((task: ITask) => task.id !== item.id);
+      //   this.board.columns[1].tasks = this.taskListInProgress.filter((task: ITask) => task.id !== item.id);
+      // }
+      // if (this.board.columns[2].name === 'Coded') {
+      //   this.taskListCoded = this.taskListCoded.filter((task: ITask) => task.id !== item.id);
+      //   this.board.columns[2].tasks = this.taskListCoded.filter((task: ITask) => task.id !== item.id);
+      // }
+      // if (this.board.columns[3].name === 'Testing') {
+      //   this.taskListTesting = this.taskListTesting.filter((task: ITask) => task.id !== item.id);
+      //   this.board.columns[3].tasks = this.taskListTesting.filter((task: ITask) => task.id !== item.id);
+      // }
+      // if (this.board.columns[4].name === 'Done') {
+      //   this.taskListDone = this.taskListDone.filter((task: ITask) => task.id !== item.id);
+      //   this.board.columns[4].tasks = this.taskListDone.filter((task: ITask) => task.id !== item.id);
+      // }
+    }
+
+    if (this.owner) {
       this.dialog.open(TaskDescriptionComponent, {
-        data: {item, invited: this.invitedUsers},
+        data: {item, board: this._boardId, invited: this.invitedUsers},
         height: '800px',
         width: '600px',
       });
-
-      // const id = item.id;
-
-      // this.tasksService.getById(id).subscribe((task) => {
-      // console.log(task);
-      // })
-
-      // const  dialogRef = this.dialog.open(TaskDescriptionComponent, {
-      //     height: '800px',
-      //     width: '600px',
-      //     data: {
-      //       item
-      //     }
-      // })
-
-      // dialogRef.afterClosed().subscribe((data) => {
-      // console.log('data', data);
-      // if (data) {
-      // console.log(data);
-      //   if (!data.isArchive){
-      //     if (data.activity) {
-      //       this.updateTask(data.task, { activity: data.activity})
-      //     }
-      //   } else {
-      //     const index = this.taskList.Tasks.findIndex((t: Task) => t.id === data.task.id)
-      //     if (index !== -1){
-      //       this.taskList.Tasks.splice(index, 1)
-      //       this.archiveTask.emit(data.task)
-      //     }
-      //   }
-      //
-      //   if (data.isDelete) {
-      //     this.deleteTasks([data.task.id]).subscribe(() => {
-      //       const idx = this.taskList.Tasks.findIndex( (task: any) => task.id === data.task.id);
-      //       this.taskList.Tasks.splice(idx, 1);
-      //     })
-      //   }
-      // }
-      // });
-
     }
   }
 
@@ -130,22 +177,24 @@ export class DashboardPageComponent implements OnInit {
     if (this.owner) {
       const nameColumn = column.name;
 
+      console.log('column', column);
+
       if (event.previousContainer === event.container) {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-        // this.updatePositionDrops(this.tasks);
-        // console.log('this.tasks', this.tasks);
-        // this.tasks.forEach((task, index) => {
-        //   console.log('update tasks');
-        //   const idx = index + 1
-        //   if (task.order !== index + 1) {
-        //     task.order = idx;
-        //     this.tasksService.updateOrder$(this.tasks)
-        //       .subscribe((tasks) => {
-        //         this.tasks = tasks;
-        // console.log('updateOrder', tasks)
-        // })
-        // }
-        // })
+        this.updatePositionDrops(this.tasks);
+        console.log('this.tasks', this.tasks);
+        this.tasks.forEach((task, index) => {
+          console.log('update tasks');
+          const idx = index + 1
+          if (task.order !== index + 1) {
+            task.order = idx;
+            this.tasksService.updateOrder$(this.tasks)
+              .subscribe((tasks) => {
+                this.tasks = tasks;
+                console.log('updateOrder', tasks)
+              })
+          }
+        })
       } else {
         transferArrayItem(event.previousContainer.data,
           event.container.data,
@@ -185,32 +234,29 @@ export class DashboardPageComponent implements OnInit {
         // //
         console.log('ggArray', ggArray);
 
-        //   if (orderSum) {
-        //     order = orderSum + 1;
-        //     // order = this.tasks.reduce((acc: any, curr: any) => {
-        //     //     return acc > curr.order ? acc : curr.order;
-        //     //   }, 1) + 1;
-        //   }
+        // if (orderSum) {
+        //   order = orderSum + 1;
+        //   // order = this.tasks.reduce((acc: any, curr: any) => {
+        //   //     return acc > curr.order ? acc : curr.order;
+        //   //   }, 1) + 1;
+        // }
 
         //   // task.order
         //   console.log(task)
         //   return task.order = ;
         // })
 
-        ggArray.forEach((task: any, index: number) => {
-          console.log(task);
-          // const idx = index + 1
-          // if (task.position === idx && task.taskListId === this.taskList.id) {
-          //   return
-          // }
-          // if (task.position !== idx) {
-          //   task.position = idx
-          // }
-        });
-
-
+        // ggArray.forEach((task: any, index: number) => {
+        //   console.log(task);
+        //   const idx = index + 1
+        //   if (task.position === idx && task.taskListId === this.taskList.id) {
+        //     return
+        //   }
+        //   if (task.position !== idx) {
+        //     task.position = idx
+        //   }
+        // });
       }
-
       console.log('this.tasks', this.tasks);
     }
   }
@@ -236,6 +282,12 @@ export class DashboardPageComponent implements OnInit {
     if (this.owner) {
       this.tasksService.delete$(id)
         .subscribe(() => {
+          // for (let i = 0; i < this.board.columns.length; i++) {
+          //   if (this.board.columns[i].name === name) {
+          //     this.taskListToDo = this.taskListToDo.filter((task: ITask) => task.id !== id);
+          //     this.board.columns[i].tasks = this.taskListToDo.filter((task: ITask) => task.id !== id);
+          //   }
+          // }
           if (this.board.columns[0].name === name) {
             this.taskListToDo = this.taskListToDo.filter((task: ITask) => task.id !== id);
             this.board.columns[0].tasks = this.taskListToDo.filter((task: ITask) => task.id !== id);
@@ -269,44 +321,44 @@ export class DashboardPageComponent implements OnInit {
       if (childNode !== null) {
         titleBoard.removeChild(childNode);
         const input = document.createElement('input');
-        input.value = this.nameBoard;
+        input.value = this._boardName;
         titleBoard.append(input);
 
         input.focus();
 
         input.addEventListener('blur', (event: FocusEvent) => {
           titleBoard.innerHTML = input.value;
-          this.nameBoard = input.value;
+          this._boardName = input.value;
 
           this.boardService.updateBoard$(
-            this._id,
-            this.nameBoard,
+            this._boardId,
+            this._boardName,
             localStorage.getItem('id'))
             .subscribe(({id, title, owner}) => {
-              if (title !== this.nameBoard) {
-                this.owner = owner;
-                this.nameBoard = title;
-                console.log('owner->', this.owner);
-              } else {
-                this.owner = owner;
-                console.log('owner->', this.owner);
-              }
+              // if (title !== this._boardName) {
+              this.owner = owner;
+              this._boardName = title;
+              // console.log('owner->', this.owner);
+              // } else {
+              //   this.owner = owner;
+              //   console.log('owner->', this.owner);
+              // }
             });
         });
 
         input.addEventListener('keydown', (event: KeyboardEvent) => {
           if (event.keyCode === 13) {
             titleBoard.innerHTML = input.value;
-            this.nameBoard = input.value;
+            this._boardName = input.value;
 
             this.boardService.updateBoard$(
-              this._id,
-              this.nameBoard,
+              this._boardId,
+              this._boardName,
               localStorage.getItem('id'))
               .subscribe(({id, title, owner}) => {
-                if (title !== this.nameBoard) {
+                if (title !== this._boardName) {
                   this.owner = owner;
-                  this.nameBoard = title;
+                  this._boardName = title;
                   console.log('owner->', this.owner);
                 } else {
                   this.owner = owner;
@@ -320,89 +372,51 @@ export class DashboardPageComponent implements OnInit {
   }
 
   fullMenu() {
-    this.archiveService.getArchive$(this._id).subscribe((tasks: any) => {
-      // console.log('tasks.tasks', tasks);
-      this.archivedTasks.push(tasks.tasks);
-      // console.log('заархивированные задачи', this.archivedTasks);
-    })
+    this.archiveService.getArchive$(this._boardId)
+      .subscribe((tasks: any) => {
+        // this.archivedTasks.push(tasks.tasks);
+        this.archiveService.archivedTasks.push(tasks.tasks);
+      })
   }
 
   unzip(task: IArchive) {
-    this.archiveService.setArchive$(task).subscribe(() => {
-      this.archivedTasks[0] = this.archivedTasks[0].filter((data: IArchive) => data.id !== task.id);
-    })
-  }
-
-  ngOnInit() {
-    console.log('userId', localStorage.getItem("name"));
-
-    this.route.params.subscribe(params => this._id = params['id']);
-
-    this.route.params
-      .pipe(switchMap((params: Params) => {
-        return this.tasksService.getTasks$(params['id']);
-      })).subscribe((tasks: any) => {
-      this.tasks = tasks.tasks;
-      this.nameBoard = tasks.title;
-
-      this.tasks.forEach((task: ITask) => {
-        if (task.nameTaskList === 'To Do' && task.archive !== true) {
-          this.taskListToDo.push(task);
+    this.archiveService.setArchive$(task)
+      .subscribe(() => {
+        for(let i = 0; i < this.board.columns.length; i++) {
+          if(this.board.columns[i].name === task.nameTaskList) {
+            this.board.columns[i].tasks.push(task);
+          }
         }
-        if (task.nameTaskList === 'In Progress' && task.archive !== true) {
-          this.taskListInProgress.push(task);
-        }
-        if (task.nameTaskList === 'Coded' && task.archive !== true) {
-          this.taskListCoded.push(task);
-        }
-        if (task.nameTaskList === 'Testing' && task.archive !== true) {
-          this.taskListTesting.push(task);
-        }
-        if (task.nameTaskList === 'Done' && task.archive !== true) {
-          this.taskListDone.push(task);
-        }
-      })
-    })
-
-    this.inviteService.Owner$({
-      userId: this.userId,
-      boardId: this._id
-    }).subscribe(({userId, owner}) => {
-      this.owner = owner;
-      console.log(this.owner);
-    })
-
-    this.inviteService.InvitedUsers(this._id, this.userId, this.nameUser)
-      .subscribe(({names, owner}) => {
-        names.forEach((data: any) => {
-          this.invitedUsers.push({id: data.id, name: data.name, owner: data.owner});
-        })
-
-        // если name_thonny_montana_ нет в массиве invetedUsers[],
-        // тогда окрашеваем его цвет гружка
-
-        console.log('invited users', this.invitedUsers);
+        this.archiveService.archivedTasks[0] = this.archiveService.archivedTasks[0].filter((data: IArchive) => data.id !== task.id);
       })
   }
 
   inviteKey() {
-    this.inviteService.InviteKey$(this._id).subscribe((key: IInviteKey) => {
-      this._key = key.key;
-      const link = `http://localhost:4200/admin/invite/${this._id}/${key.key}`;
+    this.invite = false;
 
-      this.inviteService.InviteUsers$(this._key)
-        .subscribe((data: any) => console.log(data));
-
-      console.log('invite key', link);
-    })
-    // console.log(this._key);
-
-    // this.inviteService.InviteUsers$(_key)
+    this.inviteService.InviteKey$(this._boardId)
+      .subscribe((key: IInviteKey) => {
+        this._key = key.key;
+        const link = `http://localhost:4200/admin/invite/${this._boardId}/${key.key}`;
+        this.link = link;
+        this.inviteService.InviteUsers$(this._key)
+          .subscribe((data: any) => console.log('data', data));
+        console.log('invite key', link);
+      })
+    // this.inviteService.InviteUsers$(this._key)
     //   .subscribe((data: any) => {
-    //     console.log(_key);
+    //     console.log(this._key);
     //   })
+  }
 
-    // записать ключ для работы с ним
+  onClose() {
+    this.submitted = true
+    this.form.reset()
+  }
+
+  popoverColumn() {
+    console.log('...');
+    this.popoverColumnInfo = !this.popoverColumnInfo;
   }
 
   submit(nameTaskList: string) {
@@ -418,33 +432,49 @@ export class DashboardPageComponent implements OnInit {
       if (orderSum) {
         order = orderSum + 1;
       }
+      if(
+        this.form.value.name !== null &&
+        this.form.value.description !== null
+      ) {
+        const task: ICreateTask = {
+          title: this.form.value.name,
+          description: this.form.value.description,
+          nameTaskList: nameTaskList,
+          board_id: this._boardId,
+          order: order
+        }
 
-      const task: ICreateTask = {
-        title: this.form.value.name,
-        description: this.form.value.description,
-        nameTaskList: nameTaskList,
-        board_id: this._id,
-        order: order
+        this.tasksService.create$(task)
+          .subscribe((task: ITask) => {
+            this.form.reset();
+
+            // let taskLists = ['To Do', 'In Progress', 'Coded', 'Testing', 'Done'];
+            //
+            // taskLists.forEach((taskList) => {
+            //   if(taskList === task.nameTaskList) {
+            //     this.taskListToDo.push(task);
+            //   }
+            // })
+
+            if (task.nameTaskList === 'To Do') {
+              this.taskListToDo.push(task);
+            }
+            if (task.nameTaskList === 'In Progress') {
+              this.taskListInProgress.push(task);
+            }
+            if (task.nameTaskList === 'Coded') {
+              this.taskListCoded.push(task);
+            }
+            if (task.nameTaskList === 'Testing') {
+              this.taskListTesting.push(task);
+            }
+            if (task.nameTaskList === 'Done') {
+              this.taskListDone.push(task);
+            }
+          })
+      } else {
+        console.log('данное поле не должно быть пустым');
       }
-
-      this.tasksService.create$(task).subscribe((task: ITask) => {
-        this.form.reset();
-        if (task.nameTaskList === 'To Do') {
-          this.taskListToDo.push(task);
-        }
-        if (task.nameTaskList === 'In Progress') {
-          this.taskListInProgress.push(task);
-        }
-        if (task.nameTaskList === 'Coded') {
-          this.taskListCoded.push(task);
-        }
-        if (task.nameTaskList === 'Testing') {
-          this.taskListTesting.push(task);
-        }
-        if (task.nameTaskList === 'Done') {
-          this.taskListDone.push(task);
-        }
-      })
     }
   }
 }

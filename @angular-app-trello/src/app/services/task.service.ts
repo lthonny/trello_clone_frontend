@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {IDescriptionUpdate, ITask} from "../interfaces";
+import {tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import {IDescriptionUpdate, ITask} from "../interfaces";
 export class TaskService {
 
   private _id: string | null = localStorage.getItem('id');
+  public _nameTask: string = '';
 
   constructor(
     private http: HttpClient
@@ -22,12 +24,27 @@ export class TaskService {
     return this.http.post<ITask>(`/api/task/create/${this._id}`, data);
   }
 
+  public updateTitle$(id: number, title: string): Observable<any> {
+   return this.http.post<any>(`/api/task/updateTitle`, {id, title})
+     .pipe(
+       tap((data) => {
+         // this.authUser(data);
+         this._nameTask = data.title;
+         // console.log(data.title);
+       })
+     );
+  }
+
   public updateOrder$(data: any): Observable<any> {
     return this.http.post<any>(`/api/tasks/updateOrder/${this._id}`, data)
   }
 
   public update$(data: any, nameList: string): Observable<any> {
     return this.http.post<any>(`/api/task/update`, {data, nameList})
+  }
+
+  public updateTask$(id: number, nameList: string): Observable<any> {
+    return this.http.post<any>(`/api/task/update/taskList`, {nameList});
   }
 
   public updateDescription(post: IDescriptionUpdate): Observable<any> {

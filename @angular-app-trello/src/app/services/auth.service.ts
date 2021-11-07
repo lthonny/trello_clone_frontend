@@ -1,21 +1,29 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-
 import {catchError, tap} from "rxjs/operators";
 import {BehaviorSubject, Observable} from "rxjs";
-
-import {IAuthResponse, ISingIn, ISingUp} from '../interfaces';
-
 import {ErrorService} from "./error.service";
 import {TokenService} from "./token.service";
+
+import {IAuthResponse, ISingIn, ISingUp} from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private nameUser: string = '';
+  private readonly _userId: any = localStorage.getItem('id');
+  private readonly _userName: any = localStorage.getItem('name');
+
   private _isAuthorized = new BehaviorSubject<boolean>(false);
+
+  get isUserId() {
+    return this._userId;
+  }
+
+  get isNameUser() {
+    return this._userName;
+  }
 
   get isAuthorized$(): Observable<boolean> {
     return this._isAuthorized.asObservable();
@@ -63,7 +71,7 @@ export class AuthService {
 
   public logout$(): Observable<string> {
     this._isAuthorized.next(false);
-    this.removeStorage('id', this.nameUser, 'token');
+    this.removeStorage('id', this._userName, 'token');
     return this.http.post<string>(`/api/logout`, {});
   }
 

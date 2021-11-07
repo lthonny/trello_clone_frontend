@@ -1,25 +1,17 @@
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side">
-    <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
-<!--            <button (click)="showFiller = !showFiller" mat-raised-button>-->
-<!--              Toggle extra text-->
-<!--            </button>-->
     <div class="sidenav">
       <div class="sidenav-body">
         <div class="sidenav-menu">Меню</div>
-<!--        <div class="line"></div>-->
-        <div>О доске</div>
-        <div>Действия</div>
-
+<!--        <div>О доске</div>-->
+<!--        <div>Действия</div>-->
         <h4>Архив задач</h4>
-
-        <div class="task task-archive" *ngFor="let task of archivedTasks[0]">
-          <div class="task-archive-view">
-            <div class="task-title">{{task.title}}</div>
-            <div class="task-unzip" (click)="unzip(task)">Вернуть</div>
+        <div class="tasks-container">
+          <div class="task card-body task-archive-view" *ngFor="let task of archiveService.archivedTasks[0]">
+            <span>{{ task.title }}</span>
+            <span class="btn-unzip" (click)="unzip(task)">&#x2715;</span>
           </div>
         </div>
-
       </div>
     </div>
   </mat-drawer>
@@ -29,12 +21,22 @@
       <span
         class="title-board"
         (click)="updateTitleBoard()"
-      >{{nameBoard}}</span>
-      <div class="avatar">{{ nameUser.charAt(0) | uppercase}}</div>
+      >{{_boardName}}</span>
+      <div class="avatar">{{ authService.isNameUser.charAt(0) | uppercase}}</div>
       <ng-container *ngIf="owner">
         <div class="invited-users" *ngFor="let user of invitedUsers">{{user.name.charAt(0) | uppercase}}</div>
       </ng-container>
-      <span class="invite" (click)="inviteKey()">Пригласить</span>
+      <span
+        [hidden]="!invite"
+        class="invite"
+        (click)="inviteKey()"
+      >Пригласить</span>
+
+      <div [hidden]="invite">
+        <mat-form-field appearance="fill" class="add-task-form">
+          <textarea matInput>{{link}}</textarea>
+        </mat-form-field>
+      </div>
 
       <div class="example-sidenav-content">
         <span class="full-menu" (click)="fullMenu()">
@@ -59,8 +61,18 @@
                 class="icon mr-2"
               >
 <!--              <app-popover class="icon" buttonText="...">Добавить карточку... Копировать список... Переместить список... Архивировать список</app-popover>-->
-              <mat-icon class="material-icons-outlined" aria-hidden="false"
-                        aria-label="Example home icon">more_horiz</mat-icon>
+              <mat-icon
+                class="material-icons-outlined"
+                aria-hidden="false"
+                aria-label="Example home icon"
+                (click)="popoverColumn()"
+                [hidden]="popoverColumnInfo"
+              >more_horiz</mat-icon>
+
+                <div [hidden]="!popoverColumnInfo" class="modal">
+<!--                  mmasdasd-->
+                </div>
+
             </span>
             </div>
             <div class="tasks-container"
@@ -72,34 +84,31 @@
                 <span *ngIf="owner" class="delete" (click)="deleteTask(item.id, item.nameTaskList)">&#x2715;</span>
               </div>
             </div>
+
             <form
               *ngIf="owner"
               class="form"
               [formGroup]="form"
               (ngSubmit)="submit(column.name)">
               <div>
-                <input type="text"
-                       class="form-control bg-light"
-                       placeholder="name task" formControlName="name">
+                <input
+                  type="text"
+                  class="form-control bg-light"
+                  placeholder="name task"
+                  formControlName="name"
+                >
                 <div class="enter"></div>
-                <input type="text" class="form-control bg-light" placeholder="description task"
-                       formControlName="description">
+                <input
+                  type="text"
+                  class="form-control bg-light"
+                  placeholder="description task"
+                  formControlName="description"
+                >
               </div>
-              <button type="submit" class="btn btn-dark">add task</button>
+              <div class="btn-add">
+                <button type="submit" class="btn btn-dark">add task</button>
+              </div>
             </form>
-
-<!--            <form [formGroup]="form">-->
-<!--              <mat-form-field appearance="fill" class="add-task-form">-->
-<!--                <textarea matInput placeholder="Enter a title for this card…" formControlName="title"></textarea>-->
-<!--              </mat-form-field>-->
-<!--              <div>-->
-<!--                <button mat-raised-button color="primary" type="submit">Add card</button>-->
-<!--                <button mat-icon-button type="button" >-->
-<!--                  <mat-icon class="material-icons md-light">clear</mat-icon>-->
-<!--                </button>-->
-<!--              </div>-->
-<!--            </form>-->
-
           </div>
         </div>
       </div>
@@ -107,4 +116,25 @@
   </div>
 </mat-drawer-container>
 
+<!--<div class="task-item" cdkDragDisabled cdkDrag>-->
+<!--  <div [hidden]="!submitted">-->
+<!--    <button mat-button (click)="submitted=!submitted" class="add-task">-->
+<!--      <span mat-icon class="material-icons md-light">add</span>-->
+<!--      <span>Add card</span>-->
+<!--    </button>-->
+<!--  </div>-->
+<!--  <div [hidden]="submitted">-->
+<!--    <form [formGroup]="form" (ngSubmit)="submit(column.name)">-->
+<!--      <mat-form-field appearance="fill" class="add-task-form">-->
+<!--        <textarea matInput placeholder="Enter a title for this card…" formControlName="title"></textarea>-->
+<!--      </mat-form-field>-->
+<!--      <div>-->
+<!--        <button mat-raised-button color="primary" type="submit">Add card</button>-->
+<!--        <button mat-icon-button type="button" (click)="onClose()">-->
+<!--          <mat-icon class="material-icons md-light">clear</mat-icon>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </form>-->
+<!--  </div>-->
+<!--</div>-->
 

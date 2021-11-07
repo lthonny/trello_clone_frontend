@@ -1,18 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {IAuthResponse, ISingUp} from 'src/app/interfaces';
 import {AuthService} from 'src/app/services/auth.service';
 import {GoogleLoginProvider, SocialAuthService, SocialUser} from "angularx-social-login";
+
+import {IAuthResponse, ISingUp} from 'src/app/interfaces';
 
 @Component({
   selector: 'app-reg',
   templateUrl: './reg.component.html',
   styleUrls: ['./reg.component.scss']
 })
-export class RegComponent implements OnInit {
-  submitted: boolean = false;
-  message: string = '';
+export class RegComponent {
+  public submitted: boolean = false;
+  public message: string = '';
 
   form: FormGroup = new FormGroup({
     name: new FormControl(null, [
@@ -28,14 +29,11 @@ export class RegComponent implements OnInit {
     ])
   });
 
-
   constructor(
     private authService: AuthService,
     private authServiceGoogle: SocialAuthService,
     private router: Router
   ) {}
-
-  ngOnInit(): void {}
 
   submit() {
     if (this.form.invalid) {

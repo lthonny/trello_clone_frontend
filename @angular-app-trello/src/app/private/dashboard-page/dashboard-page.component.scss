@@ -364,3 +364,35 @@ form {
   cursor: pointer;
 }
 
+.btn-add button {
+  //margin: 0 auto;
+  //display: flex;
+  //justify-content: center;
+  margin-left: 6px;
+  width: 95%;
+}
+
+.task-archive {
+  border: 1px solid green;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.task-title {
+  font-weight: bold;
+  width: 3rem;
+}
+.task-unzip {
+  width: 3rem;
+}
+
+.task-archive-view {
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-unzip {
+  cursor: pointer;
+}

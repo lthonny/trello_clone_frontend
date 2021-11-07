@@ -4,25 +4,43 @@ import { HttpClient } from "@angular/common/http";
 import {Observable} from "rxjs";
 
 import {IBoard} from "../interfaces";
+import {tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoardService {
-  private _id: string | null = localStorage.getItem('id');
-  public _key: string = '';
+  private readonly _idBoard: string | null = localStorage.getItem('id');
+  private readonly _keyBoard: string  = '';
+  public _nameBoard: string  = '';
+
+  set isIdBoard(id) {
+    this.isIdBoard = id;
+  }
+
+  get isIdBoard() {
+    return this._idBoard;
+  }
+
+  get isKeyBoard() {
+    return this._keyBoard;
+  }
 
   constructor(
     private http: HttpClient
-  ) {
+  ) {}
+
+  public getBoard$(id: number): Observable<any> {
+    return this.http.get<any>(`/api/board/${id}`);
   }
 
   public getBoards$(): Observable<IBoard[]> {
-    return this.http.get<IBoard[]>(`/api/boards/${this._id}`);
+    return this.http.get<IBoard[]>(`/api/boards/${this._idBoard}`);
   }
 
   public createBoard$(title: string): Observable<IBoard> {
-    return this.http.post<IBoard>(`/api/board/create/${this._id}`, {name: title});
+    this._nameBoard = title;
+    return this.http.post<IBoard>(`/api/board/create/${this._idBoard}`, {name: title});
   }
 
   public updateBoard$(idBoard: number, title: string, idUser: string | null): Observable<any> {

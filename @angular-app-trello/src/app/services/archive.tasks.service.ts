@@ -7,6 +7,8 @@ import {IArchive} from "../interfaces";
     providedIn: 'root'
 })
 export class ArchiveTasksService {
+  public archivedTasks: any = [];
+  public archived: boolean = true;
 
   constructor(
     private http: HttpClient

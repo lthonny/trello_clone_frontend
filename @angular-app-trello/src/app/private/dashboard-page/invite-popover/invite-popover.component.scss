@@ -1,0 +1,73 @@
+.popover {
+    background-color: #FFF;
+    border: 1px solid #DDD;
+    pointer-events: none;
+    color: #6b778c;
+    opacity: 0;
+    margin-top: 4px;
+    position: absolute;
+    border-radius: 3px;
+    transition: all 500ms ease 0s;
+    width: 304px;
+    height: auto;
+    z-index: 1; 
+}
+
+.popover-header {
+    height: 40px;
+    position: relative;
+    text-align: center;
+}
+
+.popover-title {
+    color: #5e6c84;
+    display: block;
+    line-height: 40px;
+    margin: 0 12px;
+    overflow: hidden;
+    padding: 0 32px;
+    position: relative;
+}
+
+.popover-content {
+    padding: 0 12px 12px;
+}
+
+.popover-btn {
+    float: right;
+}
+
+.popover-btn-close {
+    color: #6b778c;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.popover-invite-link {
+    color: #172b4d;
+    margin: 12px 0;
+}
+
+.popover-invite-with-link {
+    display: inline-block;
+    line-height: 14px;
+}
+
+.popover-invite-description {
+    font-size: 12px;
+    line-height: 12px;
+    margin-bottom: 12px;
+    margin-top: 8px;
+}
+
+.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.copy {
+    right: 0;
+    top: 0;
+    margin-left: 8px;
+}

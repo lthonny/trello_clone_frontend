@@ -1,0 +1,31 @@
+<button mat-stroked-button (click)="toggle()">Invite</button>
+
+<div class="popover" [class.active]="isActive">
+    <div class="popover-header">
+        <span class="popover-title">Invite to board</span>
+        <button mat-icon-button type="button" class="popover-btn-close" (click)="toggle()">
+            <mat-icon class="material-icons md-light">clear</mat-icon>
+        </button>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="popover-content">
+        <div class="popover-invite-link">
+            <span class="popover-invite-with-link">
+                <mat-icon class="material-icons-outlined">link</mat-icon>
+                Invite with link
+            </span>
+            <button *ngIf="!isCreated; else created" mat-stroked-button (click)="createInviteWithLink(boardId);isCreated=true" class="popover-btn">Create link</button>
+            <ng-template #created>
+                <button mat-stroked-button (click)="isCreated=false" class="popover-btn">Disable link</button>
+            </ng-template>
+        </div>
+        <p class="popover-invite-description">Anyone with link can join as board member</p>
+        <div *ngIf="isCreated">
+            <mat-form-field appearance="outline">
+                <mat-label>Link</mat-label>
+                <input matInput readonly [(ngModel)]="invite">
+            </mat-form-field>
+            <!-- <button mat-raised-button color="primary" class="copy">Copy</button> -->
+        </div>
+    </div>
+</div>
