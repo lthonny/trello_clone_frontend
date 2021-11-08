@@ -63,8 +63,13 @@
     </div>
   </div>
 
-  <div class="details">
+  <div class="details-body">
+    <div class="details">
     <mat-icon class="material-icons-outlined">loupe</mat-icon>
-    <h4 class="details-title" (click)="showDetails()">показать подробности</h4>
+    <h4 class="details-title" (click)="showDetails()">подробности</h4>
+    </div>
+    <div class="transaction-body">
+      <div *ngFor="let transaction of transactionTask">{{transaction.data}}</div>
+    </div>
   </div>
 </div>

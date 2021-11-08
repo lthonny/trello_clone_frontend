@@ -414,9 +414,19 @@ export class DashboardPageComponent implements OnInit {
     this.form.reset()
   }
 
-  popoverColumn() {
-    console.log('...');
-    this.popoverColumnInfo = !this.popoverColumnInfo;
+  popoverColumn(column: any) {
+    console.log(column.name);
+    if(column.name !== undefined) {
+      this.tasksService.tasksAllDelete$(this._boardId, column.name)
+        .subscribe((data: any) => {
+          console.log('data', data);
+          if(column.name === 'In Progress' && data.ok) {
+            this.taskListInProgress.length = 0;
+          }
+        })
+    } else {
+      console.log('Колонка пуста');
+    }
   }
 
   submit(nameTaskList: string) {

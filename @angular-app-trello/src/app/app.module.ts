@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -10,6 +10,12 @@ import {SharedModule} from './shared/shared.module';
 import {CookieService} from "ngx-cookie-service";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from "angularx-social-login";
+
+
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
+
+registerLocaleData(localeRu);
 
 @NgModule({
   declarations: [
@@ -38,9 +44,10 @@ import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from "a
           }
         ]
       } as SocialAuthServiceConfig
-    }
+    },
+    { provide: LOCALE_ID, useValue: 'ru' }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

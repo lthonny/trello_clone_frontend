@@ -16,6 +16,7 @@ import {BoardService} from "../services/board.service";
 import {TaskService} from "../services/task.service";
 import {ArchiveTasksService} from "../services/archive.tasks.service";
 import {InviteService} from "../services/invite.service";
+import {TransactionService} from "../services/transaction.service";
 
 import {PrivateLayoutComponent} from './private-layout/private-layout.component';
 import {TaskDescriptionComponent} from "./dashboard-page/task-description/task-description.component";
@@ -102,6 +103,7 @@ import {InvitePopoverComponent} from "./dashboard-page/invite-popover/invite-pop
     ArchiveTasksService,
     InviteService,
     AssignedService,
+    TransactionService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

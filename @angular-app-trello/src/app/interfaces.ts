@@ -117,3 +117,14 @@ export interface IAssignedUser {
   owner: boolean,
   assigned?: boolean
 }
+
+export interface ITransaction {
+  id: number,
+  task_id: number,
+  column: string,
+  name_user: string,
+  board_id: number,
+  transaction: string,
+  createdAt: Date,
+  updatedAt: string
+}

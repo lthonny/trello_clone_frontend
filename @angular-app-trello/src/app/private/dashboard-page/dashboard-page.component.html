@@ -47,6 +47,10 @@
           </button>
         </span>
       </div>
+
+      <div class="task_search">
+        task_search
+      </div>
     </div>
 
     <main>
@@ -61,18 +65,24 @@
                 class="icon mr-2"
               >
 <!--              <app-popover class="icon" buttonText="...">Добавить карточку... Копировать список... Переместить список... Архивировать список</app-popover>-->
-              <mat-icon
-                class="material-icons-outlined"
-                aria-hidden="false"
-                aria-label="Example home icon"
-                (click)="popoverColumn()"
-                [hidden]="popoverColumnInfo"
-              >more_horiz</mat-icon>
+<!--              <mat-icon-->
+<!--                class="material-icons-outlined"-->
+<!--                aria-hidden="false"-->
+<!--                aria-label="Example home icon"-->
+<!--                (click)="popoverColumn()"-->
+<!--                [hidden]="popoverColumnInfo"-->
+<!--              >more_horiz</mat-icon>-->
 
-                <div [hidden]="!popoverColumnInfo" class="modal">
-<!--                  mmasdasd-->
-                </div>
+<!--                <div [hidden]="!popoverColumnInfo" class="modal"></div>-->
 
+<!--                              <mat-icon-->
+<!--                                class="material-icons-outlined"-->
+<!--                                aria-hidden="false"-->
+<!--                                aria-label="Example home icon"-->
+<!--                                (click)="popoverColumn(column)"-->
+<!--                              >more_horiz</mat-icon>-->
+
+                <mat-icon class="material-icons-outlined" (click)="popoverColumn(column)">delete</mat-icon>
             </span>
             </div>
             <div class="tasks-container"

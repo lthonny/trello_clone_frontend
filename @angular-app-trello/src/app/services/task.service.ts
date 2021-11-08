@@ -55,4 +55,8 @@ export class TaskService {
     return this.http.delete<undefined>(`/api/task/${id}`);
   }
 
+  public tasksAllDelete$(id: number, nameTaskList: string): Observable<any> {
+    return this.http.post(`/api/tasks/board/${id}`, {nameTaskList});
+  }
+
 }

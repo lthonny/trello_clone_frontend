@@ -5,9 +5,11 @@ import {TaskService} from "../../../services/task.service";
 import {ArchiveTasksService} from "../../../services/archive.tasks.service";
 import {AssignedService} from "../../../services/assigned.service";
 
-import {DialogData, IArchive, IDescriptionUpdate} from "../../../interfaces";
+import {DialogData, IArchive, IDescriptionUpdate, ITransaction} from "../../../interfaces";
 import {ActivatedRoute, Route, Router} from "@angular/router";
-import {filter} from "rxjs/operators";
+import {TransactionService} from "../../../services/transaction.service";
+import {formatDate} from "@angular/common";
+
 
 @Component({
   selector: 'dialog-data-example-dialog',
@@ -27,6 +29,7 @@ export class TaskDescriptionComponent implements OnInit {
   public assignedUsers: any = [];
 
   private _boardId!: any;
+  public transactionTask: any = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -36,6 +39,7 @@ export class TaskDescriptionComponent implements OnInit {
     private assignedService: AssignedService,
     private route: ActivatedRoute,
     private router: Router,
+    private transactionService: TransactionService
   ) {
     this._id = data.item.id;
     this.title = data.item.title;
@@ -44,6 +48,8 @@ export class TaskDescriptionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.transaction();
+
     this.assignedService.Fetch$(this._id, localStorage.getItem('id'), this._boardId)
       .subscribe((data: any) => {
         console.log('users all', data);
@@ -53,7 +59,7 @@ export class TaskDescriptionComponent implements OnInit {
           //   console.log('assignedUsers', this.assignedUsers);
           // } else {
           // if(user.name !== '_thonny_montana_') {
-            this.users.push(user);
+          this.users.push(user);
           // }
           //   console.log('user', user.id);
           // }
@@ -64,7 +70,7 @@ export class TaskDescriptionComponent implements OnInit {
             this.assignedUsers.push(user);
             this.users = this.users.filter((data: any) => data.id !== user.id);
             console.log('true', user)
-          } else  {
+          } else {
             console.log('false', user);
           }
           // if (user.assigned === false && user.name !== '_thonny_montana_') {
@@ -83,6 +89,46 @@ export class TaskDescriptionComponent implements OnInit {
         // console.log('user---->', this.assignedUsers)
         // }
         // })
+      })
+  }
+
+  transaction() {
+    console.log('start transaction');
+    this.transactionService.fetchTransaction(this._id, this._boardId)
+      .subscribe((data: ITransaction[]) => {
+        data.forEach((transaction: ITransaction) => {
+          if (transaction.transaction === 'creation') {
+            this.transactionTask.push({
+              transaction: 'creation',
+              data: `${transaction.name_user} создал задачу.
+              время: ${formatDate(transaction.createdAt, 'medium', 'ru', '+0300')}`
+            });
+          }
+          if (transaction.transaction === 'fixing_a_task') {
+            this.transactionTask.push({
+              transaction: 'fixing_a_task',
+              data: `${transaction.name_user} изменил задачу.
+              время: ${formatDate(transaction.createdAt, 'medium', 'ru', '+0300')}`
+            });
+          }
+
+          // if (transaction.transaction === 'moving') {
+          //   this.transactionTask.push({
+          //     transaction: 'moving',
+          //     data: `${transaction.name_user} переместил задачу.
+          //     время: ${formatDate(transaction.createdAt, 'medium', 'en', '+0300')}`
+          //   });
+          // }
+
+          // if (transaction.transaction === 'assigned_users') {
+          //   this.transactionTask.push({
+          //     transaction: 'assigned_users',
+          //     data: `${transaction.name_user} переместил задачу.
+          //     время: ${formatDate(transaction.createdAt, 'medium', 'en', '+0300')}`
+          //   });
+          // }
+
+        })
       })
   }
 
