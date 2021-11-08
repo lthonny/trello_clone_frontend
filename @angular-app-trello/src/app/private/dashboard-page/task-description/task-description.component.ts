@@ -5,12 +5,11 @@ import {TaskService} from "../../../services/task.service";
 import {ArchiveTasksService} from "../../../services/archive.tasks.service";
 import {AssignedService} from "../../../services/assigned.service";
 
-import {DialogData, IArchive, IDescriptionUpdate, ITransaction, IUAssigned } from "../../../interfaces";
+import {DialogData, IArchive, IDescriptionUpdate, ITransaction, IUAssigned} from "../../../interfaces";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TransactionService} from "../../../services/transaction.service";
 import {formatDate} from "@angular/common";
 import {InviteService} from "../../../services/invite.service";
-
 
 @Component({
   selector: 'dialog-data-example-dialog',
@@ -99,17 +98,18 @@ export class TaskDescriptionComponent implements OnInit {
   }
 
   assignedFetch() {
-    this.assignedService.Fetch$(4, localStorage.getItem('id'), this._boardId)
-      .subscribe((data: any) => { console.log(data);
-        data.users.forEach((user: IUAssigned) => {
+    this.assignedService.Fetch$(this._id, localStorage.getItem('id'), this._boardId)
+      .subscribe((data: any) => {
+        console.log(data);
+        data.allUsers.forEach((user: IUAssigned) => {
           // console.log('user.assigned', !user.assigned);
           // if(user.assigned) {
           //   this.assignedUsers.push(user);
           // } else {
-            this.users.push(user);
+          this.users.push(user);
           // }
         });
-        // data.usersAssigned.forEach((user: IUAssigned) => this.assignedUsers.push(user));
+        data.userAssigned.forEach((user: any) => this.assignedUsers.push(user));
       });
   }
 
@@ -117,34 +117,19 @@ export class TaskDescriptionComponent implements OnInit {
     console.log('click +', user);
 
     this.assignedService.Create$(this._id, user.id)
-      .subscribe((user) => { console.log('пользователь добавлен', user);
-          this.users = this.users.filter((qqz: any) => user.id !== qqz.id);
+      .subscribe((user: any) => {
+        if(user.exist === 'user has already been added') {
+        } else {
           this.assignedUsers.push(user);
+        }
       })
   }
 
-  noAssigned(user: any) {
-    this.assignedUsers.remove$(this._id, user.id, user.assigned).subscribe((data: any) => console.log(data));
-  }
-
-  updateAssigned(user: any) {
-    console.log('click updateAssigned', user);
-    //
-    //   // this.assignedUsers = this.assignedUsers.filter((user: any) => {
-    //   //   if (user.id !== id) {
-    //   //     return user;
-    //   //   } else {
-    //   //     this.users.push(user);
-    //   //   }
-    //   // });
-    //
-    console.log(this._id, user.id, user.assigned)
-    this.assignedService.Remove$(this._id, user.id, user.assigned)
-      .subscribe((data): any => {
-        console.log('update user.assigned === true', data);
-        this.assignedUsers = this.assignedUsers.filter((qqz: any) => user.id !== qqz.id)
-        this.users.push(data);
-      })
+  assignedRemove(user: IUAssigned) {
+    this.assignedService.remove$(this._id, user.id)
+      .subscribe((data: IUAssigned) => {
+        this.assignedUsers = this.assignedUsers.filter((us: IUAssigned) => us.id !== user.id);
+      });
   }
 
   transaction() {

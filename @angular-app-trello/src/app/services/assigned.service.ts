@@ -12,18 +12,14 @@ export class AssignedService {
   ) {}
 
   public Fetch$(id: number, userId: any, boardId: number): Observable<any> {
-    return this.http.post<any>(`/api/assigned/users/${id}`, {userId, boardId});
+    return this.http.post<any>(`/api/assigned/users/${id}`, { userId, boardId});
   }
 
   public Create$(id: number, userId: number): Observable<IUAssigned> {
-    return this.http.post<IUAssigned>(`/api/assigned/user/create/${id}`, {userId});
+    return this.http.post<IUAssigned>(`/api/assigned/user/create/${id}`, { userId });
   }
 
-  public Remove$(id: number, userId: number, assigned: boolean): Observable<any> {
-    return this.http.post<any>(`/api/assigned/user/remove/${id}`, {userId, assigned});
+  public remove$(id: number, userId: number): Observable<any> {
+    return this.http.post<any>(`/api/assigned/user/remove/${id}`, { userId });
   }
-
-  // remove$(id: number, userId: number, assigned: boolean): Observable<any> {
-  //   return this.http.delete<any>(`/api/assigned/users/${id}`, {assigned});
-  // }
 }

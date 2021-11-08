@@ -59,7 +59,7 @@
     <h4 class="archiving-title" *ngIf="assignedUsers.length !== 0">на эту задачу назначены пользователи:</h4>
     <div class="assigned-users" *ngFor="let assignedUser of assignedUsers">
       {{ assignedUser.name }}
-      <span class="btn-remove" (click)="updateAssigned(assignedUser)">&#x2715;</span>
+      <span class="btn-remove" (click)="assignedRemove(assignedUser)">&#x2715;</span>
     </div>
   </div>
 
