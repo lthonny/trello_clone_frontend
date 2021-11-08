@@ -128,3 +128,9 @@ export interface ITransaction {
   createdAt: Date,
   updatedAt: string
 }
+
+export interface IUAssigned {
+  id: number,
+  name: string,
+  assigned?: boolean
+}

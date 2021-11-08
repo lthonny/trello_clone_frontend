@@ -48,8 +48,12 @@
         </span>
       </div>
 
+<!--      <div class="task_search">-->
+<!--        <input type="text" pleceholder="найди">-->
+<!--      </div>-->
+
       <div class="task_search">
-        task_search
+        <input type="text" placeholder="Find post..." [(ngModel)]="searchTask">
       </div>
     </div>
 
@@ -82,7 +86,7 @@
 <!--                                (click)="popoverColumn(column)"-->
 <!--                              >more_horiz</mat-icon>-->
 
-                <mat-icon class="material-icons-outlined" (click)="popoverColumn(column)">delete</mat-icon>
+                <mat-icon class="material-icons-outlined" (click)="popoverColumn(column)" *ngIf="owner">delete</mat-icon>
             </span>
             </div>
             <div class="tasks-container"

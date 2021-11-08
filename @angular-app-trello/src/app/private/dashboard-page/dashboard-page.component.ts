@@ -36,6 +36,8 @@ export interface IColumn {
 })
 export class DashboardPageComponent implements OnInit {
 
+  public searchTask: string = '';
+
   public popoverColumnInfo: boolean = false;
   public submitted: boolean = true;
   public invite: boolean = true;
@@ -420,8 +422,20 @@ export class DashboardPageComponent implements OnInit {
       this.tasksService.tasksAllDelete$(this._boardId, column.name)
         .subscribe((data: any) => {
           console.log('data', data);
+          if(column.name === 'To Do' && data.ok) {
+            this.taskListToDo.length = 0;
+          }
           if(column.name === 'In Progress' && data.ok) {
             this.taskListInProgress.length = 0;
+          }
+          if(column.name === 'Coded' && data.ok) {
+            this.taskListCoded.length = 0;
+          }
+          if(column.name === 'Testing' && data.ok) {
+            this.taskListTesting.length = 0;
+          }
+          if(column.name === 'Done' && data.ok) {
+            this.taskListDone.length = 0;
           }
         })
     } else {

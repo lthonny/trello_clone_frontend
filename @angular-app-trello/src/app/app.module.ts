@@ -14,13 +14,15 @@ import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from "a
 
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
+import {SearchPipe} from "./pipes/search.pipe";
 
 registerLocaleData(localeRu);
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderPublicComponent
+    HeaderPublicComponent,
+    SearchPipe
   ],
   imports: [
     BrowserModule,

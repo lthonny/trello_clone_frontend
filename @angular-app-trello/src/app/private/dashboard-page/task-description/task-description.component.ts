@@ -5,10 +5,11 @@ import {TaskService} from "../../../services/task.service";
 import {ArchiveTasksService} from "../../../services/archive.tasks.service";
 import {AssignedService} from "../../../services/assigned.service";
 
-import {DialogData, IArchive, IDescriptionUpdate, ITransaction} from "../../../interfaces";
-import {ActivatedRoute, Route, Router} from "@angular/router";
+import {DialogData, IArchive, IDescriptionUpdate, ITransaction, IUAssigned } from "../../../interfaces";
+import {ActivatedRoute, Router} from "@angular/router";
 import {TransactionService} from "../../../services/transaction.service";
 import {formatDate} from "@angular/common";
+import {InviteService} from "../../../services/invite.service";
 
 
 @Component({
@@ -39,7 +40,8 @@ export class TaskDescriptionComponent implements OnInit {
     private assignedService: AssignedService,
     private route: ActivatedRoute,
     private router: Router,
-    private transactionService: TransactionService
+    private transactionService: TransactionService,
+    private inviteService: InviteService
   ) {
     this._id = data.item.id;
     this.title = data.item.title;
@@ -50,45 +52,98 @@ export class TaskDescriptionComponent implements OnInit {
   ngOnInit(): void {
     this.transaction();
 
-    this.assignedService.Fetch$(this._id, localStorage.getItem('id'), this._boardId)
-      .subscribe((data: any) => {
-        console.log('users all', data);
-        data.users.forEach((user: any) => {
-          // if (user.assigned === true) {
-          // this.assignedUsers.push(user);
-          //   console.log('assignedUsers', this.assignedUsers);
+    this.assignedFetch();
+
+    // this.inviteService.InviteUsers$().subscribe((data: any) => console.log(data);)
+
+    // this.assignedService.Fetch$(this._id, localStorage.getItem('id'), this._boardId)
+    //   .subscribe((data: any) => {
+    //     console.log('users all', data);
+    //     data.users.forEach((user: any) => {
+    //       // if (user.assigned === true) {
+    //       // this.assignedUsers.push(user);
+    //       //   console.log('assignedUsers', this.assignedUsers);
+    //       // } else {
+    //       // if(user.name !== '_thonny_montana_') {
+    //       this.users.push(user);
+    //       // }
+    //       //   console.log('user', user.id);
+    //       // }
+    //     });
+    //     data.usersAssigned.forEach((user: any) => {
+    //       console.log('user all assigned', user);
+    //       if (user.assigned === true) {
+    //         this.assignedUsers.push(user);
+    //         this.users = this.users.filter((data: any) => data.id !== user.id);
+    //         console.log('true', user)
+    //       } else {
+    //         console.log('false', user);
+    //       }
+    //       // if (user.assigned === false && user.name !== '_thonny_montana_') {
+    //       //   // console.log(user.name === '_thonny_montana_');
+    //       //   console.log('false', user);
+    //       //  this.users.push(user);
+    //       //  this.assignedUsers = this.assignedUsers.filter((data: any) => data.id !== user.id);
+    //       // }
+    //     })
+    //     // data.noAssigned.forEach((user: any, index: any) => {
+    //     // this.users = filter((data: any) => data.id === user.id)
+    //     // if(
+    //     //   user.id !== this.assignedUsers.id &&
+    //     //   user.id !== this.users.id
+    //     // ) {
+    //     // console.log('user---->', this.assignedUsers)
+    //     // }
+    //     // })
+    //   })
+  }
+
+  assignedFetch() {
+    this.assignedService.Fetch$(4, localStorage.getItem('id'), this._boardId)
+      .subscribe((data: any) => { console.log(data);
+        data.users.forEach((user: IUAssigned) => {
+          // console.log('user.assigned', !user.assigned);
+          // if(user.assigned) {
+          //   this.assignedUsers.push(user);
           // } else {
-          // if(user.name !== '_thonny_montana_') {
-          this.users.push(user);
-          // }
-          //   console.log('user', user.id);
+            this.users.push(user);
           // }
         });
-        data.usersAssigned.forEach((user: any) => {
-          console.log('user all assigned', user);
-          if (user.assigned === true) {
-            this.assignedUsers.push(user);
-            this.users = this.users.filter((data: any) => data.id !== user.id);
-            console.log('true', user)
-          } else {
-            console.log('false', user);
-          }
-          // if (user.assigned === false && user.name !== '_thonny_montana_') {
-          //   // console.log(user.name === '_thonny_montana_');
-          //   console.log('false', user);
-          //  this.users.push(user);
-          //  this.assignedUsers = this.assignedUsers.filter((data: any) => data.id !== user.id);
-          // }
-        })
-        // data.noAssigned.forEach((user: any, index: any) => {
-        // this.users = filter((data: any) => data.id === user.id)
-        // if(
-        //   user.id !== this.assignedUsers.id &&
-        //   user.id !== this.users.id
-        // ) {
-        // console.log('user---->', this.assignedUsers)
-        // }
-        // })
+        // data.usersAssigned.forEach((user: IUAssigned) => this.assignedUsers.push(user));
+      });
+  }
+
+  assignedCreate(user: IUAssigned) {
+    console.log('click +', user);
+
+    this.assignedService.Create$(this._id, user.id)
+      .subscribe((user) => { console.log('пользователь добавлен', user);
+          this.users = this.users.filter((qqz: any) => user.id !== qqz.id);
+          this.assignedUsers.push(user);
+      })
+  }
+
+  noAssigned(user: any) {
+    this.assignedUsers.remove$(this._id, user.id, user.assigned).subscribe((data: any) => console.log(data));
+  }
+
+  updateAssigned(user: any) {
+    console.log('click updateAssigned', user);
+    //
+    //   // this.assignedUsers = this.assignedUsers.filter((user: any) => {
+    //   //   if (user.id !== id) {
+    //   //     return user;
+    //   //   } else {
+    //   //     this.users.push(user);
+    //   //   }
+    //   // });
+    //
+    console.log(this._id, user.id, user.assigned)
+    this.assignedService.Remove$(this._id, user.id, user.assigned)
+      .subscribe((data): any => {
+        console.log('update user.assigned === true', data);
+        this.assignedUsers = this.assignedUsers.filter((qqz: any) => user.id !== qqz.id)
+        this.users.push(data);
       })
   }
 
@@ -148,7 +203,7 @@ export class TaskDescriptionComponent implements OnInit {
 
         input.focus();
 
-        input.addEventListener('blur', (event: FocusEvent) => {
+        input.addEventListener('blur', () => {
           titleBoard.innerHTML = input.value;
           this.title = input.value;
 
@@ -204,47 +259,6 @@ export class TaskDescriptionComponent implements OnInit {
         //     // }
         //
         this.archiveService.archivedTasks[0].push(this.data.item);
-      })
-  }
-
-  assigned(user: any) {
-    // console.log('click assigned', user);
-
-    this.assignedService.Create$(this._id, user.id)
-      .subscribe((data) => {
-        // console.log('пользователь добавлен к задачи', data);
-        if (data.error) {
-          // console.log('пользователь уже добавлен к этой задачи');
-          //         this.users = this.users.filter((user: any) => user.id !== user.id);
-          //         console.log('if (data.error)')
-        } else {
-          this.users = this.users.filter((qqz: any) => user.id !== qqz.id);
-          this.assignedUsers.push(user);
-        }
-      })
-  }
-
-  noAssigned(user: any) {
-    this.assignedUsers.remove$(this._id, user.id, user.assigned).subscribe((data: any) => console.log(data));
-  }
-
-  updateAssigned(user: any) {
-    console.log('click updateAssigned', user);
-    //
-    //   // this.assignedUsers = this.assignedUsers.filter((user: any) => {
-    //   //   if (user.id !== id) {
-    //   //     return user;
-    //   //   } else {
-    //   //     this.users.push(user);
-    //   //   }
-    //   // });
-    //
-    console.log(this._id, user.id, user.assigned)
-    this.assignedService.Remove$(this._id, user.id, user.assigned)
-      .subscribe((data): any => {
-        console.log('update user.assigned === true', data);
-        this.assignedUsers = this.assignedUsers.filter((qqz: any) => user.id !== qqz.id)
-        this.users.push(data);
       })
   }
 
