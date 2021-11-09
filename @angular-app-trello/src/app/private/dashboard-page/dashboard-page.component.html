@@ -42,25 +42,24 @@
         <span class="full-menu" (click)="fullMenu()">
           <button type="button" mat-button (click)="drawer.toggle()">
             Меню
-            <mat-icon class="material-icons-outlined" aria-hidden="false"
-                      aria-label="Example home icon">more_horiz</mat-icon>
+            <mat-icon class="material-icons-outlined" aria-hidden="false" aria-label="Example home icon">more_horiz</mat-icon>
           </button>
         </span>
       </div>
 
-<!--      <div class="task_search">-->
-<!--        <input type="text" pleceholder="найди">-->
-<!--      </div>-->
-
       <div class="task_search">
-        <input type="text" placeholder="Find post..." [(ngModel)]="searchTask">
+        <input type="text" placeholder="Find task or user..." [(ngModel)]="searchTask">
+<!--        <button class="btn-search">Найти</button>-->
       </div>
     </div>
 
     <main>
       <div class="board-wrapper">
         <div class="board-columns" cdkDropListGroup>
-          <div class="board-column column" *ngFor="let column of board.columns">
+          <div
+            class="board-column column"
+            *ngFor="let column of board.columns"
+          >
             <div class="column-title">
             <span class="title">
               <h4>{{ column.name }}</h4>
@@ -86,16 +85,17 @@
 <!--                                (click)="popoverColumn(column)"-->
 <!--                              >more_horiz</mat-icon>-->
 
-                <mat-icon class="material-icons-outlined" (click)="popoverColumn(column)" *ngIf="owner">delete</mat-icon>
+<!--                <span *ngIf="!owner">покинуть задачу</span>-->
+                <mat-icon class="material-icons-outlined" (click)="removeAllTasks(column.name)" *ngIf="owner">delete</mat-icon>
             </span>
             </div>
             <div class="tasks-container"
                  cdkDropList
                  [cdkDropListData]="column.tasks"
                  (cdkDropListDropped)="drop($event, column)">
-              <div class="task card-body" *ngFor="let item of column.tasks" cdkDrag>
+              <div class="task card-body" *ngFor="let item of column.tasks | searchTask: searchTask, let i = index" cdkDrag>
                 <span (click)="openDialog(item)">{{ item.title }}</span>
-                <span *ngIf="owner" class="delete" (click)="deleteTask(item.id, item.nameTaskList)">&#x2715;</span>
+                <span *ngIf="owner" class="delete" (click)="removeTask(item.id, item.nameTaskList)">&#x2715;</span>
               </div>
             </div>
 

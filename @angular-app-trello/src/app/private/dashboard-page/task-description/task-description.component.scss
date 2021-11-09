@@ -117,3 +117,12 @@ textarea {
   margin-bottom: 4rem;
 }
 
+.column {
+  display: flex;
+
+  .btn-close {
+    cursor: pointer;
+    margin-left: 1rem;
+  }
+  //justify-content: space-between;
+}

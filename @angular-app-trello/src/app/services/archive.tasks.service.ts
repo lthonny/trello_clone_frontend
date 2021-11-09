@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import {IArchive} from "../interfaces";
+import {IAllArchiveTasks, IArchive} from "../interfaces";
+import {tap} from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +15,11 @@ export class ArchiveTasksService {
     private http: HttpClient
   ) {}
 
-  public getArchive$(id: number): Observable<IArchive[]> {
-    return this.http.get<IArchive[]>(`/api/tasks/archive/${id}`);
+  public getArchive$(id: number): Observable<IAllArchiveTasks> {
+    return this.http.get<IAllArchiveTasks>(`/api/tasks/archive/${id}`)
+      .pipe(tap((response: IAllArchiveTasks) => {
+        this.archivedTasks.push(response.tasks);
+      }))
   }
 
   public setArchive$(data: IArchive): Observable<IArchive> {

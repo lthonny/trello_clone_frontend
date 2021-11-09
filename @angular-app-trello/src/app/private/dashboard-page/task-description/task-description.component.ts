@@ -1,15 +1,23 @@
 import {Component, Inject, OnInit} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {formatDate} from "@angular/common";
 import {FormControl} from "@angular/forms";
-import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {TaskService} from "../../../services/task.service";
 import {ArchiveTasksService} from "../../../services/archive.tasks.service";
 import {AssignedService} from "../../../services/assigned.service";
-
-import {DialogData, IArchive, IDescriptionUpdate, ITransaction, IUAssigned} from "../../../interfaces";
-import {ActivatedRoute, Router} from "@angular/router";
 import {TransactionService} from "../../../services/transaction.service";
-import {formatDate} from "@angular/common";
-import {InviteService} from "../../../services/invite.service";
+import {
+  DialogData,
+  IArchive,
+  IDescriptionUpdate,
+  IResAssigned,
+  IResTransaction,
+  ITransaction,
+  IUAssigned
+} from "../../../interfaces";
+
 
 @Component({
   selector: 'dialog-data-example-dialog',
@@ -18,163 +26,126 @@ import {InviteService} from "../../../services/invite.service";
 })
 export class TaskDescriptionComponent implements OnInit {
 
-  private readonly _id: number;
-  public title: string = '';
+  private readonly _taskId: number;
+  private readonly _boardId: number;
+  public _title: string = '';
   public description!: FormControl;
-  public updateT: boolean = false;
 
-  public users: any = [];
+  public showTitle: boolean = false;
+  public users: IUAssigned[] = [];
+  public assignedUsers: IUAssigned[] = [];
 
-  public noAssignedUsers: any = [];
-  public assignedUsers: any = [];
-
-  private _boardId!: any;
-  public transactionTask: any = [];
+  public transactionTask: ITransaction[] = [];
+  public transactionDialog: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: DialogData,
+    public dialogRef: MatDialogRef<TaskDescriptionComponent>,
+    private router: Router,
+    private route: ActivatedRoute,
     public taskService: TaskService,
     public archiveService: ArchiveTasksService,
     private assignedService: AssignedService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private transactionService: TransactionService,
-    private inviteService: InviteService
+    private transactionService: TransactionService
   ) {
-    this._id = data.item.id;
-    this.title = data.item.title;
+    this._taskId = data.item.id;
     this._boardId = this.data.board;
+    this._title = data.item.title;
     this.description = new FormControl(this.data.item.description);
   }
 
   ngOnInit(): void {
-    this.transaction();
-
-    this.assignedFetch();
-
-    // this.inviteService.InviteUsers$().subscribe((data: any) => console.log(data);)
-
-    // this.assignedService.Fetch$(this._id, localStorage.getItem('id'), this._boardId)
-    //   .subscribe((data: any) => {
-    //     console.log('users all', data);
-    //     data.users.forEach((user: any) => {
-    //       // if (user.assigned === true) {
-    //       // this.assignedUsers.push(user);
-    //       //   console.log('assignedUsers', this.assignedUsers);
-    //       // } else {
-    //       // if(user.name !== '_thonny_montana_') {
-    //       this.users.push(user);
-    //       // }
-    //       //   console.log('user', user.id);
-    //       // }
-    //     });
-    //     data.usersAssigned.forEach((user: any) => {
-    //       console.log('user all assigned', user);
-    //       if (user.assigned === true) {
-    //         this.assignedUsers.push(user);
-    //         this.users = this.users.filter((data: any) => data.id !== user.id);
-    //         console.log('true', user)
-    //       } else {
-    //         console.log('false', user);
-    //       }
-    //       // if (user.assigned === false && user.name !== '_thonny_montana_') {
-    //       //   // console.log(user.name === '_thonny_montana_');
-    //       //   console.log('false', user);
-    //       //  this.users.push(user);
-    //       //  this.assignedUsers = this.assignedUsers.filter((data: any) => data.id !== user.id);
-    //       // }
-    //     })
-    //     // data.noAssigned.forEach((user: any, index: any) => {
-    //     // this.users = filter((data: any) => data.id === user.id)
-    //     // if(
-    //     //   user.id !== this.assignedUsers.id &&
-    //     //   user.id !== this.users.id
-    //     // ) {
-    //     // console.log('user---->', this.assignedUsers)
-    //     // }
-    //     // })
-    //   })
+    this.allUsersAssigned();
   }
 
-  assignedFetch() {
-    this.assignedService.Fetch$(this._id, localStorage.getItem('id'), this._boardId)
-      .subscribe((data: any) => {
-        console.log(data);
-        data.allUsers.forEach((user: IUAssigned) => {
-          // console.log('user.assigned', !user.assigned);
-          // if(user.assigned) {
-          //   this.assignedUsers.push(user);
-          // } else {
+  allUsersAssigned() {
+    this.assignedService.allUsers$({
+        taskId: this._taskId,
+        boardId: this._boardId
+      }
+    ).subscribe((data: IResAssigned) => {
+      data.allUsers.forEach((user: IUAssigned) => {
+        if (user.name !== data.owner.name) {
           this.users.push(user);
-          // }
-        });
-        data.userAssigned.forEach((user: any) => this.assignedUsers.push(user));
+        }
       });
-  }
-
-  assignedCreate(user: IUAssigned) {
-    console.log('click +', user);
-
-    this.assignedService.Create$(this._id, user.id)
-      .subscribe((user: any) => {
-        if(user.exist === 'user has already been added') {
-        } else {
-          this.assignedUsers.push(user);
+      data.userAssigned.forEach((user: any) => {
+        if (user.name !== data.owner.name) {
+          this.assignedUsers.push(user)
         }
       })
+    })
   }
 
-  assignedRemove(user: IUAssigned) {
-    this.assignedService.remove$(this._id, user.id)
-      .subscribe((data: IUAssigned) => {
-        this.assignedUsers = this.assignedUsers.filter((us: IUAssigned) => us.id !== user.id);
+  close() {
+    this.dialogRef.close(this.users);
+  }
+
+  assignUser(user: IUAssigned) {
+    this.assignedService.assignUser$(
+      {
+        userId: user.id,
+        taskId: this._taskId,
+        boardId: this._boardId
+      }).subscribe((user: IUAssigned) => {
+      if (!user.exist) {
+        this.assignedUsers.push(user);
+      }
+    })
+  }
+
+  removeAssignedUser(user: IUAssigned) {
+    this.assignedService.removeAssignedUser$({
+      userId: user.id,
+      taskId: this._taskId,
+      boardId: this._boardId
+    }).subscribe((data: IUAssigned) => {
+        this.assignedUsers = this.assignedUsers.filter((user: IUAssigned) => user.id !== user.id);
       });
   }
 
   transaction() {
-    console.log('start transaction');
-    this.transactionService.fetchTransaction(this._id, this._boardId)
-      .subscribe((data: ITransaction[]) => {
-        data.forEach((transaction: ITransaction) => {
+    this.transactionTask.length = 0;
+    this.transactionService.fetchTransaction(this._taskId, this._boardId)
+      .subscribe((data: IResTransaction[]) => {
+        data.forEach((transaction: IResTransaction) => {
           if (transaction.transaction === 'creation') {
             this.transactionTask.push({
               transaction: 'creation',
-              data: `${transaction.name_user} создал задачу.
+              data: `Пользователь (${transaction.name_user}) создал задачу.
               время: ${formatDate(transaction.createdAt, 'medium', 'ru', '+0300')}`
             });
           }
           if (transaction.transaction === 'fixing_a_task') {
             this.transactionTask.push({
               transaction: 'fixing_a_task',
-              data: `${transaction.name_user} изменил задачу.
+              data: `Пользователь (${transaction.name_user}) изменил задачу.
               время: ${formatDate(transaction.createdAt, 'medium', 'ru', '+0300')}`
             });
           }
 
-          // if (transaction.transaction === 'moving') {
-          //   this.transactionTask.push({
-          //     transaction: 'moving',
-          //     data: `${transaction.name_user} переместил задачу.
-          //     время: ${formatDate(transaction.createdAt, 'medium', 'en', '+0300')}`
-          //   });
-          // }
+          if (transaction.transaction === 'moving') {
+            this.transactionTask.push({
+              transaction: 'moving',
+              data: `${transaction.name_user} переместил задачу.
+              время: ${formatDate(transaction.createdAt, 'medium', 'ru', '+0300')}`
+            });
+          }
 
-          // if (transaction.transaction === 'assigned_users') {
-          //   this.transactionTask.push({
-          //     transaction: 'assigned_users',
-          //     data: `${transaction.name_user} переместил задачу.
-          //     время: ${formatDate(transaction.createdAt, 'medium', 'en', '+0300')}`
-          //   });
-          // }
-
+          if (transaction.transaction === 'assigned_users') {
+            this.transactionTask.push({
+              transaction: 'assigned_users',
+              data: `Пользователь (${transaction.name_user}) назначен на задачу.
+              время: ${formatDate(transaction.createdAt, 'medium', 'ru', '+0300')}`
+            });
+            this.transactionTask = this.transactionTask.filter((user: any) => user.id !== transaction.id);
+          }
         })
       })
   }
 
   updateTitle() {
-    // this.updateT = !this.updateT;
-
     const titleBoard = document.querySelector('.dialog-column-title');
 
     if (titleBoard !== null) {
@@ -183,73 +154,45 @@ export class TaskDescriptionComponent implements OnInit {
       if (childNode !== null) {
         titleBoard.removeChild(childNode);
         const input = document.createElement('input');
-        input.value = this.title;
+        input.value = this._title;
         titleBoard.append(input);
 
         input.focus();
 
         input.addEventListener('blur', () => {
           titleBoard.innerHTML = input.value;
-          this.title = input.value;
+          this._title = input.value;
 
-          this.taskService.updateTitle$(this._id, this.title)
+          this.taskService.updateTitle$(this._taskId, this._title)
             .subscribe((data) => {
-              // console.log(data.title);
-              this.title = data.title;
+              this._title = data.title;
             })
-
-          //   this.boardService.updateBoard$(
-          //     this._boardId,
-          //     this._boardName,
-          //     localStorage.getItem('id'))
-          //     .subscribe(({id, title, owner}) => {
-          //       // if (title !== this._boardName) {
-          //       this.owner = owner;
-          //       this._boardName = title;
-          //       // console.log('owner->', this.owner);
-          //       // } else {
-          //       //   this.owner = owner;
-          //       //   console.log('owner->', this.owner);}
         });
       }
-      // });
-      console.log('title', this.title, 'id', this._id);
     }
   }
 
   showDetails() {
-    console.log('showDetails');
+    if (this.transactionDialog) {
+      this.transactionDialog = false;
+    } else {
+      this.transaction();
+      this.transactionDialog = true;
+    }
   }
 
-  archiveState() {
+  archive() {
     const task: IArchive = this.data.item;
-
-    // for (let i = 0; i < this.archiveService.archivedTasks[0].length; i++) {
-    //   console.log('qqz');
-    // }
 
     this.archiveService.setArchive$(task)
       .subscribe(() => {
-        //     // if() {
-        //     // }
-        //     console.log('archive', this.data.item.id);
-        //     // this.archiveService.archived = false;
-        //     console.log('array', this.archiveService.archivedTasks[0]);
-        //
-        //     // this.archiveService.archivedTasks[0].forEach((item: any) => {
-        //     //   console.log(item)
-        //     // })
-        //     // if(this.data.item.id === task.id) {
-        //     //   console.log('qqz')
-        //     // }
-        //
-        this.archiveService.archivedTasks[0].push(this.data.item);
+        this.archiveService.archivedTasks[0].push(task);
       })
   }
 
   submit() {
     const descriptionUpdate: IDescriptionUpdate = {
-      id: this._id,
+      id: this._taskId,
       description: this.description.value
     }
 

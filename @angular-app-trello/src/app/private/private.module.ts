@@ -30,6 +30,7 @@ import {LoginComponent} from './auth/login-page/login.component';
 import {RegComponent} from './auth/signup-page/reg.component';
 import {MatDividerModule} from "@angular/material/divider";
 import {InvitePopoverComponent} from "./dashboard-page/invite-popover/invite-popover.component";
+import {SearchPipe} from "../pipes/search.pipe";
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import {InvitePopoverComponent} from "./dashboard-page/invite-popover/invite-pop
     InvitePageComponent,
     AddBoardComponent,
     InvitePopoverComponent,
+    SearchPipe
   ],
   imports: [
     CommonModule,

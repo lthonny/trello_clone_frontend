@@ -1,24 +1,9 @@
 <h1 mat-dialog-title>
-  <span class="dialog-column-title" (click)="updateTitle()" [hidden]="updateT"> {{title}}</span>
-
-  <!--      <span [hidden]="!updateT">-->
-  <!--        <mat-form-field appearance="fill" class="update-title">-->
-  <!--          <textarea matInput cdkTextareaAutosize class="title">ddd</textarea>-->
-  <!--        </mat-form-field>-->
-  <!--      </span>-->
-
-  <!--       <mat-form-field appearance="fill">-->
-  <!--        <mat-label>описание</mat-label>-->
-  <!--        <textarea-->
-  <!--          matInput-->
-  <!--          cdkTextareaAutosize-->
-  <!--          [formControl]="description"-->
-  <!--        ></textarea>-->
-  <!--      </mat-form-field>-->
-
+  <span class="dialog-column-title" (click)="updateTitle()" [hidden]="showTitle"> {{ _title }}</span>
 </h1>
 <div class="column">
-  в колонке <span class="column-title">{{ data.item.nameTaskList }}</span>
+  <div>в колонке <span class="column-title">{{ data.item.nameTaskList }}</span></div>
+  <span class="btn-close" (click)="close()"></span>
 </div>
 <div mat-dialog-content>
 
@@ -47,19 +32,19 @@
 
   <div class="archiving">
     <mat-icon class="material-icons-outlined">send_and_archive</mat-icon>
-    <h4 class="archiving-title" *ngIf="archiveService.archived" (click)="archiveState()">Архивация</h4>
+    <h4 class="archiving-title" *ngIf="archiveService.archived" (click)="archive()">Архивация</h4>
   </div>
 
   <div class="invited">
     <h4 class="users" *ngIf="users.length !== 0">Выбор пользователей на эту задачу:</h4>
     <div class="invited-users" *ngFor="let user of users">
       {{ user.name }}
-      <span class="btn-add" (click)="assignedCreate(user)">+</span>
+      <span class="btn-add" (click)="assignUser(user)">+</span>
     </div>
     <h4 class="archiving-title" *ngIf="assignedUsers.length !== 0">на эту задачу назначены пользователи:</h4>
     <div class="assigned-users" *ngFor="let assignedUser of assignedUsers">
       {{ assignedUser.name }}
-      <span class="btn-remove" (click)="assignedRemove(assignedUser)">&#x2715;</span>
+      <span class="btn-remove" (click)="removeAssignedUser(assignedUser)">&#x2715;</span>
     </div>
   </div>
 
@@ -68,7 +53,7 @@
     <mat-icon class="material-icons-outlined">loupe</mat-icon>
     <h4 class="details-title" (click)="showDetails()">подробности</h4>
     </div>
-    <div class="transaction-body">
+    <div class="transaction-body" [hidden]="!transactionDialog">
       <div *ngFor="let transaction of transactionTask">{{transaction.data}}</div>
     </div>
   </div>

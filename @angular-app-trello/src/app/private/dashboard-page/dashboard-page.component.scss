@@ -1,8 +1,8 @@
 .body {
-  height: 95vh;
+  height: 93.5vh;
+  //height: 100%;
   width: 100%;
   // background-image: url("https://trello-backgrounds.s3.amazonaws.com/SharedBackground/2400x1600/2e1fb0a799f60366577d27f34f98aed8/photo-1627719736178-dfadf8f370d9.jpg");
-
   main {
     display: flex;
     //justify-content: space-around;
@@ -295,7 +295,9 @@ form {
   display: flex;
   justify-content: flex-end;
 }
-.task-title {}
+
+.task-title {
+}
 
 
 .cdk-drag-preview {
@@ -383,6 +385,7 @@ form {
   font-weight: bold;
   width: 3rem;
 }
+
 .task-unzip {
   width: 3rem;
 }
@@ -400,3 +403,29 @@ form {
 .transaction-body {
   display: inline-block;
 }
+
+.task_search {
+  input {
+    height: 100%;
+    margin-left: 1.5rem;
+
+    border-radius: 3px;
+    border: 1px solid #a5afb7;
+  }
+
+  button {
+    color: #172b4d;
+    font-weight: 500;
+    background-color: #dfe1e6;
+    height: 100%;
+    border-radius: 0 3px 3px 0;
+    border: 1px solid #a5afb7;
+    //width: 3rem;
+    padding: 0 1rem;
+    //margin-left: 0.1rem;
+    &:hover {
+      background-color: #a5afb7;
+    }
+  }
+}
+

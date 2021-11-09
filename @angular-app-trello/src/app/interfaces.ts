@@ -59,7 +59,7 @@ export interface IArchive {
 }
 
 export interface DialogData {
-  board: string,
+  board: number,
   invited: [{
     name: string,
     owner: boolean
@@ -118,7 +118,7 @@ export interface IAssignedUser {
   assigned?: boolean
 }
 
-export interface ITransaction {
+export interface IResTransaction {
   id: number,
   task_id: number,
   column: string,
@@ -126,11 +126,33 @@ export interface ITransaction {
   board_id: number,
   transaction: string,
   createdAt: Date,
-  updatedAt: string
+  updatedAt: Date
+}
+
+export interface ITransaction {
+  data: string,
+  transaction: string
+}
+
+export interface IResAssigned {
+  allUsers: IUAssigned[],
+  owner: {
+    id: number,
+    name: string
+  },
+  userAssigned: IUAssigned[]
 }
 
 export interface IUAssigned {
   id: number,
   name: string,
-  assigned?: boolean
+  assigned?: boolean,
+  exist?: string
 }
+
+export interface IAllArchiveTasks {
+  idBoard: number,
+  nameBoard: string,
+  tasks?: IArchive[]
+}
+
