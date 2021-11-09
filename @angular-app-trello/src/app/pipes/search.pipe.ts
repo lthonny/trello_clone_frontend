@@ -10,7 +10,7 @@ export class SearchPipe implements PipeTransform {
       return tasks;
     }
     return tasks.filter((task: any) => {
-      console.log(task)
+      // console.log(task)
       if(task.title === search) {
         return task.title.toLowerCase().includes(search.toLowerCase());
       }

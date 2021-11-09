@@ -89,8 +89,6 @@ export class DashboardPageComponent implements OnInit {
     this.route.params.subscribe(params => this._boardId = params['id']);
     this.boardService.getBoard$(this._boardId)
       .subscribe((board: IBoard) => this._boardName = board.title);
-
-    // console.log(this.board.columns[2].tasks)
   }
 
   assigned(task: ITask) {
@@ -98,6 +96,32 @@ export class DashboardPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.fetchAllTasks();
+    this.getOwner();
+    this.getInvitedUsers();
+  }
+
+  getInvitedUsers() {
+    this.inviteService.InvitedUsers(this._boardId, this.authService.isUserId, this.authService.isNameUser)
+      .subscribe(({names, owner}) => {
+        names.forEach((data: any) => {
+          this.invitedUsers.push({id: data.id, name: data.name, owner: data.owner});
+        })
+        console.log('invited users', this.invitedUsers);
+      })
+  }
+
+  getOwner() {
+    this.inviteService.Owner$({
+      userId: this.authService.isUserId,
+      boardId: this._boardId
+    }).subscribe(({userId, owner}) => {
+      this.owner = owner;
+      console.log(this.owner);
+    })
+  }
+
+  fetchAllTasks() {
     this.route.params
       .pipe(switchMap((params: Params) => {
         return this.tasksService.getTasks$(params['id']);
@@ -106,6 +130,8 @@ export class DashboardPageComponent implements OnInit {
         if (!tasks.error) {
           this.tasks = tasks.tasks;
           this._boardName = tasks.title;
+
+          console.log(this.tasks);
 
           this.tasks.forEach((task: ITask) => {
             if (task.nameTaskList === 'To Do' && task.archive !== true) {
@@ -125,22 +151,6 @@ export class DashboardPageComponent implements OnInit {
             }
           })
         }
-      })
-
-    this.inviteService.Owner$({
-      userId: this.authService.isUserId,
-      boardId: this._boardId
-    }).subscribe(({userId, owner}) => {
-      this.owner = owner;
-      console.log(this.owner);
-    })
-
-    this.inviteService.InvitedUsers(this._boardId, this.authService.isUserId, this.authService.isNameUser)
-      .subscribe(({names, owner}) => {
-        names.forEach((data: any) => {
-          this.invitedUsers.push({id: data.id, name: data.name, owner: data.owner});
-        })
-        console.log('invited users', this.invitedUsers);
       })
   }
 
