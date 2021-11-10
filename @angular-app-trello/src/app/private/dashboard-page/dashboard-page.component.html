@@ -93,7 +93,7 @@
                  cdkDropList
                  [cdkDropListData]="column.tasks"
                  (cdkDropListDropped)="drop($event, column)">
-              <div class="task card-body" *ngFor="let item of column.tasks | searchTask: searchTask, let i = index" cdkDrag>
+              <div class="task card-body" *ngFor="let item of column.tasks | searchTask: searchTask" cdkDrag>
                 <span (click)="openDialog(item)">{{ item.title }}</span>
                 <span *ngIf="owner" class="delete" (click)="removeTask(item.id, item.nameTaskList)">&#x2715;</span>
               </div>

@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {BoardService} from "../../services/board.service";
 import {InviteService} from "../../services/invite.service";
 import {IBoard} from "../../interfaces";
+import {SocialAuthService, SocialUser} from "angularx-social-login";
 
 @Component({
   selector: 'app-boards',
@@ -13,10 +14,14 @@ export class BoardsComponent implements OnInit {
   boards: IBoard[] = [];
   boardName: string = '';
 
+  private userGoogle!: SocialUser;
+  private loggedIn!: boolean;
+
   constructor(
     private boardService: BoardService,
     private dialog: MatDialog,
-    public inviteService: InviteService
+    public inviteService: InviteService,
+    private authServiceGoogle: SocialAuthService,
   ) {
   }
 
@@ -29,6 +34,12 @@ export class BoardsComponent implements OnInit {
       .subscribe((board: IBoard) => {
         this.boards.push(board);
       });
+
+    // this.authServiceGoogle.authState.subscribe((user) => {
+    //   console.log('user', user);
+    //   this.userGoogle = user;
+    //   this.loggedIn = (user != null);
+    // })
   }
 
   addBoardDialog() {

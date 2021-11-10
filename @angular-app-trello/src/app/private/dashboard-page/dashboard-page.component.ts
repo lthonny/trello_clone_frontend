@@ -31,7 +31,7 @@ import {AssignedService} from "../../services/assigned.service";
   styleUrls: ['./dashboard-page.component.scss']
 })
 export class DashboardPageComponent implements OnInit {
-  private readonly _userId: string | null = localStorage.getItem('id');
+  private  _userId: string | null = localStorage.getItem('id');
   public owner!: boolean;
   private _boardId!: number;
   public _boardName!: string;
@@ -107,7 +107,7 @@ export class DashboardPageComponent implements OnInit {
         names.forEach((data: any) => {
           this.invitedUsers.push({id: data.id, name: data.name, owner: data.owner});
         })
-        console.log('invited users', this.invitedUsers);
+        // console.log('invited users', this.invitedUsers);
       })
   }
 
@@ -117,7 +117,7 @@ export class DashboardPageComponent implements OnInit {
       boardId: this._boardId
     }).subscribe(({userId, owner}) => {
       this.owner = owner;
-      console.log(this.owner);
+      // console.log(this.owner);
     })
   }
 
@@ -176,7 +176,44 @@ export class DashboardPageComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log('users', result);
+        // console.log('users', result, 'task', item, 'board_id', this._boardId)
+        // console.log('users', result);
+        // console.log(result.task_id, item.id)
+
+        result.forEach((resultUsers: any) => {
+          if(item.nameTaskList === 'Coded' && resultUsers.task_id === item.id) {
+            // console.log('===');
+
+            this.taskListCoded.forEach((task: any) => {
+              if(task.id === resultUsers.task_id) {
+                console.log(task);
+                this.taskListCoded = this.taskListCoded.filter((data: any) => {
+                  // console.log(data.id !== task.id)
+                  return data.id !== task.id;
+                })
+
+                const newTask: any = {
+                  id: task.id,
+                  title: task.title,
+                  description: task.description,
+                  nameTaskList: task.nameTaskList,
+                  board_id: task.board_id,
+                  createdAt: task.createdAt,
+                  updatedAt: task.updatedAt,
+                  users: [{
+                    name: resultUsers.name
+                  }]
+                }
+
+                this.taskListCoded.push(newTask);
+                // console.log('this.taskListCoded', this.taskListCoded);
+              }
+            })
+
+            // console.log(this.taskListCoded)
+
+          }
+        })
       });
     }
   }

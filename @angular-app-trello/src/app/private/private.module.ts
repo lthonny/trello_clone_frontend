@@ -79,7 +79,7 @@ import {SearchPipe} from "../pipes/search.pipe";
           {
             path: 'boards',
             component: BoardsComponent,
-            canActivate: [AuthGuard]
+            // canActivate: [AuthGuard]
           },
           {
             path: 'boards-page/:id',

@@ -26,8 +26,8 @@ import {
 })
 export class TaskDescriptionComponent implements OnInit {
 
-  private readonly _taskId: number;
-  private readonly _boardId: number;
+  public _taskId: number;
+  private _boardId: number;
   public _title: string = '';
   public description!: FormControl;
 
@@ -79,7 +79,7 @@ export class TaskDescriptionComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close(this.users);
+    this.dialogRef.close(this.assignedUsers);
   }
 
   assignUser(user: IUAssigned) {

@@ -39,12 +39,12 @@ export class AuthService {
     private error: ErrorService,
     private tokenService: TokenService
   ) {
-    this.isAuth$()
-      .subscribe(() => {
-        this._isAuthorized.next(true);
-      }, () => {
-        this._isAuthorized.next(false);
-      })
+    // this.isAuth$()
+      // .subscribe(() => {
+      //   this._isAuthorized.next(true);
+      // }, () => {
+      //   this._isAuthorized.next(false);
+      // })
   }
 
   public isAuth$(): Observable<undefined> {
@@ -54,6 +54,10 @@ export class AuthService {
 
   public singUp$(user: ISingUp): Observable<IAuthResponse> {
     return this.http.post<IAuthResponse>(`/api/signup`, user);
+  }
+
+  public singUpGoogle$(user: any): Observable<any> {
+    return this.http.post<any>(`/api/singUpGoogle`, user);
   }
 
   public singIn$(user: ISingIn): Observable<IAuthResponse> {

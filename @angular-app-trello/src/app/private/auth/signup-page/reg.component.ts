@@ -55,22 +55,29 @@ export class RegComponent {
       });
   }
 
-  signInHandler() {
+  signInWithGoogle(): void {
+    // this.authServiceGoogle.signIn(GoogleLoginProvider.PROVIDER_ID).then(() => {
+    //
+    // })
+
     this.authServiceGoogle.signIn(GoogleLoginProvider.PROVIDER_ID).then((data: SocialUser) => {
       const user: ISingUp = {
         name: data.name,
-        email: data.email
+        email: data.email,
+        // auth
+        // token_id:
       }
 
+
       console.log('google data', data);
-      console.log('google user', user);
-
-      this.authService.singUp$(user).subscribe(() => {
-        console.log('данные отправлены');
-      })
-
-      // localStorage.setItem('google_auth', JSON.stringify(data));
-      // this.router.navigateByUrl('/admin/boards-page').then();
+    //   console.log('google user', user);
+    //
+    //   this.authService.singUpGoogle$(user).subscribe(() => {
+    //     console.log('данные отправлены');
+    //   })
+    //
+    //   // localStorage.setItem('google_auth', JSON.stringify(data));
+    //   // this.router.navigateByUrl('/admin/boards-page').then();
     })
   }
 }
