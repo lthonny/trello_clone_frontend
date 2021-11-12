@@ -9,8 +9,6 @@ import {SharedModule} from './shared/shared.module';
 
 import {CookieService} from "ngx-cookie-service";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from "angularx-social-login";
-
 
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
@@ -28,26 +26,11 @@ registerLocaleData(localeRu);
         BrowserModule,
         AppRoutingModule,
         SharedModule,
-        BrowserAnimationsModule,
-        SocialLoginModule,
+        BrowserAnimationsModule
     ],
     providers: [
         CookieService,
-        {
-            provide: 'SocialAuthServiceConfig',
-            useValue: {
-                autoLogin: false,
-                providers: [
-                    {
-                        id: GoogleLoginProvider.PROVIDER_ID,
-                        provider: new GoogleLoginProvider(
-                            '700802076060-a48feomksrk878vip7n5ps11s1t4mdfq.apps.googleusercontent.com'
-                        )
-                    }
-                ]
-            } as SocialAuthServiceConfig
-        },
-        {provide: LOCALE_ID, useValue: 'ru'}
+        { provide: LOCALE_ID, useValue: 'ru' }
     ],
     bootstrap: [AppComponent],
     exports: [

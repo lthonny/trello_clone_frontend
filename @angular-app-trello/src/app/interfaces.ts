@@ -156,3 +156,9 @@ export interface IAllArchiveTasks {
   tasks?: IArchive[]
 }
 
+export interface IAuthResGoogle {
+  name: string,
+  email: string,
+  auth_vie: string
+}
+

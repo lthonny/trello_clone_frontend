@@ -10,7 +10,7 @@ import {tap} from "rxjs/operators";
   providedIn: 'root'
 })
 export class BoardService {
-  private readonly _idBoard: string | null = localStorage.getItem('id');
+  private readonly _idUser: string | null = localStorage.getItem('id');
   private readonly _keyBoard: string  = '';
   public _nameBoard: string  = '';
 
@@ -19,7 +19,7 @@ export class BoardService {
   }
 
   get isIdBoard() {
-    return this._idBoard;
+    return this._idUser;
   }
 
   get isKeyBoard() {
@@ -35,12 +35,12 @@ export class BoardService {
   }
 
   public getBoards$(): Observable<IBoard[]> {
-    return this.http.get<IBoard[]>(`/api/boards/${this._idBoard}`);
+    return this.http.get<IBoard[]>(`/api/boards/${this._idUser}`);
   }
 
   public createBoard$(title: string): Observable<IBoard> {
     this._nameBoard = title;
-    return this.http.post<IBoard>(`/api/board/create/${this._idBoard}`, {name: title});
+    return this.http.post<IBoard>(`/api/board/create/${this._idUser}`, {name: title});
   }
 
   public updateBoard$(idBoard: number, title: string, idUser: string | null): Observable<any> {

@@ -56,8 +56,8 @@ export class AuthService {
     return this.http.post<IAuthResponse>(`/api/signup`, user);
   }
 
-  public singUpGoogle$(user: any): Observable<any> {
-    return this.http.post<any>(`/api/singUpGoogle`, user);
+  public authGoogle$(): Observable<any> {
+    return this.http.get<any>(`/api/google`);
   }
 
   public singIn$(user: ISingIn): Observable<IAuthResponse> {

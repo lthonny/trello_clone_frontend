@@ -5,8 +5,7 @@ import {AuthService} from 'src/app/services/auth.service';
 import {TokenService} from "../../../services/token.service";
 import {ErrorService} from "../../../services/error.service";
 
-import {IAuthResponse, ISingIn, ISingUp} from 'src/app/interfaces';
-import {GoogleLoginProvider, SocialAuthService, SocialUser} from "angularx-social-login";
+import {IAuthResponse, ISingIn} from 'src/app/interfaces';
 
 @Component({
   selector: 'app-login',
@@ -33,8 +32,7 @@ export class LoginComponent implements OnInit {
     private tokenService: TokenService,
     private errorService: ErrorService,
     private router: Router,
-    private route: ActivatedRoute,
-    private authServiceGoogle: SocialAuthService,
+    private route: ActivatedRoute
   ) {
   }
 
@@ -46,20 +44,9 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  signInWithGoogle(): void {
-    // this.authServiceGoogle.signIn(GoogleLoginProvider.PROVIDER_ID).then((data: SocialUser) => {
-    //   const user: ISingUp = {
-    //     name: data.name,
-    //     email: data.email,
-    //     // auth
-    //     // token_id:
-    //   }
-
-
-      console.log('google data');
-    // })
+  signInWithGoogle() {
+    window.open("http://localhost:5000/auth/google", "_blank");
   }
-
 
   submit() {
     if (this.form.invalid) {

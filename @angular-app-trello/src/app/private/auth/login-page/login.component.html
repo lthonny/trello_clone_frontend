@@ -5,29 +5,18 @@
     <div class="wrapper">
       <h4>Log in to Trello</h4>
 
-            <div class="mb-3" [ngClass]="{invalid: form.get('email')?.touched && form.get('email')?.invalid}">
-<!--              <mat-form-field class="log-in-form-input" appearance="outline">-->
-<!--                <mat-label>Enter email</mat-label>-->
-<!--                <input matInput type="email" placeholder="Enter email" formControlName="email"/>-->
-<!--              </mat-form-field>-->
+      <div class="mb-3" [ngClass]="{invalid: form.get('email')?.touched && form.get('email')?.invalid}">
+        <input id="email" class="form-control bg-light" type="email" placeholder="Enter email" formControlName="email">
+        <div *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="validation">
+        </div>
+      </div>
 
-                      <input id="email" class="form-control bg-light" type="email" placeholder="Enter email" formControlName="email">
-                      <div *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="validation">
-                      </div>
-            </div>
-
-            <div class="mb-3" [ngClass]="{invalid: form.get('password')?.touched && form.get('password')?.invalid}">
-              <input id="password" class="form-control bg-light" type="password" placeholder="Enter password" formControlName="password">
-              <div *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="validation">
-              </div>
-            </div>
-
-<!--      <div class="mb-3" [ngClass]="{invalid: form.get('password')?.touched && form.get('password')?.invalid}">-->
-<!--        <mat-form-field class="log-in-form-input" appearance="outline">-->
-<!--          <mat-label>Enter password</mat-label>-->
-<!--          <input matInput type="password" placeholder="Enter password" formControlName="password"/>-->
-<!--        </mat-form-field>-->
-<!--      </div>-->
+      <div class="mb-3" [ngClass]="{invalid: form.get('password')?.touched && form.get('password')?.invalid}">
+        <input id="password" class="form-control bg-light" type="password" placeholder="Enter password"
+               formControlName="password">
+        <div *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="validation">
+        </div>
+      </div>
 
       <button type="submit" class="btn bg-success bg-gradient" [disabled]="form.invalid || submitted">Log in
       </button>
