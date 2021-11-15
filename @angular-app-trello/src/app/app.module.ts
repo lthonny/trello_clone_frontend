@@ -26,7 +26,7 @@ registerLocaleData(localeRu);
         BrowserModule,
         AppRoutingModule,
         SharedModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
     ],
     providers: [
         CookieService,

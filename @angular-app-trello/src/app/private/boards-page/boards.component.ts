@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {BoardService} from "../../services/board.service";
 import {InviteService} from "../../services/invite.service";
 import {IBoard} from "../../interfaces";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-boards',
@@ -18,26 +19,30 @@ export class BoardsComponent implements OnInit {
   constructor(
     private boardService: BoardService,
     private dialog: MatDialog,
-    public inviteService: InviteService
+    public inviteService: InviteService,
+    private cookies: CookieService
   ) {
+    console.log('cookies id', this.cookies.get('id'));
+    console.log('cookies name', this.cookies.get('name'));
+
+    localStorage.setItem('id', this.cookies.get('id'));
+    localStorage.setItem('name', this.cookies.get('name'));
   }
 
   ngOnInit() {
-    // console.log('gg');
     this.boardService.getBoards$()
       .subscribe((board: IBoard[]) => {
-        this.boards = board
+        if(board.length !== 0) {
+          this.boards = board;
+        }
       });
+    console.log('board', this.boards)
     this.inviteService.InviteBoard$(this.boardService.isIdBoard, this.boardService.isKeyBoard)
-      .subscribe((board: IBoard) => {
-        this.boards.push(board);
+      .subscribe((board:  any) => {
+        if(board !== 'Key not found') {
+          this.boards.push(board);
+        }
       });
-
-    // this.authServiceGoogle.authState.subscribe((user) => {
-    //   console.log('user', user);
-    //   this.userGoogle = user;
-    //   this.loggedIn = (user != null);
-    // })
   }
 
   addBoardDialog() {

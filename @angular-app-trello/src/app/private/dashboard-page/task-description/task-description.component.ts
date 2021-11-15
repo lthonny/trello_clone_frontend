@@ -79,6 +79,8 @@ export class TaskDescriptionComponent implements OnInit {
   }
 
   close() {
+    // console.log(this.data.item)
+    // this.dialogRef.close(this.data.item);
     this.dialogRef.close(this.assignedUsers);
   }
 
@@ -186,8 +188,11 @@ export class TaskDescriptionComponent implements OnInit {
 
     this.archiveService.setArchive$(task)
       .subscribe(() => {
-        this.archiveService.archivedTasks[0].push(task);
+        // this.archiveService.archivedTasks[0].push(task);
+        this.dialogRef.close(this.data);
       })
+
+    // this.dialogRef.close(this.data.item);
   }
 
   submit() {

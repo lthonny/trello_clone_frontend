@@ -32,6 +32,7 @@ export class RegComponent {
     private authService: AuthService,
     private router: Router
   ) {
+    // console.log('gg')
   }
 
   submit() {
@@ -59,7 +60,7 @@ export class RegComponent {
     window.open("http://localhost:5000/auth/google", "_blank");
   }
 
-  logout = () => {
+  logout() {
     window.open('http://localhost:5000/auth/logout', "_self");
   }
 }

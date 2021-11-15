@@ -9,6 +9,7 @@ import {BoardService} from "../../services/board.service";
 import {InviteService} from "../../services/invite.service";
 import {ArchiveTasksService} from "../../services/archive.tasks.service";
 import {
+  DialogData,
   IAllArchiveTasks,
   IArchive,
   IBoard,
@@ -31,7 +32,7 @@ import {AssignedService} from "../../services/assigned.service";
   styleUrls: ['./dashboard-page.component.scss']
 })
 export class DashboardPageComponent implements OnInit {
-  private  _userId: string | null = localStorage.getItem('id');
+  private _userId: string | null = localStorage.getItem('id');
   public owner!: boolean;
   private _boardId!: number;
   public _boardName!: string;
@@ -155,14 +156,16 @@ export class DashboardPageComponent implements OnInit {
   }
 
   openDialog(item: ITask): void {
-    if (this.archiveService.archived === true) {
-      this.allNameTaskList.forEach((name: string, i: number) => {
-        // if (this.board.columns[i].name === name) {
-        //   this.taskLists[i] = this.taskLists[i].filter((task: ITask) => task.id !== item.id);
-        //   this.board.columns[i].tasks = this.taskLists[i].filter((task: ITask) => task.id !== item.id);
-        // }
-      })
-    }
+    // if (this.archiveService.archived === true) {
+    //   this.allNameTaskList.forEach((name: string, i: number) => {
+    //     // if (this.board.columns[i].name === name) {
+    //     //   this.taskLists[i] = this.taskLists[i].filter((task: ITask) => task.id !== item.id);
+    //     //   this.board.columns[i].tasks = this.taskLists[i].filter((task: ITask) => task.id !== item.id);
+    //     // }
+    //   })
+    // }
+
+    // console.log(item);
 
     if (this.owner) {
       const dialogRef = this.dialog.open(TaskDescriptionComponent, {
@@ -175,45 +178,75 @@ export class DashboardPageComponent implements OnInit {
         width: '600px',
       });
 
-      dialogRef.afterClosed().subscribe(result => {
-        // console.log('users', result, 'task', item, 'board_id', this._boardId)
-        // console.log('users', result);
-        // console.log(result.task_id, item.id)
-
-        result.forEach((resultUsers: any) => {
-          if(item.nameTaskList === 'Coded' && resultUsers.task_id === item.id) {
-            // console.log('===');
-
-            this.taskListCoded.forEach((task: any) => {
-              if(task.id === resultUsers.task_id) {
-                console.log(task);
-                this.taskListCoded = this.taskListCoded.filter((data: any) => {
-                  // console.log(data.id !== task.id)
-                  return data.id !== task.id;
-                })
-
-                const newTask: any = {
-                  id: task.id,
-                  title: task.title,
-                  description: task.description,
-                  nameTaskList: task.nameTaskList,
-                  board_id: task.board_id,
-                  createdAt: task.createdAt,
-                  updatedAt: task.updatedAt,
-                  users: [{
-                    name: resultUsers.name
-                  }]
-                }
-
-                this.taskListCoded.push(newTask);
-                // console.log('this.taskListCoded', this.taskListCoded);
-              }
-            })
-
-            // console.log(this.taskListCoded)
-
+      dialogRef.afterClosed().subscribe((result: DialogData) => {
+        if(result.item.nameTaskList === 'To Do') {
+          const index = this.taskListToDo.findIndex((task) => task.id === result.item.id);
+          if (index !== -1) {
+            this.taskListToDo.splice(index, 1);
+            this.archiveService.archivedTasks[0].push(result.item);
           }
-        })
+        }
+        if(result.item.nameTaskList === 'In Progress') {
+          const index = this.taskListInProgress.findIndex((task) => task.id === result.item.id);
+          if (index !== -1) {
+            this.taskListInProgress.splice(index, 1);
+            this.archiveService.archivedTasks[0].push(result.item);
+          }
+        }
+        if(result.item.nameTaskList === 'Coded') {
+          const index = this.taskListCoded.findIndex((task) => task.id === result.item.id);
+          if (index !== -1) {
+            this.taskListCoded.splice(index, 1);
+            this.archiveService.archivedTasks[0].push(result.item);
+          }
+        }
+        if(result.item.nameTaskList === 'Testing') {
+          const index = this.taskListTesting.findIndex((task) => task.id === result.item.id);
+          if (index !== -1) {
+            this.taskListTesting.splice(index, 1);
+            this.archiveService.archivedTasks[0].push(result.item);
+          }
+        }
+        if(result.item.nameTaskList === 'Done') {
+          const index = this.taskListDone.findIndex((task) => task.id === result.item.id);
+          if (index !== -1) {
+            this.taskListTesting.splice(index, 1);
+            this.archiveService.archivedTasks[0].push(result.item);
+          }
+        }
+        // result.forEach((resultUsers: any) => {
+        //   console.log(resultUsers)
+        // if(item.nameTaskList === 'Coded' && resultUsers.task_id === item.id) {
+        //   // console.log('===');
+        //
+        //   this.taskListCoded.forEach((task: any) => {
+        //     if(task.id === resultUsers.task_id) {
+        //       console.log(task);
+        //       this.taskListCoded = this.taskListCoded.filter((data: any) => {
+        //         // console.log(data.id !== task.id)
+        //         return data.id !== task.id;
+        //       })
+        //
+        //       const newTask: any = {
+        //         id: task.id,
+        //         title: task.title,
+        //         description: task.description,
+        //         nameTaskList: task.nameTaskList,
+        //         board_id: task.board_id,
+        //         createdAt: task.createdAt,
+        //         updatedAt: task.updatedAt,
+        //         users: [{
+        //           name: resultUsers.name
+        //         }]
+        //       }
+        //
+        //       this.taskListCoded.push(newTask);
+        //       // console.log('this.taskListCoded', this.taskListCoded);
+        //     }
+        //   })
+        // console.log(this.taskListCoded)
+        // }
+        // })
       });
     }
   }

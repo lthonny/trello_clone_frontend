@@ -65,7 +65,7 @@ export interface DialogData {
     owner: boolean
   }],
   item: {
-    id: number,
+    id: any,
     title: string,
     description: string,
     nameTaskList: string,

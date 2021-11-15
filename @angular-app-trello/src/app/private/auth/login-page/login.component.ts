@@ -28,11 +28,11 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(
-    private authService: AuthService,
-    private tokenService: TokenService,
-    private errorService: ErrorService,
-    private router: Router,
-    private route: ActivatedRoute
+    public authService: AuthService,
+    public tokenService: TokenService,
+    public errorService: ErrorService,
+    public router: Router,
+    public route: ActivatedRoute
   ) {
   }
 
