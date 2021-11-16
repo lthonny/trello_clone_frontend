@@ -60,8 +60,11 @@ export class LoginComponent implements OnInit {
       password: this.form.value.password
     }
 
+    console.log(user)
+
     this.authService.singIn$(user)
       .subscribe((response: IAuthResponse) => {
+        console.log('response', response)
         this.tokenService.setToken(response.accessToken);
         this.form.reset();
         this.router.navigate(['/admin', 'boards']);

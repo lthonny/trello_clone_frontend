@@ -2,14 +2,13 @@
   <mat-drawer #drawer class="example-sidenav" mode="side">
     <div class="sidenav">
       <div class="sidenav-body">
-        <div class="sidenav-menu">Меню</div>
-<!--        <div>О доске</div>-->
-<!--        <div>Действия</div>-->
-        <h4>Архив задач</h4>
+        <h4 class="sidenav-menu">Архив задач</h4>
         <div class="tasks-container">
           <div class="task card-body task-archive-view" *ngFor="let task of archiveService.archivedTasks[0]">
             <span>{{ task.title }}</span>
-            <span class="btn-unzip" (click)="unzip(task)">&#x2715;</span>
+            <mat-icon class="material-icons-outlined" (click)="unzip(task)">
+              swipe_right
+            </mat-icon>
           </div>
         </div>
       </div>
@@ -18,15 +17,16 @@
 
   <div class="body">
     <div class="menu">
-      <span
-        class="title-board"
-        (click)="updateTitleBoard()"
-      >{{_boardName}}</span>
+      <span class="title-board" (click)="updateTitleBoard()">{{_boardName}}</span>
       <div class="avatar">{{ authService.isNameUser.charAt(0) | uppercase}}</div>
       <ng-container *ngIf="owner">
-        <div class="invited-users" *ngFor="let user of invitedUsers">{{user.name.charAt(0) | uppercase}}</div>
+        <div class="invited-users" *ngFor="let user of invitedUsers">
+          {{user.name.charAt(0) | uppercase}}
+          <mat-icon class="material-icons-outlined user-invite-delete" (click)="removeInvited(user)">clear</mat-icon>
+        </div>
       </ng-container>
       <span
+        *ngIf="owner"
         [hidden]="!invite"
         class="invite"
         (click)="inviteKey()"
@@ -40,8 +40,7 @@
 
       <div class="example-sidenav-content">
         <span class="full-menu" (click)="fullMenu()">
-          <button type="button" mat-button (click)="drawer.toggle()">
-            Меню
+          <button type="button" mat-button (click)="drawer.toggle()"> Меню
             <mat-icon class="material-icons-outlined" aria-hidden="false" aria-label="Example home icon">more_horiz</mat-icon>
           </button>
         </span>
@@ -49,8 +48,10 @@
 
       <div class="task_search">
         <input type="text" placeholder="Find task or user..." [(ngModel)]="searchTask">
-<!--        <button class="btn-search">Найти</button>-->
+        <!--        <button class="btn-search">Найти</button>-->
       </div>
+
+      <span class="leave-board" (click)="leaveBoard()" *ngIf="!owner"> покинуть доску </span>
     </div>
 
     <main>
@@ -67,35 +68,21 @@
               <span
                 class="icon mr-2"
               >
-<!--              <app-popover class="icon" buttonText="...">Добавить карточку... Копировать список... Переместить список... Архивировать список</app-popover>-->
-<!--              <mat-icon-->
-<!--                class="material-icons-outlined"-->
-<!--                aria-hidden="false"-->
-<!--                aria-label="Example home icon"-->
-<!--                (click)="popoverColumn()"-->
-<!--                [hidden]="popoverColumnInfo"-->
-<!--              >more_horiz</mat-icon>-->
-
-<!--                <div [hidden]="!popoverColumnInfo" class="modal"></div>-->
-
-<!--                              <mat-icon-->
-<!--                                class="material-icons-outlined"-->
-<!--                                aria-hidden="false"-->
-<!--                                aria-label="Example home icon"-->
-<!--                                (click)="popoverColumn(column)"-->
-<!--                              >more_horiz</mat-icon>-->
-
-<!--                <span *ngIf="!owner">покинуть задачу</span>-->
-                <mat-icon class="material-icons-outlined" (click)="removeAllTasks(column.name)" *ngIf="owner">delete</mat-icon>
+                <mat-icon class="material-icons-outlined" (click)="removeAllTasks(column.name)"
+                          *ngIf="owner">delete</mat-icon>
             </span>
             </div>
             <div class="tasks-container"
                  cdkDropList
                  [cdkDropListData]="column.tasks"
                  (cdkDropListDropped)="drop($event, column)">
-              <div class="task card-body" *ngFor="let item of column.tasks | searchTask: searchTask" cdkDrag>
-                <span (click)="openDialog(item)">{{ item.title }}</span>
+              <div class="task card-body" *ngFor="let item of column.tasks | searchTask: searchTask" cdkDrag
+                   (click)="openDialog(item)">
+                <span>{{ item.title }}</span>
                 <span *ngIf="owner" class="delete" (click)="removeTask(item.id, item.nameTaskList)">&#x2715;</span>
+                <mat-icon class="material-icons-outlined active-task" *ngIf="!owner">
+                  push_pin
+                </mat-icon>
               </div>
             </div>
 

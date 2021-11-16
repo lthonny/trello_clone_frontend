@@ -39,12 +39,12 @@ export class AuthService {
     private error: ErrorService,
     private tokenService: TokenService
   ) {
-    // this.isAuth$()
-      // .subscribe(() => {
-      //   this._isAuthorized.next(true);
-      // }, () => {
-      //   this._isAuthorized.next(false);
-      // })
+    this.isAuth$()
+      .subscribe(() => {
+        this._isAuthorized.next(true);
+      }, () => {
+        this._isAuthorized.next(false);
+      })
   }
 
   public isAuth$(): Observable<undefined> {
@@ -64,7 +64,9 @@ export class AuthService {
     return this.http.post<IAuthResponse>(`/api/login`, user)
       .pipe(
         catchError(err => this.error.handleError(err)),
-        tap((data) => this.login$(data))
+        tap((data) => {
+          this.login$(data)
+        })
       )
   }
 

@@ -38,9 +38,11 @@ export class TaskDescriptionComponent implements OnInit {
   public transactionTask: ITransaction[] = [];
   public transactionDialog: boolean = false;
 
+  public _ownerStatus!: boolean;
+
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    public data: DialogData,
+    public data: any,
     public dialogRef: MatDialogRef<TaskDescriptionComponent>,
     private router: Router,
     private route: ActivatedRoute,
@@ -52,7 +54,11 @@ export class TaskDescriptionComponent implements OnInit {
     this._taskId = data.item.id;
     this._boardId = this.data.board;
     this._title = data.item.title;
+    this._ownerStatus = data.item.ownerStatus;
+
     this.description = new FormControl(this.data.item.description);
+
+    console.log(this.data)
   }
 
   ngOnInit(): void {
@@ -64,23 +70,33 @@ export class TaskDescriptionComponent implements OnInit {
         taskId: this._taskId,
         boardId: this._boardId
       }
-    ).subscribe((data: IResAssigned) => {
+    ).subscribe((data: any) => {
+      // this.owner = data.owner;
+      // console.log('this.owner', data);
+
       data.allUsers.forEach((user: IUAssigned) => {
         if (user.name !== data.owner.name) {
+          this.users = this.users.filter((data: any) => data.id !== user.id);
           this.users.push(user);
         }
       });
       data.userAssigned.forEach((user: any) => {
         if (user.name !== data.owner.name) {
-          this.assignedUsers.push(user)
+          this.assignedUsers = this.assignedUsers.filter((data: any) => data.id !== user.id);
+          this.assignedUsers.push(user);
         }
       })
     })
   }
 
   close() {
-    // console.log(this.data.item)
+    // console.log('this.data.item.title', this.data.item.title, 'this._title', this._title)
     // this.dialogRef.close(this.data.item);
+    // if (this.data.item.title !== this._title) {
+    //
+    // } else {
+    //
+    // }
     this.dialogRef.close(this.assignedUsers);
   }
 
@@ -103,8 +119,8 @@ export class TaskDescriptionComponent implements OnInit {
       taskId: this._taskId,
       boardId: this._boardId
     }).subscribe((data: IUAssigned) => {
-        this.assignedUsers = this.assignedUsers.filter((user: IUAssigned) => user.id !== user.id);
-      });
+      this.assignedUsers = this.assignedUsers.filter((user: IUAssigned) => user.id !== user.id);
+    });
   }
 
   transaction() {
@@ -148,28 +164,30 @@ export class TaskDescriptionComponent implements OnInit {
   }
 
   updateTitle() {
-    const titleBoard = document.querySelector('.dialog-column-title');
+    if (this._ownerStatus) {
+      const titleBoard = document.querySelector('.dialog-column-title');
 
-    if (titleBoard !== null) {
-      const childNode = titleBoard.firstChild;
+      if (titleBoard !== null) {
+        const childNode = titleBoard.firstChild;
 
-      if (childNode !== null) {
-        titleBoard.removeChild(childNode);
-        const input = document.createElement('input');
-        input.value = this._title;
-        titleBoard.append(input);
+        if (childNode !== null) {
+          titleBoard.removeChild(childNode);
+          const input = document.createElement('input');
+          input.value = this._title;
+          titleBoard.append(input);
 
-        input.focus();
+          input.focus();
 
-        input.addEventListener('blur', () => {
-          titleBoard.innerHTML = input.value;
-          this._title = input.value;
+          input.addEventListener('blur', () => {
+            titleBoard.innerHTML = input.value;
+            this._title = input.value;
 
-          this.taskService.updateTitle$(this._taskId, this._title)
-            .subscribe((data) => {
-              this._title = data.title;
-            })
-        });
+            this.taskService.updateTitle$(this._taskId, this._title)
+              .subscribe((data) => {
+                this._title = data.title;
+              })
+          });
+        }
       }
     }
   }
@@ -201,10 +219,17 @@ export class TaskDescriptionComponent implements OnInit {
       description: this.description.value
     }
 
-    this.taskService.updateDescription(descriptionUpdate)
-      .subscribe((task) => {
-        this.data.item.description = task.description;
-      });
+    if (this._ownerStatus) {
+      this.taskService.updateDescription(descriptionUpdate)
+        .subscribe((task) => {
+          this.data.item.description = task.description;
+        });
+    }
+
+    // this.taskService.updateDescription(descriptionUpdate)
+    //   .subscribe((task) => {
+    //     this.data.item.description = task.description;
+    //   });
   }
 }
 

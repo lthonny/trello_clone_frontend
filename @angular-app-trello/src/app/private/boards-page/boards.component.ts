@@ -22,11 +22,10 @@ export class BoardsComponent implements OnInit {
     public inviteService: InviteService,
     private cookies: CookieService
   ) {
-    console.log('cookies id', this.cookies.get('id'));
-    console.log('cookies name', this.cookies.get('name'));
-
-    localStorage.setItem('id', this.cookies.get('id'));
-    localStorage.setItem('name', this.cookies.get('name'));
+    // console.log('cookies id', this.cookies.get('id'));
+    // console.log('cookies name', this.cookies.get('name'));
+    // localStorage.setItem('id', this.cookies.get('id'));
+    // localStorage.setItem('name', this.cookies.get('name'));
   }
 
   ngOnInit() {
@@ -36,7 +35,7 @@ export class BoardsComponent implements OnInit {
           this.boards = board;
         }
       });
-    console.log('board', this.boards)
+    // console.log('board', this.boardService.isIdBoard, this.inviteService._key);
     this.inviteService.InviteBoard$(this.boardService.isIdBoard, this.boardService.isKeyBoard)
       .subscribe((board:  any) => {
         if(board !== 'Key not found') {

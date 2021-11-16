@@ -34,4 +34,12 @@ export class InviteService {
   public Owner$(data: IOwner): Observable<IInitOwner> {
     return this.http.post<IInitOwner>(`/api/invite/owner`, {data});
   }
+
+  public LeaveBoard$(data: any): Observable<any> {
+    return this.http.post<any>(`/api/leave/board/user`, {data});
+  }
+
+  public RemoveInvitedUsers$(data: any): Observable<any> {
+    return this.http.post<any>(`/api/remove/invited/user`, { data });
+  }
 }

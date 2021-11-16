@@ -37,22 +37,22 @@ export class InvitePageComponent implements OnInit {
         this._boardId = data.id;
 
         this.inviteService._key = this._key;
+        // this.router.navigate(['/admin', `boards-page`, this._boardId])
       })
 
-    console.log(this.boardName)
+    // console.log(this.boardName)
 
-
+    // console.log(this._userId)
   }
 
   joinBoard() {
-    console.log('join Board', this._userId, this._key);
-    // this.inviteService.InviteBoard$(this._userId, this._key)
-      // .subscribe((board: IBoard)=> {
-      //       this.boardName = board.title;
-      //       this._boardId = board.id;
-      //       this.inviteService._key = this._key;
-
-        this.router.navigate(['/admin', `boards-page`, this._boardId])
-      // })
+  //   console.log('join Board', this._userId, this._key);
+  //   this.inviteService.InviteBoard$(this._userId, this._key)
+  //     .subscribe((board: IBoard)=> {
+  //           this.boardName = board.title;
+  //           this._boardId = board.id;
+  //           this.inviteService._key = this._key;
+  //           this.router.navigate(['/admin', `boards-page`, this._boardId])
+  //     })
   }
 }

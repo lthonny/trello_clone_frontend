@@ -162,3 +162,9 @@ export interface IAuthResGoogle {
   auth_vie: string
 }
 
+export interface IInvitedUsers {
+  id: string,
+  name: string,
+  owner: boolean
+}
+

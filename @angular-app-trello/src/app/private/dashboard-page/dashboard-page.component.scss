@@ -429,3 +429,32 @@ form {
   }
 }
 
+.material-icons-outlined {
+  cursor: pointer;
+}
+
+.active-task {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.invited-users {
+  position: relative;
+}
+
+.user-invite-delete {
+  font-size: 15px;
+
+  position: absolute;
+  top: -5px;
+  right: -10px;
+}
+
+.leave-board {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}

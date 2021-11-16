@@ -67,7 +67,7 @@ import {SearchPipe} from "../pipes/search.pipe";
       {
         path: 'invite/:id/:key',
         component: InvitePageComponent,
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: '', component: PrivateLayoutComponent, children: [
@@ -79,12 +79,12 @@ import {SearchPipe} from "../pipes/search.pipe";
           {
             path: 'boards',
             component: BoardsComponent,
-            // canActivate: [AuthGuard]
+            canActivate: [AuthGuard]
           },
           {
             path: 'boards-page/:id',
             component: DashboardPageComponent,
-            // canActivate: [AuthGuard]
+            canActivate: [AuthGuard]
           }
         ]
       }

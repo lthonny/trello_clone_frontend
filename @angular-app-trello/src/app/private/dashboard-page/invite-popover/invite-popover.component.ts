@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, Input, OnInit } from '@angular/core';
-// import { InviteService } from '../../services/invite.service';
+import {InviteService} from "../../../services/invite.service";
 
 @Component({
   selector: 'app-invite-popover',
@@ -14,7 +14,8 @@ export class InvitePopoverComponent implements OnInit {
   isCreated = false
 
   constructor(
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    // private inviteService: InviteService
   ) { }
 
   ngOnInit(): void {
@@ -33,8 +34,8 @@ export class InvitePopoverComponent implements OnInit {
   }
 
   createInviteWithLink(boardId: number) {
-    // this.inviteService.fetchKey(boardId).subscribe( (response: any) => {
-    //   this.invite = `http://localhost:4200/invite/${response.key}`
-    // })
+  //   this.inviteService.InviteKey$(boardId).subscribe( (response: any) => {
+  //     this.invite = `http://localhost:4200/invite/${response.key}`
+  //   })
   }
 }
