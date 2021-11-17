@@ -33,7 +33,7 @@ import {TaskDescriptionComponent} from "./task-description/task-description.comp
 })
 export class DashboardPageComponent implements OnInit {
   private _userId: string | null = localStorage.getItem('id');
-  public owner!: boolean;
+  public owner: boolean = true;
   private _boardId!: number;
   public _boardName!: string;
   public _key!: string;
@@ -166,7 +166,7 @@ export class DashboardPageComponent implements OnInit {
         board: this._boardId,
         invited: this.invitedUsers
       },
-      height: '800px',
+      height: '700px',
       width: '600px',
     });
 

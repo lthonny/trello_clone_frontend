@@ -38,7 +38,9 @@ export class TaskDescriptionComponent implements OnInit {
   public transactionTask: ITransaction[] = [];
   public transactionDialog: boolean = false;
 
-  public _ownerStatus!: boolean;
+  public ownerStatus!: boolean;
+
+  public task: any = {};
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -54,15 +56,19 @@ export class TaskDescriptionComponent implements OnInit {
     this._taskId = data.item.id;
     this._boardId = this.data.board;
     this._title = data.item.title;
-    this._ownerStatus = data.item.ownerStatus;
-
     this.description = new FormControl(this.data.item.description);
 
-    console.log(this.data)
+    // this.task = this.data;
+
+    // console.log('this._title', this.task)
   }
 
   ngOnInit(): void {
     this.allUsersAssigned();
+    // console.log('this._ownerStatus', this.data);
+    // console.log(this.data.ownerStatus)
+    //
+    // console.log('status: ', this.ownerStatus)
   }
 
   allUsersAssigned() {
@@ -164,7 +170,7 @@ export class TaskDescriptionComponent implements OnInit {
   }
 
   updateTitle() {
-    if (this._ownerStatus) {
+    if (this.data.ownerStatus) {
       const titleBoard = document.querySelector('.dialog-column-title');
 
       if (titleBoard !== null) {
@@ -213,13 +219,17 @@ export class TaskDescriptionComponent implements OnInit {
     // this.dialogRef.close(this.data.item);
   }
 
+  leaveTask() {
+    console.log('gg');
+  }
+
   submit() {
     const descriptionUpdate: IDescriptionUpdate = {
       id: this._taskId,
       description: this.description.value
     }
 
-    if (this._ownerStatus) {
+    if (this.data.ownerStatus) {
       this.taskService.updateDescription(descriptionUpdate)
         .subscribe((task) => {
           this.data.item.description = task.description;

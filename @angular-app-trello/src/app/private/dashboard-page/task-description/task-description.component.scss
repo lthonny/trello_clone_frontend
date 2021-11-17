@@ -124,5 +124,14 @@ textarea {
     cursor: pointer;
     margin-left: 1rem;
   }
-  //justify-content: space-between;
+}
+
+.leave-task {
+  cursor: pointer;
+  font-weight: 500;
+  margin-left: 1rem;
+
+  &:hover {
+    color: #172b4d;
+  }
 }
