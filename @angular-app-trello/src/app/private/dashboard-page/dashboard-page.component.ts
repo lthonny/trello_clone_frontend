@@ -55,6 +55,8 @@ export class DashboardPageComponent implements OnInit {
   public archivedTasks: any = [];
   public showFiller: boolean = false;
 
+  public gg: any = [];
+
   public userActiveTasks = [];
 
   board: Board = new Board('tasks', [
@@ -131,6 +133,8 @@ export class DashboardPageComponent implements OnInit {
       }))
       .subscribe((tasks: any) => {
         console.log('all tasks', tasks);
+        // this.gg = tasks.activeTasks;
+
         if (!tasks.error) {
           this.tasks = tasks.tasks;
           this._boardName = tasks.title;
@@ -170,7 +174,7 @@ export class DashboardPageComponent implements OnInit {
       width: '600px',
     });
 
-    console.log('dialogRef', dialogRef)
+    // console.log('dialogRef', dialogRef);
 
     dialogRef.afterClosed().subscribe((result: DialogData) => {
       if (result.item.nameTaskList === 'To Do') {
@@ -251,17 +255,17 @@ export class DashboardPageComponent implements OnInit {
 
       if (event.previousContainer === event.container) {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-        // this.updatePositionDrops(this.tasks);
-        this.tasks.forEach((task, index) => {
-          const idx = index + 1
-          if (task.order !== index + 1) {
-            task.order = idx;
-            this.tasksService.updateOrder$(this.tasks)
-              .subscribe((tasks) => {
-                this.tasks = tasks;
-              })
-          }
-        })
+        this.updatePositionDrops(this.tasks);
+        // this.tasks.forEach((task, index) => {
+        //   const idx = index + 1
+        //   if (task.order !== index + 1) {
+        //     task.order = idx;
+        //     this.tasksService.updateOrder$(this.tasks)
+        //       .subscribe((tasks) => {
+        //         this.tasks = tasks;
+        //       })
+        //   }
+        // })
       } else {
         transferArrayItem(
           event.previousContainer.data,
@@ -279,25 +283,10 @@ export class DashboardPageComponent implements OnInit {
           newTaskList.push(task);
 
           if (task.nameTaskList !== nameColumn || task.order !== undefined) {
-            this.tasksService.update$(task, nameColumn).subscribe((data: any) => {
-            });
+            this.tasksService.update$(task, nameColumn, this._userId).subscribe((data: any) => {});
           }
           return;
         })
-
-        // const ggArray: any = [];
-        // for (let i = 0; i < newTaskList.length; i++) {
-        //   let gg = {
-        //     id: newTaskList[i].id,
-        //     title: newTaskList[i].title,
-        //     description: newTaskList[i].description,
-        //     nameTaskList: newTaskList[i].nameTaskList,
-        //     createdAt: newTaskList[i].createdAt,
-        //     updatedAt: newTaskList[i].updatedAt,
-        //     order: i
-        //   }
-        //   ggArray.push(gg);
-        // }
       }
     }
   }

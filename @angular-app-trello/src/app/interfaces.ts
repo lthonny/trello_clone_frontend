@@ -35,7 +35,14 @@ export interface ITask {
   createdAt: Date,
   updatedAt: Date,
   order: number
-  archive: boolean
+  archive: boolean,
+  active?: [
+    {
+      id: number,
+      name: string,
+      email: string
+    }
+  ]
 }
 
 export interface ICreateTask {

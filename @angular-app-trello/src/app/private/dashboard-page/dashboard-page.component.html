@@ -41,7 +41,8 @@
       <div class="example-sidenav-content">
         <span class="full-menu" (click)="fullMenu()">
           <button type="button" mat-button (click)="drawer.toggle()"> Меню
-            <mat-icon class="material-icons-outlined" aria-hidden="false" aria-label="Example home icon">more_horiz</mat-icon>
+            <mat-icon class="material-icons-outlined" aria-hidden="false"
+                      aria-label="Example home icon">more_horiz</mat-icon>
           </button>
         </span>
       </div>
@@ -76,13 +77,18 @@
                  cdkDropList
                  [cdkDropListData]="column.tasks"
                  (cdkDropListDropped)="drop($event, column)">
-              <div class="task card-body" *ngFor="let item of column.tasks | searchTask: searchTask" cdkDrag
+              <div class="task card-body" *ngFor="let item of column.tasks | searchTask: searchTask; let i = index"
+                   cdkDrag
                    (click)="openDialog(item)">
                 <span>{{ item.title }}</span>
                 <span *ngIf="owner" class="delete" (click)="removeTask(item.id, item.nameTaskList)">&#x2715;</span>
-                <mat-icon class="material-icons-outlined active-task" *ngIf="!owner">
-                  push_pin
-                </mat-icon>
+                <div *ngIf="!owner">
+                  <div class="active-user" *ngFor="let active of item.active">
+                    <mat-icon class="material-icons-outlined active-task">
+                      push_pin
+                    </mat-icon>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -139,3 +145,4 @@
 <!--  </div>-->
 <!--</div>-->
 
+{{gg | json}}

@@ -39,8 +39,8 @@ export class TaskService {
     return this.http.post<any>(`/api/tasks/updateOrder/${this._id}`, data)
   }
 
-  public update$(data: any, nameList: string): Observable<any> {
-    return this.http.post<any>(`/api/task/update`, {data, nameList})
+  public update$(data: any, nameList: string, userId: string | null): Observable<any> {
+    return this.http.post<any>(`/api/task/update`, {data, nameList, userId})
   }
 
   public updateTask$(id: number, nameList: string): Observable<any> {
