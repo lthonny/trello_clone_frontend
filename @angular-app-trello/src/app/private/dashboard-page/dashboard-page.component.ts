@@ -142,19 +142,102 @@ export class DashboardPageComponent implements OnInit {
           // console.log(this.tasks);
           this.tasks.forEach((task: ITask) => {
             if (task.nameTaskList === 'To Do' && task.archive !== true) {
-              this.taskListToDo.push(task);
+              // if(task.active) {
+                this.taskListToDo.push(task);
+              // } else {
+              //   this.taskListToDo = this.taskListToDo.filter((data: any) => {
+              //     if(data.id !== task.id) {
+                    this.taskListToDo.push(task);
+                  // }
+                // })
+              // }
             }
             if (task.nameTaskList === 'In Progress' && task.archive !== true) {
-              this.taskListInProgress.push(task);
+              // if(task.active) {
+                this.taskListInProgress.push(task);
+              // } else {
+              //   this.taskListInProgress = this.taskListInProgress.filter((data: any) => {
+              //     if(data.id !== task.id) {
+              //       this.taskListInProgress.push(task);
+              //     }
+              //   })
+              // }
             }
             if (task.nameTaskList === 'Coded' && task.archive !== true) {
-              this.taskListCoded.push(task);
+
+              // this.taskListCoded.forEach((task: any) => {
+              //   console.log('task', task)
+              //
+              //   // if() {
+              //   //
+              //   // }
+              // })
+              // if(task.active) {
+              //   // this.taskListCoded = this.taskListCoded.filter((data: any) => {
+              //   //   l;
+              //   // })
+              //   // if()
+              //   // this.taskListCoded.push(task);
+              //
+              //   this.taskListCoded.forEach((task: any) => {
+              //     console.log('task', task)
+              //
+              //     // if() {
+              //     //
+              //     // }
+              //   })
+              // } else {
+              //   // const index = this.taskListCoded.indexOf(task);
+              //   // console.log('index', index)
+              //   // if (index > -1) {
+              //   //   array.splice(index, 1);
+              //   // }
+              //
+              //   // this.taskListCoded.forEach((data: any, i) => {
+              //   //   console.log('data', data)
+              //   // //   if(data.id === task.id) {
+              //   // //     console.log(task)
+              //   // //     // this.taskListCoded.push(task);
+              //   // //     return;
+              //   // //   } else {
+              //   // //     // console.log(task)
+              //   // //     this.taskListCoded.push(task);
+              //   // //   }
+              //   // });
+              //   // console.log(task.id);
+              //
+              // }
+              //   // else {
+              // //   this.taskListCoded = this.taskListCoded.filter((data: any) => {
+              // //       if(data.id !== task.id) {
+              //   //       console.log(data.id)
+                      this.taskListCoded.push(task);
+              //   //     }
+              //     // return task;
+              //   // })
+              // // }
             }
             if (task.nameTaskList === 'Testing' && task.archive !== true) {
-              this.taskListTesting.push(task);
+              // if(task.active) {
+                this.taskListTesting.push(task);
+              // } else {
+                // this.taskListTesting = this.taskListTesting.filter((data: any) => {
+                  // if(data.id !== task.id) {
+                  //   this.taskListTesting.push(task);
+                  // }
+                // })
+              // }
             }
             if (task.nameTaskList === 'Done' && task.archive !== true) {
-              this.taskListDone.push(task);
+              // if(task.active) {
+                this.taskListDone.push(task);
+              // } else {
+              //   this.taskListDone = this.taskListDone.filter((data: any) => {
+              //     if(data.id !== task.id) {
+              //       this.taskListDone.push(task);
+              //     }
+              //   })
+              // }
             }
           })
         }

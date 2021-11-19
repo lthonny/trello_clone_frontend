@@ -17,7 +17,7 @@ export class TaskService {
   ) {}
 
   public getTasks$(id: string): Observable<ITask[]> {
-    return this.http.get<ITask[]>(`/api/tasks/board/${id}`);
+    return this.http.get<ITask[]>(`/api/board/getAllTasks/${id}`);
   }
 
   public create$(data: any): Observable<ITask> {
@@ -36,11 +36,11 @@ export class TaskService {
   }
 
   public updateOrder$(data: any): Observable<any> {
-    return this.http.post<any>(`/api/tasks/updateOrder/${this._id}`, data)
+    return this.http.post<any>(`/api/task/updateOrder/${this._id}`, data);
   }
 
   public update$(data: any, nameList: string, userId: string | null): Observable<any> {
-    return this.http.post<any>(`/api/task/update`, {data, nameList, userId})
+    return this.http.post<any>(`/api/task/update`, {data, nameList, userId});
   }
 
   public updateTask$(id: number, nameList: string): Observable<any> {
@@ -48,7 +48,7 @@ export class TaskService {
   }
 
   public updateDescription(post: IDescriptionUpdate): Observable<any> {
-    return this.http.post<any>(`/api/task/updateDescription`, post)
+    return this.http.post<any>(`/api/task/updateDescription`, post);
   }
 
   public delete$(id: number): Observable<undefined> {
@@ -56,7 +56,6 @@ export class TaskService {
   }
 
   public tasksAllDelete$(id: number, nameTaskList: string): Observable<any> {
-    return this.http.post(`/api/tasks/board/${id}`, {nameTaskList});
+    return this.http.post(`/api/task/allRemove/${id}`, {nameTaskList});
   }
-
 }

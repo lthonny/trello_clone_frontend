@@ -49,19 +49,19 @@ export class AuthService {
 
   public isAuth$(): Observable<undefined> {
     const accessToken = this.tokenService.getToken();
-    return this.http.get<undefined>(`/api/isauth`, {headers: {Authorization: `Bearer ${accessToken}`}})
+    return this.http.get<undefined>(`/api/user/isauth`, {headers: {Authorization: `Bearer ${accessToken}`}})
   }
 
   public singUp$(user: ISingUp): Observable<IAuthResponse> {
-    return this.http.post<IAuthResponse>(`/api/signup`, user);
+    return this.http.post<IAuthResponse>(`/api/user/signup`, user);
   }
 
   public authGoogle$(): Observable<any> {
-    return this.http.get<any>(`/api/google`);
+    return this.http.get<any>(`/api/user/google`);
   }
 
   public singIn$(user: ISingIn): Observable<IAuthResponse> {
-    return this.http.post<IAuthResponse>(`/api/login`, user)
+    return this.http.post<IAuthResponse>(`/api/user/login`, user)
       .pipe(
         catchError(err => this.error.handleError(err)),
         tap((data) => {
@@ -78,7 +78,7 @@ export class AuthService {
   public logout$(): Observable<string> {
     this._isAuthorized.next(false);
     this.removeStorage('id', this._userName, 'token');
-    return this.http.post<string>(`/api/logout`, {});
+    return this.http.post<string>(`/api/user/logout`, {});
   }
 
   private setStorage(id: string, name: string, token: string) {
