@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from 'src/app/services/auth.service';
@@ -35,6 +35,19 @@ export class RegComponent {
     // console.log('gg')
   }
 
+  @HostListener('window:message', ['$event'])
+  onMessage(event: any) {
+    this.receiveMessage(event);
+  }
+
+  receiveMessage(event: any) {
+    if (event.origin !== "http://localhost:4200") {
+      return; 
+    }
+    // (<any>window).popup.postMessage("successfull", "http://localhost:4200");
+    console.log(event.data);
+  }
+
   submit() {
     if (this.form.invalid) {
       return;
@@ -56,8 +69,16 @@ export class RegComponent {
   }
 
   signInWithGoogle() {
-    // window.open('http://localhost:5000/auth/google', "_self");
-    window.open("http://localhost:5000/auth/google", "_blank");
+    window.open('http://localhost:5000/auth/google', "_self");
+    // this.authService.authGoogle$().subscribe((data) => {
+    //   console.log('data', data);
+    // })
+
+    // window.open('http://localhost:5000/auth/google',"mywindow","location=1,status=1,scrollbars=1, width=800,height=800");
+    // let listener = window.addEventListener('message', (message) => {
+    //   //message will contain google user and details
+    //   console.log(message);
+    // });
   }
 
   logout() {

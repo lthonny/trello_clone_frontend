@@ -16,19 +16,19 @@ export class InviteService {
   ) {}
 
   public InviteKey$(id: number): Observable<IInviteKey> {
-    return this.http.get<IInviteKey>(`/api/board/invite/${id}`);
+    return this.http.get<IInviteKey>(`/api/invite/create/${id}`);
   }
 
   public InviteUsers$(key: any): Observable<any> {
-    return this.http.post<any>(`/api/board/key/${key}`, null);
+    return this.http.post<any>(`/api/invite/key/${key}`, null);
   }
 
-  public InviteBoard$(id: string | null, key: string): Observable<any>{
-    return this.http.post<any>(`/api/invite`, {id, key});
+  public InviteBoard$(userId: string | null, key: string): Observable<any>{
+    return this.http.post<any>(`/api/invite`, {userId, key});
   }
 
   public InvitedUsers(boardId: number, userId: string | null, name: string): Observable<IInvitedUsersName> {
-    return this.http.post<IInvitedUsersName>(`/api/invited/users/${boardId}`, {userId, name});
+    return this.http.post<IInvitedUsersName>(`/api/invite/users/${boardId}`, {userId, name});
   }
 
   public Owner$(data: IOwner): Observable<IInitOwner> {
@@ -36,10 +36,10 @@ export class InviteService {
   }
 
   public LeaveBoard$(data: any): Observable<any> {
-    return this.http.post<any>(`/api/leave/board/user`, {data});
+    return this.http.post<any>(`/api/invite/leave`, {data});
   }
 
   public RemoveInvitedUsers$(data: any): Observable<any> {
-    return this.http.post<any>(`/api/remove/invited/user`, { data });
+    return this.http.post<any>(`/api/invite/remove`, { data });
   }
 }

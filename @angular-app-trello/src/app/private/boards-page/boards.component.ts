@@ -4,6 +4,8 @@ import {BoardService} from "../../services/board.service";
 import {InviteService} from "../../services/invite.service";
 import {IBoard} from "../../interfaces";
 import {CookieService} from "ngx-cookie-service";
+import {AuthService} from "../../services/auth.service";
+
 
 @Component({
   selector: 'app-boards',
@@ -20,13 +22,30 @@ export class BoardsComponent implements OnInit {
     private boardService: BoardService,
     private dialog: MatDialog,
     public inviteService: InviteService,
-    private cookies: CookieService
+    private cookies: CookieService,
+    private authService: AuthService
   ) {
     // console.log('cookies id', this.cookies.get('id'));
     // console.log('cookies name', this.cookies.get('name'));
     // localStorage.setItem('id', this.cookies.get('id'));
     // localStorage.setItem('name', this.cookies.get('name'));
+    // this.authService.authGoogle$().subscribe((data) => {
+    //   console.log('data', data);
+    // })
   }
+
+  // @HostListener('window:message', ['$event'])
+  // onMessage(event: any) {
+  //   this.receiveMessage(event);
+  // }
+
+  // // receiveMessage(event: any) {
+  // //   if (event.origin !== "http://localhost:4200") {
+  // //     return; 
+  // //   }
+  // //   (<any>window).popup.postMessage("successfull", "http://localhost:4200");
+  // //   console.log(event.data);
+  // // }
 
   ngOnInit() {
     this.boardService.getBoards$()
