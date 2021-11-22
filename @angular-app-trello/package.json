@@ -47,5 +47,6 @@
   "engines": {
     "node": "14.17.6",
     "npm": "7.21.1"
-  }
+  },
+  "engineStrict": true
 }
