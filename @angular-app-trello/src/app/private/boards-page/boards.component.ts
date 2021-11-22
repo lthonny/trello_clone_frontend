@@ -29,9 +29,9 @@ export class BoardsComponent implements OnInit {
     // console.log('cookies name', this.cookies.get('name'));
     // localStorage.setItem('id', this.cookies.get('id'));
     // localStorage.setItem('name', this.cookies.get('name'));
-    // this.authService.authGoogle$().subscribe((data) => {
-    //   console.log('data', data);
-    // })
+    this.authService.authGoogle$().subscribe((data) => {
+      console.log('data', data);
+    })
   }
 
   // @HostListener('window:message', ['$event'])
@@ -41,7 +41,7 @@ export class BoardsComponent implements OnInit {
 
   // // receiveMessage(event: any) {
   // //   if (event.origin !== "http://localhost:4200") {
-  // //     return; 
+  // //     return;
   // //   }
   // //   (<any>window).popup.postMessage("successfull", "http://localhost:4200");
   // //   console.log(event.data);
@@ -55,7 +55,8 @@ export class BoardsComponent implements OnInit {
         }
       });
     // console.log('board', this.boardService.isIdBoard, this.inviteService._key);
-    this.inviteService.InviteBoard$(this.boardService.isIdBoard, this.boardService.isKeyBoard)
+
+    this.inviteService.InviteBoard$(localStorage.getItem('id'), this.boardService.isKeyBoard)
       .subscribe((board:  any) => {
         if(board !== 'Key not found') {
           this.boards.push(board);

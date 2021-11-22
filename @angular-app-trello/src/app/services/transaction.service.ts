@@ -13,6 +13,6 @@ export class TransactionService {
   ) {}
 
   public fetchTransaction(id: number, board_id: number): Observable<IResTransaction[]> {
-    return this.http.post<IResTransaction[]>(`/api/task/transaction/${id}`, { board_id });
+    return this.http.post<IResTransaction[]>(`/api/transaction/${id}`, { board_id });
   }
 }

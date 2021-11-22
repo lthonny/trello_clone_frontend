@@ -47,12 +47,12 @@ export class TaskService {
     return this.http.post<any>(`/api/task/update/taskList`, {nameList});
   }
 
-  public updateDescription(post: IDescriptionUpdate): Observable<any> {
-    return this.http.post<any>(`/api/task/updateDescription`, post);
+  public updateDescription(userId: string | null, post: IDescriptionUpdate): Observable<any> {
+    return this.http.post<any>(`/api/task/updateDescription`, {userId, post});
   }
 
   public delete$(id: number): Observable<undefined> {
-    return this.http.delete<undefined>(`/api/task/${id}`);
+    return this.http.delete<undefined>(`/api/task/delete/${id}`);
   }
 
   public tasksAllDelete$(id: number, nameTaskList: string): Observable<any> {

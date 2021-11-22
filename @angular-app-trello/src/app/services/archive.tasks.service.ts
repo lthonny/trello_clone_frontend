@@ -16,7 +16,7 @@ export class ArchiveTasksService {
   ) {}
 
   public getArchive$(id: number): Observable<IAllArchiveTasks> {
-    return this.http.get<IAllArchiveTasks>(`/api/tasks/archive/${id}`)
+    return this.http.get<IAllArchiveTasks>(`/api/task/archive/${id}`)
       .pipe(tap((response: IAllArchiveTasks) => {
         this.archivedTasks.push(response.tasks);
       }))

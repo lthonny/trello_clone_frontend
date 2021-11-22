@@ -114,6 +114,7 @@ export interface IOwner {
 }
 
 export interface IInitOwner {
+  title?: any,
   userId: number,
   owner: boolean
 }

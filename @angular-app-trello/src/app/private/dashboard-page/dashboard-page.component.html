@@ -6,7 +6,7 @@
         <div class="tasks-container">
           <div class="task card-body task-archive-view" *ngFor="let task of archiveService.archivedTasks[0]">
             <span>{{ task.title }}</span>
-            <mat-icon class="material-icons-outlined" (click)="unzip(task)">
+            <mat-icon class="material-icons-outlined" (click)="unzip(task)" *ngIf="owner">
               swipe_right
             </mat-icon>
           </div>
@@ -78,9 +78,8 @@
                  [cdkDropListData]="column.tasks"
                  (cdkDropListDropped)="drop($event, column)">
               <div class="task card-body" *ngFor="let item of column.tasks | searchTask: searchTask; let i = index"
-                   cdkDrag
-                   (click)="openDialog(item)">
-                <span>{{ item.title }}</span>
+                   cdkDrag>
+                <span (click)="openDialog(item)">{{ item.title }}</span>
                 <span *ngIf="owner" class="delete" (click)="removeTask(item.id, item.nameTaskList)">&#x2715;</span>
                 <div *ngIf="!owner">
                   <div class="active-user" *ngFor="let active of item.active">
@@ -144,5 +143,3 @@
 <!--    </form>-->
 <!--  </div>-->
 <!--</div>-->
-
-{{gg | json}}

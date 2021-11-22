@@ -30,6 +30,10 @@ export class BoardService {
     private http: HttpClient
   ) {}
 
+  // public success$(): Observable<any> {
+  //   return this.http.get<any>(`/auth/login/failed`);
+  // }
+
   public getBoard$(id: number): Observable<any> {
     return this.http.get<any>(`/api/board/getAllTasks/${id}`);
   }

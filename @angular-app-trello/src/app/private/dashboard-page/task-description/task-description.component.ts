@@ -41,6 +41,7 @@ export class TaskDescriptionComponent implements OnInit {
   public ownerStatus!: boolean;
 
   public task: any = {};
+  public userId: null | string = localStorage.getItem('id');
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -230,7 +231,7 @@ export class TaskDescriptionComponent implements OnInit {
     }
 
     if (this.data.ownerStatus) {
-      this.taskService.updateDescription(descriptionUpdate)
+      this.taskService.updateDescription(this.userId, descriptionUpdate)
         .subscribe((task) => {
           this.data.item.description = task.description;
         });
