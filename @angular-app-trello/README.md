@@ -1,27 +1,44 @@
-# Auth
+# Clone Trello frontend
+######Repository backend https://github.com/lthonny/vanilla-todo-client
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.4.
+### Application functionality:
+#### The board creator can: 
+- authorization and registration of new users 
+- create, delete, rename boards
+- add, delete, change description and title, move from board to board
+- tasks can be searched by title, description and assigned users
+- inviting new or old users to the board using a special link works
+- people can be assigned to the task
+- view task history
+- tasks can be zipped and unzipped
+- google authorization is under construction
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### Core technology stack:
+ - Angular 
 
-## Code scaffolding
+ - Angular Material
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+ - Bootstrap
 
-## Build
+### 1) To download all project dependencies, write:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+    `npm ci`
 
-## Running unit tests
+### 2) Run npm start
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    `npm run start`
 
-## Running end-to-end tests
+### 🤝 Connect with me:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+[<img alt="thonny | telegram" src="https://img.shields.io/badge/telegram-4680C2.svg?&style=for-the-badge&logo=telegram&logoColor=fff" />][telegram]
+[<img alt="thonny | Instagram" src="https://img.shields.io/badge/instagram-E4405F.svg?&style=for-the-badge&logo=instagram&logoColor=fff" />][instagram]
+[<img alt="thonny | VK" src="https://img.shields.io/badge/vk-4680C2.svg?&style=for-the-badge&logo=vk&logoColor=fff" />][vk]
 
-## Further help
+[vk]: https://vk.com/thonny_v
+[telegram]: https://t.me/thonnyDev
+[instagram]: https://www.instagram.com/_th_vasiliy_/
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
+
