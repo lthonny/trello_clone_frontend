@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {IAuthResponse} from "../interfaces";
 import {Observable} from "rxjs";
 import {CookieService} from "ngx-cookie-service";
+import {IAuthResponse} from "../interfaces";
 
 @Injectable({
   providedIn: 'root'

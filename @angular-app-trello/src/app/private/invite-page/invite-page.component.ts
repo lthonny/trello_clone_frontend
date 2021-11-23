@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 
 import {InviteService} from "../../services/invite.service";
 import {AuthService} from "../../services/auth.service";
-
-import {IBoard} from "../../interfaces";
 
 @Component({
   selector: 'app-invite-page',
@@ -13,20 +11,20 @@ import {IBoard} from "../../interfaces";
 })
 export class InvitePageComponent implements OnInit {
 
-  // public email: ;
-  private _userId: string | null = localStorage.getItem('id');
-  public userName: string | null = localStorage.getItem('name');
+  private readonly _userId: string | null = localStorage.getItem('id');
+  public readonly _userName: string | null = localStorage.getItem('name');
 
+  private _key: string = '';
   public _boardId!: number;
   public boardName: string = '';
-  private _key: string = '';
 
   constructor(
     private inviteService: InviteService,
     private route: ActivatedRoute,
     private router: Router,
     public authService: AuthService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => this._key = params['key']);
@@ -36,22 +34,18 @@ export class InvitePageComponent implements OnInit {
         this._boardId = data.id;
 
         this.inviteService._key = this._key;
-        // this.router.navigate(['/admin', `boards-page`, this._boardId])
+        this.router.navigate(['/admin', `boards-page`, this._boardId])
       })
-
-    // console.log(this.boardName)
-
-    // console.log(this._userId)
   }
 
-  joinBoard() {
-  //   console.log('join Board', this._userId, this._key);
-    this.inviteService.InviteBoard$(this._userId, this._key)
-      .subscribe((board: IBoard)=> {
-            this.boardName = board.title;
-            this._boardId = board.id;
-            this.inviteService._key = this._key;
-            this.router.navigate(['/admin', `boards-page`, this._boardId])
-      })
+  joinBoard(): void {
+
+    // this.inviteService.InviteBoard$(this._userId, this._key)
+    //   .subscribe((board: IBoard) => {
+    //     this.boardName = board.title;
+    //     this._boardId = board.id;
+    //     this.inviteService._key = this._key;
+    //     this.router.navigate(['/admin', `boards-page`, this._boardId])
+    //   })
   }
 }

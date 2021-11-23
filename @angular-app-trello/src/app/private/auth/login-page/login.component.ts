@@ -28,11 +28,11 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(
-    public authService: AuthService,
-    public tokenService: TokenService,
+    private authService: AuthService,
+    private tokenService: TokenService,
     public errorService: ErrorService,
-    public router: Router,
-    public route: ActivatedRoute
+    private router: Router,
+    private route: ActivatedRoute
   ) {
   }
 
@@ -60,11 +60,8 @@ export class LoginComponent implements OnInit {
       password: this.form.value.password
     }
 
-    console.log(user)
-
     this.authService.singIn$(user)
       .subscribe((response: IAuthResponse) => {
-        console.log('response', response)
         this.tokenService.setToken(response.accessToken);
         this.form.reset();
         this.router.navigate(['/admin', 'boards']);

@@ -12,7 +12,6 @@ import {
   DialogData,
   IArchive,
   IDescriptionUpdate,
-  IResAssigned,
   IResTransaction,
   ITransaction,
   IUAssigned
@@ -39,16 +38,14 @@ export class TaskDescriptionComponent implements OnInit {
   public transactionDialog: boolean = false;
 
   public ownerStatus!: boolean;
-
-  public task: any = {};
   public userId: null | string = localStorage.getItem('id');
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    public data: any,
+    public data: DialogData,
     public dialogRef: MatDialogRef<TaskDescriptionComponent>,
-    private router: Router,
-    private route: ActivatedRoute,
+    public router: Router,
+    public route: ActivatedRoute,
     public taskService: TaskService,
     public archiveService: ArchiveTasksService,
     private assignedService: AssignedService,
@@ -58,56 +55,38 @@ export class TaskDescriptionComponent implements OnInit {
     this._boardId = this.data.board;
     this._title = data.item.title;
     this.description = new FormControl(this.data.item.description);
-
-    // this.task = this.data;
-
-    // console.log('this._title', this.task)
   }
 
   ngOnInit(): void {
     this.allUsersAssigned();
-    // console.log('this._ownerStatus', this.data);
-    // console.log(this.data.ownerStatus)
-    //
-    // console.log('status: ', this.ownerStatus)
   }
 
-  allUsersAssigned() {
+  allUsersAssigned(): void {
     this.assignedService.allUsers$({
         taskId: this._taskId,
         boardId: this._boardId
       }
     ).subscribe((data: any) => {
-      // this.owner = data.owner;
-      // console.log('this.owner', data);
-
       data.allUsers.forEach((user: IUAssigned) => {
         if (user.name !== data.owner.name) {
-          this.users = this.users.filter((data: any) => data.id !== user.id);
+          this.users = this.users.filter((data: IUAssigned) => data.id !== user.id);
           this.users.push(user);
         }
       });
       data.userAssigned.forEach((user: any) => {
         if (user.name !== data.owner.name) {
-          this.assignedUsers = this.assignedUsers.filter((data: any) => data.id !== user.id);
+          this.assignedUsers = this.assignedUsers.filter((data: IUAssigned) => data.id !== user.id);
           this.assignedUsers.push(user);
         }
       })
     })
   }
 
-  close() {
-    // console.log('this.data.item.title', this.data.item.title, 'this._title', this._title)
-    // this.dialogRef.close(this.data.item);
-    // if (this.data.item.title !== this._title) {
-    //
-    // } else {
-    //
-    // }
+  close(): void {
     this.dialogRef.close(this.assignedUsers);
   }
 
-  assignUser(user: IUAssigned) {
+  assignUser(user: IUAssigned): void {
     this.assignedService.assignUser$(
       {
         userId: user.id,
@@ -120,7 +99,7 @@ export class TaskDescriptionComponent implements OnInit {
     })
   }
 
-  removeAssignedUser(user: IUAssigned) {
+  removeAssignedUser(user: IUAssigned): void {
     this.assignedService.removeAssignedUser$({
       userId: user.id,
       taskId: this._taskId,
@@ -130,7 +109,7 @@ export class TaskDescriptionComponent implements OnInit {
     });
   }
 
-  transaction() {
+  transaction(): void {
     this.transactionTask.length = 0;
     this.transactionService.fetchTransaction(this._taskId, this._boardId)
       .subscribe((data: IResTransaction[]) => {
@@ -170,7 +149,7 @@ export class TaskDescriptionComponent implements OnInit {
       })
   }
 
-  updateTitle() {
+  updateTitle(): void {
     if (this.data.ownerStatus) {
       const titleBoard = document.querySelector('.dialog-column-title');
 
@@ -199,7 +178,7 @@ export class TaskDescriptionComponent implements OnInit {
     }
   }
 
-  showDetails() {
+  showDetails(): void {
     if (this.transactionDialog) {
       this.transactionDialog = false;
     } else {
@@ -208,23 +187,15 @@ export class TaskDescriptionComponent implements OnInit {
     }
   }
 
-  archive() {
+  archive(): void {
     const task: IArchive = this.data.item;
-
     this.archiveService.setArchive$(task)
       .subscribe(() => {
-        // this.archiveService.archivedTasks[0].push(task);
         this.dialogRef.close(this.data);
       })
-
-    // this.dialogRef.close(this.data.item);
   }
 
-  leaveTask() {
-    console.log('gg');
-  }
-
-  submit() {
+  submit(): void {
     const descriptionUpdate: IDescriptionUpdate = {
       id: this._taskId,
       description: this.description.value
@@ -236,11 +207,6 @@ export class TaskDescriptionComponent implements OnInit {
           this.data.item.description = task.description;
         });
     }
-
-    // this.taskService.updateDescription(descriptionUpdate)
-    //   .subscribe((task) => {
-    //     this.data.item.description = task.description;
-    //   });
   }
 }
 

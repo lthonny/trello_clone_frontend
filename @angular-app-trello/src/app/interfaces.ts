@@ -67,6 +67,7 @@ export interface IArchive {
 
 export interface DialogData {
   board: number,
+  ownerStatus: boolean,
   invited: [{
     name: string,
     owner: boolean
@@ -119,13 +120,6 @@ export interface IInitOwner {
   owner: boolean
 }
 
-export interface IAssignedUser {
-  id: number,
-  name: string,
-  owner: boolean,
-  assigned?: boolean
-}
-
 export interface IResTransaction {
   id: number,
   task_id: number,
@@ -164,15 +158,25 @@ export interface IAllArchiveTasks {
   tasks?: IArchive[]
 }
 
-export interface IAuthResGoogle {
-  name: string,
-  email: string,
-  auth_vie: string
-}
-
 export interface IInvitedUsers {
   id: string,
   name: string,
   owner: boolean
 }
 
+export interface IColumn {
+  name: string,
+  tasks: ITask[]
+}
+
+// export interface IAllInvitedUsers {
+//   allUsers: [
+//     id: number,
+//     name: string
+//   ],
+//   userAssigned: IUAssigned,
+//   owner: {
+//     id: number,
+//     name: string
+//   }
+// }

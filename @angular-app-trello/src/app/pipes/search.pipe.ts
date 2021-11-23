@@ -9,7 +9,7 @@ export class SearchPipe implements PipeTransform {
     if(!search.trim()) {
       return tasks;
     }
-    return tasks.filter((task: any, index: number) => {
+    return tasks.filter((task: any) => {
       if(task.title === search) {
         return task.title.toLowerCase().includes(search.toLowerCase());
       }
@@ -19,8 +19,6 @@ export class SearchPipe implements PipeTransform {
       }
 
       if(task.active) {
-        console.log(task.active);
-
         if(task.active[0].name === search) {
           return task.active[0].name.toLowerCase().includes(search.toLowerCase());
         }
@@ -28,25 +26,6 @@ export class SearchPipe implements PipeTransform {
           return task.active[0].email.toLowerCase().includes(search.toLowerCase());
         }
       }
-
-
-      // if(task.active.name === search) {
-      //   console.log('gg');
-      //   return task.title.toLowerCase().includes(search.toLowerCase());
-      // }
-
-      // if(task.active.name === search) {
-      //   console.log(task.active.name)
-      //   // return task.active.name.toLowerCase().includes(search.toLowerCase());
-      // }
-
-      // if(task.active.email === search) {
-      //   if(task.active.email) {
-      //     return task.active.name.toLowerCase().includes(search.toLowerCase());
-      //   }
-      //   console.log(task.active.name)
-
-      // }
     })
   }
 }

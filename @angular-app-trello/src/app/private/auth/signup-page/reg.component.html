@@ -18,7 +18,8 @@
       </div>
 
       <div class="mb-3" [ngClass]="{invalid: form.get('password')?.touched && form.get('password')?.invalid}">
-        <input id="password" class="form-control bg-light" type="password" placeholder="Enter password" formControlName="password">
+        <input id="password" class="form-control bg-light" type="password" placeholder="Enter password"
+               formControlName="password">
         <div *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="validation">
         </div>
       </div>
@@ -34,9 +35,6 @@
       </div>
     </div>
   </form>
-
-<!--  <div (click)="signInWithGoogle()">вход</div>-->
-<!--  <div (click)="logout()">logout</div>-->
 
 </div>
 

@@ -16,8 +16,9 @@ import {
   DialogData,
   IAllArchiveTasks,
   IArchive,
-  IBoard,
-  ICreateTask, IInvitedUsers,
+  IBoard, IColumn,
+  ICreateTask,
+  IInvitedUsers,
   IInviteKey,
   ITask
 } from "../../interfaces";
@@ -55,8 +56,6 @@ export class DashboardPageComponent implements OnInit {
 
   public archivedTasks: any = [];
   public showFiller: boolean = false;
-
-  public gg: any = [];
 
   public userActiveTasks = [];
 
@@ -109,10 +108,6 @@ export class DashboardPageComponent implements OnInit {
           if (!user.owner) {
             this.invitedUsers = this.invitedUsers.filter((data: any) => data.id !== user.id);
             this.invitedUsers.push({id: user.id, name: user.name, owner: user.owner});
-
-            // if(user) {
-            //   this.userActiveTasks.push({id: user.id, name: user.name, owner: user.owner});
-            // }
           }
         })
       })
@@ -163,7 +158,6 @@ export class DashboardPageComponent implements OnInit {
   }
 
   openDialog(item: ITask): void {
-    // if (this.owner) {
     const dialogRef = this.dialog.open(TaskDescriptionComponent, {
       data: {
         item,
@@ -176,82 +170,47 @@ export class DashboardPageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result: DialogData) => {
-      if(result) {
+      if (result) {
         if (result.item.nameTaskList === 'To Do') {
-          const index = this.taskListToDo.findIndex((task: any) => task.id === result.item.id);
+          const index = this.taskListToDo.findIndex((task: ITask) => task.id === result.item.id);
           if (index !== -1) {
             this.taskListToDo.splice(index, 1);
             this.archiveService.archivedTasks[0].push(result.item);
           }
         }
         if (result.item.nameTaskList === 'In Progress') {
-          const index = this.taskListInProgress.findIndex((task) => task.id === result.item.id);
+          const index = this.taskListInProgress.findIndex((task: ITask) => task.id === result.item.id);
           if (index !== -1) {
             this.taskListInProgress.splice(index, 1);
             this.archiveService.archivedTasks[0].push(result.item);
           }
         }
         if (result.item.nameTaskList === 'Coded') {
-          const index = this.taskListCoded.findIndex((task) => task.id === result.item.id);
+          const index = this.taskListCoded.findIndex((task: ITask) => task.id === result.item.id);
           if (index !== -1) {
             this.taskListCoded.splice(index, 1);
             this.archiveService.archivedTasks[0].push(result.item);
           }
         }
         if (result.item.nameTaskList === 'Testing') {
-          const index = this.taskListTesting.findIndex((task) => task.id === result.item.id);
+          const index = this.taskListTesting.findIndex((task: ITask) => task.id === result.item.id);
           if (index !== -1) {
             this.taskListTesting.splice(index, 1);
             this.archiveService.archivedTasks[0].push(result.item);
           }
         }
         if (result.item.nameTaskList === 'Done') {
-          const index = this.taskListDone.findIndex((task) => task.id === result.item.id);
+          const index = this.taskListDone.findIndex((task: ITask) => task.id === result.item.id);
           if (index !== -1) {
             this.taskListTesting.splice(index, 1);
             this.archiveService.archivedTasks[0].push(result.item);
           }
         }
       }
-
-      // result.forEach((resultUsers: any) => {
-      //   console.log(resultUsers)
-      // if(item.nameTaskList === 'Coded' && resultUsers.task_id === item.id) {
-      //   // console.log('===');
-      //
-      //   this.taskListCoded.forEach((task: any) => {
-      //     if(task.id === resultUsers.task_id) {
-      //       console.log(task);
-      //       this.taskListCoded = this.taskListCoded.filter((data: any) => {
-      //         // console.log(data.id !== task.id)
-      //         return data.id !== task.id;
-      //       })
-      //
-      //       const newTask: any = {
-      //         id: task.id,
-      //         title: task.title,
-      //         description: task.description,
-      //         nameTaskList: task.nameTaskList,
-      //         board_id: task.board_id,
-      //         createdAt: task.createdAt,
-      //         updatedAt: task.updatedAt,
-      //         users: [{
-      //           name: resultUsers.name
-      //         }]
-      //       }
-      //
-      //       this.taskListCoded.push(newTask);
-      //       // console.log('this.taskListCoded', this.taskListCoded);
-      //     }
-      //   })
-      // console.log(this.taskListCoded)
-      // }
-      // })
     });
-    // }
   }
 
-  drop(event: CdkDragDrop<string[]>, column: any): void {
+  drop(event: CdkDragDrop<string[]>, column: IColumn): void {
     if (this.owner) {
       const nameColumn = column.name;
 
@@ -274,12 +233,13 @@ export class DashboardPageComponent implements OnInit {
       })
 
       this.sortTasks(event.container.data);
-      this.tasksService.updateOrder$(event.container.data).subscribe(() => {})
+      this.tasksService.updateOrder$(event.container.data).subscribe(() => {
+      })
 
       if (event.container.data.length >= 0) {
-        let newTaskList: any = [];
+        let newTaskList: ITask[] = [];
 
-        event.container.data.forEach((task: any, index) => {
+        event.container.data.forEach((task: any) => {
           newTaskList.push(task);
 
           if (task.nameTaskList !== nameColumn || task.order !== undefined) {
@@ -345,10 +305,8 @@ export class DashboardPageComponent implements OnInit {
                 if (title !== this._boardName) {
                   this.owner = owner;
                   this._boardName = title;
-                  console.log('owner->', this.owner);
                 } else {
                   this.owner = owner;
-                  console.log('owner->', this.owner);
                 }
               });
           }
@@ -425,12 +383,9 @@ export class DashboardPageComponent implements OnInit {
   }
 
   removeInvited(user: IInvitedUsers) {
-    console.log('user', user);
-
-    const data = {board_id: this._boardId, user};
+    const data = { board_id: this._boardId, user };
 
     this.inviteService.RemoveInvitedUsers$(data).subscribe((data) => {
-      // console.log('RemoveInvitedUsers(user)', data)
       if (data === 'user removed from board') {
         this.invitedUsers = this.invitedUsers.filter((data) => data.id !== user.id);
       }
@@ -509,7 +464,7 @@ export class DashboardPageComponent implements OnInit {
             }
           })
       } else {
-        console.log('данное поле не должно быть пустым');
+        console.log('this field must not be empty');
       }
     }
   }

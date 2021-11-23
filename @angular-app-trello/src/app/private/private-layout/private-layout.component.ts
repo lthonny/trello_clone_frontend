@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
-
+import {Router} from '@angular/router';
+import {AuthService} from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-private-layout',
@@ -16,9 +15,10 @@ export class PrivateLayoutComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
-  logout() {
+  logout(): void {
     this.authService.logout$().subscribe(() => {
       this.router.navigate(['/']);
     });

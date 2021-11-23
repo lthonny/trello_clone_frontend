@@ -22,8 +22,6 @@ import {PrivateLayoutComponent} from './private-layout/private-layout.component'
 import {TaskDescriptionComponent} from "./dashboard-page/task-description/task-description.component";
 import {DashboardPageComponent} from './dashboard-page/dashboard-page.component';
 import {AddBoardComponent, BoardsComponent} from './boards-page/boards.component';
-import {SidenavAutosizeComponent} from "../popovers/sidenav-autosize/sidenav-autosize.component";
-import {PopoverComponent} from "../popovers/popever/popover.component";
 import {InvitePageComponent} from './invite-page/invite-page.component';
 import {AuthInterceptor} from "../services/auth.interceptor";
 import {LoginComponent} from './auth/login-page/login.component';
@@ -39,9 +37,7 @@ import {SearchPipe} from "../pipes/search.pipe";
     RegComponent,
     DashboardPageComponent,
     BoardsComponent,
-    PopoverComponent,
     TaskDescriptionComponent,
-    SidenavAutosizeComponent,
     InvitePageComponent,
     AddBoardComponent,
     InvitePopoverComponent,
@@ -56,36 +52,13 @@ import {SearchPipe} from "../pipes/search.pipe";
     DragDropModule,
 
     RouterModule.forChild([
-      {
-        path: 'login-page',
-        component: LoginComponent
-      },
-      {
-        path: 'signup-page',
-        component: RegComponent
-      },
-      {
-        path: 'invite/:id/:key',
-        component: InvitePageComponent,
-        // canActivate: [AuthGuard]
-      },
-      {
-        path: '', component: PrivateLayoutComponent, children: [
-          {
-            path: '',
-            redirectTo: '/admin/login-page',
-            pathMatch: 'full'
-          },
-          {
-            path: 'boards',
-            component: BoardsComponent,
-            // canActivate: [AuthGuard]
-          },
-          {
-            path: 'boards-page/:id',
-            component: DashboardPageComponent,
-            // canActivate: [AuthGuard]
-          }
+      { path: 'login-page', component: LoginComponent },
+      { path: 'signup-page', component: RegComponent },
+      { path: 'invite/:id/:key', component: InvitePageComponent, canActivate: [AuthGuard]},
+      { path: '', component: PrivateLayoutComponent, children: [
+          { path: '', redirectTo: '/admin/login-page', pathMatch: 'full' },
+          { path: 'boards', component: BoardsComponent, canActivate: [AuthGuard] },
+          { path: 'boards-page/:id', component: DashboardPageComponent, canActivate: [AuthGuard] }
         ]
       }
     ]),

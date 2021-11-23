@@ -39,12 +39,12 @@ export class AuthService {
     private error: ErrorService,
     private tokenService: TokenService
   ) {
-    // this.isAuth$()
-    //   .subscribe(() => {
-    //     this._isAuthorized.next(true);
-    //   }, () => {
-    //     this._isAuthorized.next(false);
-    //   })
+    this.isAuth$()
+      .subscribe(() => {
+        this._isAuthorized.next(true);
+      }, () => {
+        this._isAuthorized.next(false);
+      })
   }
 
   public isAuth$(): Observable<undefined> {
