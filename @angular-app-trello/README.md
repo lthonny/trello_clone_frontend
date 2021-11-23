@@ -1,5 +1,5 @@
 # Clone Trello frontend
-######Repository backend https://github.com/lthonny/vanilla-todo-client
+Repository backend https://github.com/lthonny/vanilla-todo-client
 
 ### Application functionality:
 #### The board creator can: 
