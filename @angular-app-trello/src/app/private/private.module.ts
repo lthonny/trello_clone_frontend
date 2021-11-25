@@ -4,7 +4,6 @@ import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
-import {QuillModule} from "ngx-quill";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {MaterialModule} from "../material.module";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
@@ -48,7 +47,6 @@ import {SearchPipe} from "../pipes/search.pipe";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    QuillModule.forRoot(),
     DragDropModule,
 
     RouterModule.forChild([
@@ -69,7 +67,6 @@ import {SearchPipe} from "../pipes/search.pipe";
   exports: [
     RouterModule,
     HttpClientModule,
-    QuillModule,
     NgbModule
   ],
   providers: [
