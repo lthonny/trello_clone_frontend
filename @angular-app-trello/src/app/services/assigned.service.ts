@@ -19,7 +19,7 @@ export class AssignedService {
     return this.http.post<IUAssigned>(`/api/assigned/create/${data.taskId}`, { data });
   }
 
-  public removeAssignedUser$(data: {userId: number, taskId: number, boardId: number}): Observable<any> {
-    return this.http.post<any>(`/api/assigned/remove/${data.taskId}`, { data });
+  public removeAssignedUser$(data: {userId: number, taskId: number, boardId: number}): Observable<string> {
+    return this.http.post<string>(`/api/assigned/remove/${data.taskId}`, { data });
   }
 }

@@ -7,7 +7,6 @@ import { AuthService } from "./auth.service";
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-
   constructor(
     private auth: AuthService,
     private router: Router
@@ -17,7 +16,6 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean| UrlTree> | Promise<boolean| UrlTree> | boolean| UrlTree {
-    // console.log('guard');
     if(!this.auth.isAuthorized){
       return this.router.createUrlTree(['/admin', 'login-page']);
     }

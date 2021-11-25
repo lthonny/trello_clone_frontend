@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 
 import {InviteService} from "../../services/invite.service";
 import {AuthService} from "../../services/auth.service";
+import {IBoard} from "../../interfaces";
 
 @Component({
   selector: 'app-invite-page',
@@ -28,8 +29,8 @@ export class InvitePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => this._key = params['key']);
-    this.inviteService.InviteBoard$(this._userId, this._key)
-      .subscribe((data) => {
+    this.inviteService.inviteBoard$(this._userId, this._key)
+      .subscribe((data: IBoard) => {
         this.boardName = data.title;
         this._boardId = data.id;
 

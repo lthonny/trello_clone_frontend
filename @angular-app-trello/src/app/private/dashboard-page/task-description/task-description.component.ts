@@ -104,7 +104,7 @@ export class TaskDescriptionComponent implements OnInit {
       userId: user.id,
       taskId: this._taskId,
       boardId: this._boardId
-    }).subscribe((data: IUAssigned) => {
+    }).subscribe((data: string) => {
       this.assignedUsers = this.assignedUsers.filter((user: IUAssigned) => user.id !== user.id);
     });
   }
@@ -189,7 +189,7 @@ export class TaskDescriptionComponent implements OnInit {
 
   archive(): void {
     const task: IArchive = this.data.item;
-    this.archiveService.setArchive$(task)
+    this.archiveService.archiveTask$(task)
       .subscribe(() => {
         this.dialogRef.close(this.data);
       })
@@ -202,7 +202,7 @@ export class TaskDescriptionComponent implements OnInit {
     }
 
     if (this.data.ownerStatus) {
-      this.taskService.updateDescription(this.userId, descriptionUpdate)
+      this.taskService.updateDescription$(this.userId, descriptionUpdate)
         .subscribe((task) => {
           this.data.item.description = task.description;
         });

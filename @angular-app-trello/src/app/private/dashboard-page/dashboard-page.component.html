@@ -4,7 +4,7 @@
       <div class="sidenav-body">
         <h4 class="sidenav-menu">Архив задач</h4>
         <div class="tasks-container">
-          <div class="task card-body task-archive-view" *ngFor="let task of archiveService.archivedTasks[0]">
+          <div class="task card-body task-archive-view" *ngFor="let task of archiveService.archivedTasks">
             <span>{{ task.title }}</span>
             <mat-icon class="material-icons-outlined" (click)="unzip(task)" *ngIf="owner">
               swipe_right

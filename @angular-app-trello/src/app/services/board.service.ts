@@ -1,26 +1,14 @@
 import {Injectable} from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-
+import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-
-import {IBoard} from "../interfaces";
-import {tap} from "rxjs/operators";
+import {IBoard, IUpdateBoardTitle} from "../interfaces";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoardService {
-  private readonly _idUser: string | null = localStorage.getItem('id');
-  private readonly _keyBoard: string  = '';
-  public _nameBoard: string  = '';
-
-  set isIdBoard(id) {
-    this.isIdBoard = id;
-  }
-
-  get isIdBoard() {
-    return this._idUser;
-  }
+  private readonly _keyBoard: string = '';
+  public _nameBoard: string = '';
 
   get isKeyBoard() {
     return this._keyBoard;
@@ -28,30 +16,27 @@ export class BoardService {
 
   constructor(
     private http: HttpClient
-  ) {}
-
-  // public success$(): Observable<any> {
-  //   return this.http.get<any>(`/auth/login/failed`);
-  // }
-
-  public getBoard$(id: number): Observable<any> {
-    return this.http.get<any>(`/api/board/getAllTasks/${id}`);
+  ) {
   }
 
-  public getBoards$(): Observable<IBoard[]> {
-    return this.http.get<IBoard[]>(`/api/board/getAllBoards/${this._idUser}`);
+  public getBoard$(id: number): Observable<IBoard> {
+    return this.http.get<IBoard>(`/api/board/getAllTasks/${id}`);
   }
 
-  public createBoard$(title: string): Observable<IBoard> {
+  public getBoards$(id: null | string): Observable<IBoard[]> {
+    return this.http.get<IBoard[]>(`/api/board/getAllBoards/${id}`);
+  }
+
+  public createBoard$(id: null | string, title: string): Observable<IBoard> {
     this._nameBoard = title;
-    return this.http.post<IBoard>(`/api/board/create/${this._idUser}`, {name: title});
+    return this.http.post<IBoard>(`/api/board/create/${id}`, {name: title});
   }
 
-  public updateBoard$(idBoard: number, title: string, idUser: string | null): Observable<any> {
-    return this.http.post<any>(`/api/board/update/${idBoard}`, {title, idUser});
+  public updateBoard$(idBoard: number, title: string, idUser: string | null): Observable<IUpdateBoardTitle> {
+    return this.http.post<IUpdateBoardTitle>(`/api/board/update/${idBoard}`, {title, idUser});
   }
 
-  public removeBoard$(id: number): Observable<any> {
-    return this.http.delete(`/api/board/delete/${id}`);
+  public removeBoard$(user_id: string | null, id: number): Observable<string> {
+    return this.http.post<string>(`/api/board/delete/${id}`, {user_id});
   }
 }

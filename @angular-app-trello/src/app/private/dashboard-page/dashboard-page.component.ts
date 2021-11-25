@@ -18,7 +18,7 @@ import {
   IArchive,
   IBoard, IColumn,
   ICreateTask,
-  IInvitedUsers,
+  IInvitedUser,
   IInviteKey,
   ITask
 } from "../../interfaces";
@@ -45,7 +45,7 @@ export class DashboardPageComponent implements OnInit {
 
   public searchTask: string = '';
 
-  public invitedUsers: IInvitedUsers[] = [];
+  public invitedUsers: IInvitedUser[] = [];
 
   public tasks: ITask[] = [];
   private taskListToDo: ITask[] = [];
@@ -102,7 +102,7 @@ export class DashboardPageComponent implements OnInit {
   }
 
   getInvitedUsers(): void {
-    this.inviteService.InvitedUsers(this._boardId, this.authService.isUserId, this.authService.isNameUser)
+    this.inviteService.invitedUsers$(this._boardId, this.authService.isUserId, this.authService.isNameUser)
       .subscribe(({names, owner}) => {
         names.forEach((user: any) => {
           if (!user.owner) {
@@ -114,7 +114,7 @@ export class DashboardPageComponent implements OnInit {
   }
 
   getOwner(): void {
-    this.inviteService.Owner$({
+    this.inviteService.getOwner$({
       userId: this.authService.isUserId,
       boardId: this._boardId
     }).subscribe(({title, userId, owner}) => {
@@ -175,35 +175,35 @@ export class DashboardPageComponent implements OnInit {
           const index = this.taskListToDo.findIndex((task: ITask) => task.id === result.item.id);
           if (index !== -1) {
             this.taskListToDo.splice(index, 1);
-            this.archiveService.archivedTasks[0].push(result.item);
+            this.archiveService.archivedTasks.push(result.item);
           }
         }
         if (result.item.nameTaskList === 'In Progress') {
           const index = this.taskListInProgress.findIndex((task: ITask) => task.id === result.item.id);
           if (index !== -1) {
             this.taskListInProgress.splice(index, 1);
-            this.archiveService.archivedTasks[0].push(result.item);
+            this.archiveService.archivedTasks.push(result.item);
           }
         }
         if (result.item.nameTaskList === 'Coded') {
           const index = this.taskListCoded.findIndex((task: ITask) => task.id === result.item.id);
           if (index !== -1) {
             this.taskListCoded.splice(index, 1);
-            this.archiveService.archivedTasks[0].push(result.item);
+            this.archiveService.archivedTasks.push(result.item);
           }
         }
         if (result.item.nameTaskList === 'Testing') {
           const index = this.taskListTesting.findIndex((task: ITask) => task.id === result.item.id);
           if (index !== -1) {
             this.taskListTesting.splice(index, 1);
-            this.archiveService.archivedTasks[0].push(result.item);
+            this.archiveService.archivedTasks.push(result.item);
           }
         }
         if (result.item.nameTaskList === 'Done') {
           const index = this.taskListDone.findIndex((task: ITask) => task.id === result.item.id);
           if (index !== -1) {
             this.taskListTesting.splice(index, 1);
-            this.archiveService.archivedTasks[0].push(result.item);
+            this.archiveService.archivedTasks.push(result.item);
           }
         }
       }
@@ -233,8 +233,7 @@ export class DashboardPageComponent implements OnInit {
       })
 
       this.sortTasks(event.container.data);
-      this.tasksService.updateOrder$(event.container.data).subscribe(() => {
-      })
+      this.tasksService.updateOrder$(this._userId, event.container.data).subscribe((data) => {})
 
       if (event.container.data.length >= 0) {
         let newTaskList: ITask[] = [];
@@ -244,6 +243,7 @@ export class DashboardPageComponent implements OnInit {
 
           if (task.nameTaskList !== nameColumn || task.order !== undefined) {
             this.tasksService.update$(task, nameColumn, this._userId).subscribe((data: any) => {
+              console.log('this.tasksService.update$', data);
             });
           }
           return;
@@ -300,7 +300,7 @@ export class DashboardPageComponent implements OnInit {
             this.boardService.updateBoard$(
               this._boardId,
               this._boardName,
-              localStorage.getItem('id'))
+              this._userId)
               .subscribe(({id, title, owner}) => {
                 if (title !== this._boardName) {
                   this.owner = owner;
@@ -316,35 +316,35 @@ export class DashboardPageComponent implements OnInit {
   }
 
   fullMenu(): void {
-    this.archiveService.getArchive$(this._boardId)
+    this.archiveService.getArchivedTasks$(this._boardId)
       .subscribe((data: IAllArchiveTasks) => {
         this.archivedTasks.push(data.tasks);
       })
   }
 
   unzip(task: IArchive): void {
-    this.archiveService.setArchive$(task)
+    this.archiveService.archiveTask$(task)
       .subscribe(() => {
         for (let i = 0; i < this.board.columns.length; i++) {
           if (this.board.columns[i].name === task.nameTaskList) {
             this.board.columns[i].tasks.push(task);
           }
         }
-        this.archiveService.archivedTasks[0] = this.archiveService.archivedTasks[0].filter((data: IArchive) => data.id !== task.id);
+        this.archiveService.archivedTasks = this.archiveService.archivedTasks.filter((data: IArchive) => data.id !== task.id);
       })
   }
 
   inviteKey(): void {
     this.invite = false;
 
-    this.inviteService.InviteKey$(this._boardId)
+    this.inviteService.getInviteKey$(this._boardId)
       .subscribe((key: IInviteKey) => {
         this._key = key.key;
         this.link = `http://localhost:4200/admin/invite/${this._boardId}/${key.key}`;
-        this.inviteService.InviteUsers$(this._key)
-          .subscribe((key: string) => {
-            console.log('invite link', this.link);
-          });
+        // this.inviteService.InviteUsers$(this._key)
+        //   .subscribe((key: string) => {
+        //     console.log('key', key)
+        //   });
       })
   }
 
@@ -372,9 +372,9 @@ export class DashboardPageComponent implements OnInit {
       this.tasksService.tasksAllDelete$(
         this._boardId,
         columnName
-      ).subscribe((data: { ok: string }) => {
+      ).subscribe((data) => {
         this.allNameTaskList.forEach((allNameTaskList: string, i: number) => {
-          if (columnName === allNameTaskList && data.ok) {
+          if (columnName === allNameTaskList && 'all tasks in this column have been deleted') {
             this.taskLists[i].length = 0;
           }
         })
@@ -382,10 +382,10 @@ export class DashboardPageComponent implements OnInit {
     }
   }
 
-  removeInvited(user: IInvitedUsers) {
+  removeInvited(user: IInvitedUser) {
     const data = { board_id: this._boardId, user };
 
-    this.inviteService.RemoveInvitedUsers$(data).subscribe((data) => {
+    this.inviteService.removeInvitedUsers$(data).subscribe((data) => {
       if (data === 'user removed from board') {
         this.invitedUsers = this.invitedUsers.filter((data) => data.id !== user.id);
       }
@@ -396,8 +396,8 @@ export class DashboardPageComponent implements OnInit {
     const data = {
       user_id: this._userId,
       board_id: this._boardId
-    }
-    this.inviteService.LeaveBoard$(data).subscribe(() => {
+    };
+    this.inviteService.leaveBoard$(data).subscribe(() => {
       this.router.navigate(['/admin', 'boards']);
     });
   }
@@ -443,7 +443,7 @@ export class DashboardPageComponent implements OnInit {
           order: order
         }
 
-        this.tasksService.create$(task)
+        this.tasksService.create$(this._userId, task)
           .subscribe((task: ITask) => {
             this.form.reset();
 

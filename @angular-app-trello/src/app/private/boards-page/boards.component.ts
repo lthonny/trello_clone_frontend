@@ -21,16 +21,18 @@ export class BoardsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.boardService.getBoards$()
+    this.boardService.getBoards$(this._userId)
       .subscribe((board: IBoard[]) => {
         if(board.length !== 0) {
           this.boards = board;
         }
       });
 
-    this.inviteService.InviteBoard$(this._userId, this.boardService.isKeyBoard)
-      .subscribe((board:  string & IBoard) => {
+    this.inviteService.inviteBoard$(this._userId, this.boardService.isKeyBoard)
+      .subscribe((board: any) => {
+        // console.log('this.inviteService.inviteBoard$', board);
         if(board !== 'Key not found') {
+          console.log(board)
           this.boards.push(board);
         }
       });
@@ -53,7 +55,7 @@ export class BoardsComponent implements OnInit {
   }
 
   remove(id: number): void {
-    this.boardService.removeBoard$(id)
+    this.boardService.removeBoard$(this._userId, id)
       .subscribe(() => {
         this.boards = this.boards.filter((board: IBoard) => board.id !== id);
       });
@@ -63,7 +65,7 @@ export class BoardsComponent implements OnInit {
     if (!this.boardName.trim()) {
       return;
     }
-    this.boardService.createBoard$(this.boardName)
+    this.boardService.createBoard$(this._userId, this.boardName)
       .subscribe((board: IBoard) => {
         this.boards.push(board);
       })

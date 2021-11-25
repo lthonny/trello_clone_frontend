@@ -1,15 +1,11 @@
 .body {
   height: 93.5vh;
-  //height: 100%;
   width: 100%;
-  // background-image: url("https://trello-backgrounds.s3.amazonaws.com/SharedBackground/2400x1600/2e1fb0a799f60366577d27f34f98aed8/photo-1627719736178-dfadf8f370d9.jpg");
   main {
     display: flex;
-    //justify-content: space-around;
     flex-wrap: wrap;
 
     .column {
-      //text-align: center;
       border: 1px solid #ebecf0;
       background-color: #ebecf0;
       border-radius: 5px;
@@ -34,7 +30,6 @@
 
 .menu {
   display: flex;
-  //justify-content: space-between;
   margin: 1rem 5px;
 
   .title-board {
@@ -127,7 +122,6 @@
 
   .card-body {
     display: flex;
-    //border: 1px solid #697178;
     border-radius: 5px;
     justify-content: space-between;
   }
@@ -176,8 +170,6 @@ form {
   flex-direction: column;
   flex-grow: 1;
 
-  // Override Automatic Minimum Size
-  // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
   min-width: 0;
   min-height: 0;
 
@@ -205,7 +197,7 @@ form {
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-        flex-basis: 0; // to force the columns to all be the same size, regardless of content
+        flex-basis: 0;
 
         min-width: 300px;
         margin: 50px;
@@ -222,12 +214,6 @@ form {
         .column-title {
           display: flex;
           justify-content: space-between;
-
-          //font-size: 20px;
-          //font-weight: 800;
-          //font-family: 'Lato', sans-serif;
-          //text-transform: uppercase;
-          //margin-bottom: 20px;
         }
       }
     }
@@ -285,20 +271,13 @@ form {
 }
 
 .task-archive {
-  //width: 90%;
   padding: 10px 100px;
-  //display: flex;
-  //justify-content: space-between;
 }
 
 .task-archive-view {
   display: flex;
   justify-content: flex-end;
 }
-
-.task-title {
-}
-
 
 .cdk-drag-preview {
   box-sizing: border-box;
@@ -321,19 +300,12 @@ form {
 }
 
 .board-columns {
-  //text-align: center;
-
   display: flex;
-  //justify-content: space-between;
-
   flex-wrap: wrap;
 
   position: relative;
   top: 0;
   left: 0;
-}
-
-.example-container {
 }
 
 .example-sidenav {
@@ -355,21 +327,11 @@ form {
   margin: 20px 0px;
 }
 
-//.line {
-//  width: 100%;
-//  height: 1px;
-//  border-top: 1px solid rgba(gray, 0.5);
-//  position: absolute;
-//}
-
 .task-unzip {
   cursor: pointer;
 }
 
 .btn-add button {
-  //margin: 0 auto;
-  //display: flex;
-  //justify-content: center;
   margin-left: 6px;
   width: 95%;
 }
@@ -420,9 +382,7 @@ form {
     height: 100%;
     border-radius: 0 3px 3px 0;
     border: 1px solid #a5afb7;
-    //width: 3rem;
     padding: 0 1rem;
-    //margin-left: 0.1rem;
     &:hover {
       background-color: #a5afb7;
     }
@@ -464,15 +424,4 @@ form {
 .add-task-form {
   width: 250px;
 }
-
-//.active-user {
-//  //color: #2af598;
-//
-//  .active-user-bg {
-//    width: 10px;
-//    height: 10px;
-//    background-color: #2af598;
-//    //display: block;
-//  }
-//}
 

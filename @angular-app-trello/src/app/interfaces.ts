@@ -54,15 +54,15 @@ export interface ICreateTask {
 }
 
 export interface IArchive {
-  id: any,
-  title: any,
-  description: any,
-  board_id: any,
-  nameTaskList: any,
-  createdAt: any,
-  updatedAt: any,
-  order: any,
-  archive: any
+  id: number,
+  title: string,
+  description: string,
+  board_id: number,
+  nameTaskList: string,
+  createdAt: Date,
+  updatedAt: Date,
+  order: number,
+  archive: boolean
 }
 
 export interface DialogData {
@@ -158,7 +158,7 @@ export interface IAllArchiveTasks {
   tasks?: IArchive[]
 }
 
-export interface IInvitedUsers {
+export interface IInvitedUser {
   id: string,
   name: string,
   owner: boolean
@@ -169,14 +169,8 @@ export interface IColumn {
   tasks: ITask[]
 }
 
-// export interface IAllInvitedUsers {
-//   allUsers: [
-//     id: number,
-//     name: string
-//   ],
-//   userAssigned: IUAssigned,
-//   owner: {
-//     id: number,
-//     name: string
-//   }
-// }
+export interface IUpdateBoardTitle {
+  id: number,
+  title: string,
+  owner: boolean
+}
