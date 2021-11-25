@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {ICreateTask, IDescriptionUpdate, ITask} from "../interfaces";
+import {ICreateTask, IDescriptionUpdate, IResAllTasks, ITask} from "../interfaces";
 import {tap} from "rxjs/operators";
 
 @Injectable({
@@ -14,8 +14,8 @@ export class TaskService {
     private http: HttpClient
   ) {}
 
-  public getTasks$(id: string): Observable<ITask[]> {
-    return this.http.get<ITask[]>(`/api/board/getAllTasks/${id}`);
+  public getTasks$(id: string): Observable<IResAllTasks> {
+    return this.http.get<IResAllTasks>(`/api/board/getAllTasks/${id}`);
   }
 
   public create$(id: string | null, data: ICreateTask): Observable<ITask> {

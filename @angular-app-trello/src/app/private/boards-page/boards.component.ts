@@ -32,7 +32,7 @@ export class BoardsComponent implements OnInit {
       .subscribe((board: any) => {
         // console.log('this.inviteService.inviteBoard$', board);
         if(board !== 'Key not found') {
-          console.log(board)
+          // console.log(board)
           this.boards.push(board);
         }
       });

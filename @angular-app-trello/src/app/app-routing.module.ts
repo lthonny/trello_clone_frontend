@@ -15,7 +15,7 @@ const routes: Routes = [
     loadChildren: () => import('./private/private.module').then(mod => mod.PrivateModule),
   },
   {path: 'error', component: ErrorComponent},
-  // {path: '**', redirectTo: '/error'}
+  {path: '**', redirectTo: '/error'}
 ];
 
 @NgModule({

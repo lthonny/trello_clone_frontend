@@ -23,7 +23,7 @@ export interface IBoard {
   id: number,
   title: string,
   createdAt: Date,
-  updatedAt: Date,
+  updatedAt: Date
 }
 
 export interface ITask {
@@ -43,6 +43,12 @@ export interface ITask {
       email: string
     }
   ]
+}
+
+export interface IResAllTasks {
+  id: number,
+  tasks: ITask[],
+  title: string
 }
 
 export interface ICreateTask {
@@ -103,10 +109,18 @@ export interface IInvitedUsersName {
     }
   ],
   names: [
-    id: number,
-    name: string,
-    owner: boolean
+    {
+      id: number,
+      name: string,
+      owner: boolean
+    }
   ]
+}
+
+export interface IInvitedUser {
+  id: number,
+  name: string,
+  owner: boolean
 }
 
 export interface IOwner {
@@ -132,6 +146,7 @@ export interface IResTransaction {
 }
 
 export interface ITransaction {
+  id: number,
   data: string,
   transaction: string
 }
@@ -148,6 +163,7 @@ export interface IResAssigned {
 export interface IUAssigned {
   id: number,
   name: string,
+  task_id?: number,
   assigned?: boolean,
   exist?: string
 }
@@ -156,12 +172,6 @@ export interface IAllArchiveTasks {
   idBoard: number,
   nameBoard: string,
   tasks?: IArchive[]
-}
-
-export interface IInvitedUser {
-  id: string,
-  name: string,
-  owner: boolean
 }
 
 export interface IColumn {
@@ -173,4 +183,16 @@ export interface IUpdateBoardTitle {
   id: number,
   title: string,
   owner: boolean
+}
+
+export interface IResInviteBoard {
+  userId: number,
+  board: IBoard
+}
+
+export interface IResBoardTasks {
+  id: number | string,
+  title: string,
+  tasks: ITask[],
+  error?: any
 }

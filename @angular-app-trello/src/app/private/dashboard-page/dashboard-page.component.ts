@@ -54,10 +54,7 @@ export class DashboardPageComponent implements OnInit {
   private taskListTesting: ITask[] = [];
   private taskListDone: ITask[] = [];
 
-  public archivedTasks: any = [];
-  public showFiller: boolean = false;
-
-  public userActiveTasks = [];
+  public archivedTasks: ITask[] = [];
 
   board: Board = new Board('tasks', [
     new Column('To Do', this.taskListToDo),
@@ -104,9 +101,9 @@ export class DashboardPageComponent implements OnInit {
   getInvitedUsers(): void {
     this.inviteService.invitedUsers$(this._boardId, this.authService.isUserId, this.authService.isNameUser)
       .subscribe(({names, owner}) => {
-        names.forEach((user: any) => {
+        names.forEach((user) => {
           if (!user.owner) {
-            this.invitedUsers = this.invitedUsers.filter((data: any) => data.id !== user.id);
+            this.invitedUsers = this.invitedUsers.filter((data) => data.id !== user.id);
             this.invitedUsers.push({id: user.id, name: user.name, owner: user.owner});
           }
         })
@@ -128,9 +125,8 @@ export class DashboardPageComponent implements OnInit {
       .pipe(switchMap((params: Params) => {
         return this.tasksService.getTasks$(params['id']);
       }))
-      .subscribe((tasks: any) => {
-        console.log('все задачи: ', tasks)
-        if (!tasks.error) {
+      .subscribe((tasks) => {
+        if (tasks.tasks) {
           this.tasks = tasks.tasks;
           this._boardName = tasks.title;
 
@@ -210,7 +206,7 @@ export class DashboardPageComponent implements OnInit {
     });
   }
 
-  drop(event: CdkDragDrop<string[]>, column: IColumn): void {
+  drop(event: CdkDragDrop<ITask[]>, column: IColumn): void {
     if (this.owner) {
       const nameColumn = column.name;
 
@@ -223,12 +219,12 @@ export class DashboardPageComponent implements OnInit {
           event.previousIndex,
           event.currentIndex
         );
-        event.previousContainer.data.forEach((x: any, index) => {
+        event.previousContainer.data.forEach((x: ITask, index) => {
           x.order = index;
         });
       }
 
-      event.container.data.forEach((x: any, index) => {
+      event.container.data.forEach((x: ITask, index) => {
         x.order = index;
       })
 
@@ -238,13 +234,11 @@ export class DashboardPageComponent implements OnInit {
       if (event.container.data.length >= 0) {
         let newTaskList: ITask[] = [];
 
-        event.container.data.forEach((task: any) => {
+        event.container.data.forEach((task: ITask) => {
           newTaskList.push(task);
 
           if (task.nameTaskList !== nameColumn || task.order !== undefined) {
-            this.tasksService.update$(task, nameColumn, this._userId).subscribe((data: any) => {
-              console.log('this.tasksService.update$', data);
-            });
+            this.tasksService.update$(task, nameColumn, this._userId).subscribe((data) => {});
           }
           return;
         })
@@ -252,8 +246,8 @@ export class DashboardPageComponent implements OnInit {
     }
   }
 
-  sortTasks(tasks: any): void {
-    tasks.sort((a: any, b: any) => {
+  sortTasks(tasks: ITask[]): void {
+    tasks.sort((a: ITask, b: ITask) => {
       if (a.order < b.order) {
         return -1;
       }
@@ -318,7 +312,7 @@ export class DashboardPageComponent implements OnInit {
   fullMenu(): void {
     this.archiveService.getArchivedTasks$(this._boardId)
       .subscribe((data: IAllArchiveTasks) => {
-        this.archivedTasks.push(data.tasks);
+        data.tasks?.forEach((task) => this.archivedTasks.push(task));
       })
   }
 
@@ -356,7 +350,7 @@ export class DashboardPageComponent implements OnInit {
   removeTask(id: number, name: string): void {
     if (this.owner) {
       this.tasksService.delete$(id)
-        .subscribe((data: any) => {
+        .subscribe((data) => {
           this.allNameTaskList.forEach((taskName: string, i: number) => {
             if (taskName === name) {
               this.taskLists[i] = this.taskLists[i].filter((task: ITask) => task.id !== id);
@@ -382,7 +376,7 @@ export class DashboardPageComponent implements OnInit {
     }
   }
 
-  removeInvited(user: IInvitedUser) {
+  removeInvited(user: IInvitedUser): void {
     const data = { board_id: this._boardId, user };
 
     this.inviteService.removeInvitedUsers$(data).subscribe((data) => {
@@ -392,7 +386,7 @@ export class DashboardPageComponent implements OnInit {
     });
   }
 
-  leaveBoard() {
+  leaveBoard(): void {
     const data = {
       user_id: this._userId,
       board_id: this._boardId

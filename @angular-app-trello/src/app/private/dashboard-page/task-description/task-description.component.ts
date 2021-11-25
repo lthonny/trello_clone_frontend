@@ -11,10 +11,10 @@ import {TransactionService} from "../../../services/transaction.service";
 import {
   DialogData,
   IArchive,
-  IDescriptionUpdate,
+  IDescriptionUpdate, IResAssigned,
   IResTransaction,
   ITransaction,
-  IUAssigned
+  IUAssigned,
 } from "../../../interfaces";
 
 
@@ -66,14 +66,16 @@ export class TaskDescriptionComponent implements OnInit {
         taskId: this._taskId,
         boardId: this._boardId
       }
-    ).subscribe((data: any) => {
+    ).subscribe((data: IResAssigned) => {
+      console.log('data IResAssigned', data);
+
       data.allUsers.forEach((user: IUAssigned) => {
         if (user.name !== data.owner.name) {
           this.users = this.users.filter((data: IUAssigned) => data.id !== user.id);
           this.users.push(user);
         }
       });
-      data.userAssigned.forEach((user: any) => {
+      data.userAssigned.forEach((user) => {
         if (user.name !== data.owner.name) {
           this.assignedUsers = this.assignedUsers.filter((data: IUAssigned) => data.id !== user.id);
           this.assignedUsers.push(user);
@@ -116,6 +118,7 @@ export class TaskDescriptionComponent implements OnInit {
         data.forEach((transaction: IResTransaction) => {
           if (transaction.transaction === 'creation') {
             this.transactionTask.push({
+              id: transaction.id,
               transaction: 'creation',
               data: `Пользователь (${transaction.name_user}) создал задачу.
               время: ${formatDate(transaction.createdAt, 'medium', 'ru', '+0300')}`
@@ -123,6 +126,7 @@ export class TaskDescriptionComponent implements OnInit {
           }
           if (transaction.transaction === 'fixing_a_task') {
             this.transactionTask.push({
+              id: transaction.id,
               transaction: 'fixing_a_task',
               data: `Пользователь (${transaction.name_user}) изменил задачу.
               время: ${formatDate(transaction.createdAt, 'medium', 'ru', '+0300')}`
@@ -131,6 +135,7 @@ export class TaskDescriptionComponent implements OnInit {
 
           if (transaction.transaction === 'moving') {
             this.transactionTask.push({
+              id: transaction.id,
               transaction: 'moving',
               data: `${transaction.name_user} переместил задачу.
               время: ${formatDate(transaction.createdAt, 'medium', 'ru', '+0300')}`
@@ -139,11 +144,11 @@ export class TaskDescriptionComponent implements OnInit {
 
           if (transaction.transaction === 'assigned_users') {
             this.transactionTask.push({
+              id: transaction.id,
               transaction: 'assigned_users',
               data: `Пользователь (${transaction.name_user}) назначен на задачу.
               время: ${formatDate(transaction.createdAt, 'medium', 'ru', '+0300')}`
             });
-            this.transactionTask = this.transactionTask.filter((user: any) => user.id !== transaction.id);
           }
         })
       })
