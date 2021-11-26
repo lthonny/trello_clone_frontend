@@ -1,12 +1,26 @@
 {
   "name": "trello-clone-frontend",
   "version": "1.0.0",
+  "description": "Implementing a Trello clone app",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
+  },
+  "author": {
+    "name" : "Vasily Shitukhin",
+    "email" : "thonny02@mail.ru",
+    "url" : "https://vk.com/thonny_v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lthonny/trello_clone_frontend"
+  },
+  "bugs": {
+    "url" : "https://github.com/lthonny/trello_clone_frontend",
+    "email" : "thonny02@mail.ru"
   },
   "private": true,
   "dependencies": {
