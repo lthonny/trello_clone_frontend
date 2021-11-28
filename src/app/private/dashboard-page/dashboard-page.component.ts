@@ -88,7 +88,7 @@ export class DashboardPageComponent implements OnInit {
     private router: Router
   ) {
     this.route.params.subscribe(params => this._boardId = params['id']);
-    this.boardService.getBoard$(this._boardId)
+    this.boardService.getTasksBoard$(this._boardId)
       .subscribe((board: IBoard) => this._boardName = board.title);
   }
 

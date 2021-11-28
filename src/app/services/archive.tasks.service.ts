@@ -16,7 +16,7 @@ export class ArchiveTasksService {
   }
 
   public getArchivedTasks$(id: number): Observable<IAllArchiveTasks> {
-    return this.http.get<IAllArchiveTasks>(`/api/task/archive/${id}`)
+    return this.http.get<IAllArchiveTasks>(`/api/archive/fetch/${id}`)
       .pipe(tap((response: IAllArchiveTasks) => {
         this.archivedTasks.length = 0;
         response.tasks?.forEach((task: IArchive) => this.archivedTasks.push(task))
@@ -24,6 +24,6 @@ export class ArchiveTasksService {
   }
 
   public archiveTask$(data: IArchive): Observable<IArchive> {
-    return this.http.post<IArchive>(`/api/task/archive`, data);
+    return this.http.post<IArchive>(`/api/archive/create`, data);
   }
 }

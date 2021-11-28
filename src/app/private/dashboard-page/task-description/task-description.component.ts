@@ -207,7 +207,7 @@ export class TaskDescriptionComponent implements OnInit {
     }
 
     if (this.data.ownerStatus) {
-      this.taskService.updateDescription$(this.userId, descriptionUpdate)
+      this.taskService.updateDescription$(descriptionUpdate)
         .subscribe((task) => {
           this.data.item.description = task.description;
         });

@@ -15,7 +15,7 @@ export class TaskService {
   ) {}
 
   public getTasks$(id: string): Observable<IResAllTasks> {
-    return this.http.get<IResAllTasks>(`/api/board/getAllTasks/${id}`);
+    return this.http.get<IResAllTasks>(`/api/board/tasks/${id}`);
   }
 
   public create$(id: string | null, data: ICreateTask): Observable<ITask> {
@@ -31,23 +31,23 @@ export class TaskService {
      );
   }
 
-  public updateOrder$(id: string | null, data: any): Observable<string> {
-    return this.http.post<string>(`/api/task/updateOrder/${id}`, data);
-  }
-
   public update$(data: ITask, nameList: string, userId: string | null): Observable<ITask> {
     return this.http.post<ITask>(`/api/task/update`, {data, nameList, userId});
   }
 
-  public updateDescription$(userId: string | null, post: IDescriptionUpdate): Observable<ITask> {
-    return this.http.post<ITask>(`/api/task/updateDescription`, {userId, post});
+  public updateOrder$(id: string | null, data: any): Observable<string> {
+    return this.http.post<string>(`/api/task/updateOrder/${id}`, data);
+  }
+
+  public updateDescription$(post: IDescriptionUpdate): Observable<ITask> {
+    return this.http.post<ITask>(`/api/task/updateDescription`, {post});
   }
 
   public delete$(id: number): Observable<undefined> {
-    return this.http.delete<undefined>(`/api/task/delete/${id}`);
+    return this.http.delete<undefined>(`/api/task/${id}`);
   }
 
   public tasksAllDelete$(id: number, nameTaskList: string): Observable<string> {
-    return this.http.post<string>(`/api/task/allRemove/${id}`, {nameTaskList});
+    return this.http.post<string>(`/api/task/allDelete/${id}`, {nameTaskList});
   }
 }

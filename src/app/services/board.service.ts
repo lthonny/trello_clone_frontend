@@ -19,12 +19,12 @@ export class BoardService {
   ) {
   }
 
-  public getBoard$(id: number): Observable<IBoard> {
-    return this.http.get<IBoard>(`/api/board/getAllTasks/${id}`);
+  public getBoards$(id: null | string): Observable<IBoard[]> {
+    return this.http.get<IBoard[]>(`/api/board/boards/${id}`);
   }
 
-  public getBoards$(id: null | string): Observable<IBoard[]> {
-    return this.http.get<IBoard[]>(`/api/board/getAllBoards/${id}`);
+  public getTasksBoard$(id: number): Observable<IBoard> {
+    return this.http.get<IBoard>(`/api/board/tasks/${id}`);
   }
 
   public createBoard$(id: null | string, title: string): Observable<IBoard> {
@@ -37,6 +37,6 @@ export class BoardService {
   }
 
   public removeBoard$(id: number): Observable<any> {
-    return this.http.delete<any>(`/api/board/delete/${id}`);
+    return this.http.delete<any>(`/api/board/${id}`);
   }
 }
