@@ -278,8 +278,7 @@ export class DashboardPageComponent implements OnInit {
 
           this.boardService.updateBoard$(
             this._boardId,
-            this._boardName,
-            this._userId
+            this._boardName
           ).subscribe(({id, title, owner}) => {
             this.owner = owner;
             this._boardName = title;
@@ -293,8 +292,7 @@ export class DashboardPageComponent implements OnInit {
 
             this.boardService.updateBoard$(
               this._boardId,
-              this._boardName,
-              this._userId)
+              this._boardName)
               .subscribe(({id, title, owner}) => {
                 if (title !== this._boardName) {
                   this.owner = owner;

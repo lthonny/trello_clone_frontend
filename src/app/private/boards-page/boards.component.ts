@@ -55,8 +55,7 @@ export class BoardsComponent implements OnInit {
   }
 
   remove(id: number): void {
-    this.boardService.removeBoard$(this._userId, id)
-      .subscribe(() => {
+    this.boardService.removeBoard$(id).subscribe(() => {
         this.boards = this.boards.filter((board: IBoard) => board.id !== id);
       });
   }
