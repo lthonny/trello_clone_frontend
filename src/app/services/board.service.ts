@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {IBoard, IUpdateBoardTitle} from "../interfaces";
+import {IBoard, IResAllTasks, IUpdateBoardTitle} from "../interfaces";
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +23,8 @@ export class BoardService {
     return this.http.get<IBoard[]>(`/api/board`);
   }
 
-  public getTasksBoard$(id: number): Observable<IBoard> {
-    return this.http.get<IBoard>(`/api/board/tasks/${id}`);
+  public getTasksBoard$(id: number): Observable<IResAllTasks> {
+    return this.http.get<IResAllTasks>(`/api/board/tasks/${id}`);
   }
 
   public createBoard$(title: string): Observable<IBoard> {
@@ -36,7 +36,7 @@ export class BoardService {
     return this.http.post<IUpdateBoardTitle>(`/api/board/update/${idBoard}`, {title});
   }
 
-  public removeBoard$(id: number): Observable<any> {
-    return this.http.delete<any>(`/api/board/${id}`);
+  public removeBoard$(id: number): Observable<undefined> {
+    return this.http.delete<undefined>(`/api/board/${id}`);
   }
 }

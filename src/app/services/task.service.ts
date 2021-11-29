@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {ICreateTask, IDescriptionUpdate, IResAllTasks, ITask} from "../interfaces";
+import {ICreateTask, IDescriptionUpdate, ITask} from "../interfaces";
 import {tap} from "rxjs/operators";
 
 @Injectable({
@@ -14,12 +14,8 @@ export class TaskService {
     private http: HttpClient
   ) {}
 
-  public getTasks$(id: string): Observable<IResAllTasks> {
-    return this.http.get<IResAllTasks>(`/api/board/tasks/${id}`);
-  }
-
-  public create$(id: string | null, data: ICreateTask): Observable<ITask> {
-    return this.http.post<ITask>(`/api/task/create/${id}`, data);
+  public create$(data: ICreateTask): Observable<ITask> {
+    return this.http.post<ITask>(`/api/task/create`, { data });
   }
 
   public updateTitle$(id: number, title: string): Observable<ITask> {
@@ -31,12 +27,12 @@ export class TaskService {
      );
   }
 
-  public update$(data: ITask, nameList: string, userId: string | null): Observable<ITask> {
-    return this.http.post<ITask>(`/api/task/update`, {data, nameList, userId});
+  public update$(data: ITask, nameList: string): Observable<ITask> {
+    return this.http.post<ITask>(`/api/task/update`, {data, nameList});
   }
 
-  public updateOrder$(id: string | null, data: any): Observable<string> {
-    return this.http.post<string>(`/api/task/updateOrder/${id}`, data);
+  public updateOrder$(data: any): Observable<string> {
+    return this.http.post<string>(`/api/task/updateOrder`, data);
   }
 
   public updateDescription$(post: IDescriptionUpdate): Observable<ITask> {

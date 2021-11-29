@@ -89,7 +89,7 @@ export class DashboardPageComponent implements OnInit {
   ) {
     this.route.params.subscribe(params => this._boardId = params['id']);
     this.boardService.getTasksBoard$(this._boardId)
-      .subscribe((board: IBoard) => this._boardName = board.title);
+      .subscribe((board) => this._boardName = board.title);
   }
 
   ngOnInit(): void {
@@ -123,7 +123,7 @@ export class DashboardPageComponent implements OnInit {
   fetchAllTasks(): void {
     this.route.params
       .pipe(switchMap((params: Params) => {
-        return this.tasksService.getTasks$(params['id']);
+        return this.boardService.getTasksBoard$(params['id']);
       }))
       .subscribe((tasks) => {
         if (tasks.tasks) {
@@ -229,7 +229,7 @@ export class DashboardPageComponent implements OnInit {
       })
 
       this.sortTasks(event.container.data);
-      this.tasksService.updateOrder$(this._userId, event.container.data).subscribe((data) => {})
+      this.tasksService.updateOrder$(event.container.data).subscribe((data) => {})
 
       if (event.container.data.length >= 0) {
         let newTaskList: ITask[] = [];
@@ -238,7 +238,7 @@ export class DashboardPageComponent implements OnInit {
           newTaskList.push(task);
 
           if (task.nameTaskList !== nameColumn || task.order !== undefined) {
-            this.tasksService.update$(task, nameColumn, this._userId).subscribe((data) => {});
+            this.tasksService.update$(task, nameColumn).subscribe((data) => {});
           }
           return;
         })
@@ -435,7 +435,7 @@ export class DashboardPageComponent implements OnInit {
           order: order
         }
 
-        this.tasksService.create$(this._userId, task)
+        this.tasksService.create$(task)
           .subscribe((task: ITask) => {
             this.form.reset();
 
