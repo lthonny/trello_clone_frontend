@@ -21,7 +21,7 @@ export class BoardsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.boardService.getBoards$(this._userId)
+    this.boardService.getBoards$()
       .subscribe((board: IBoard[]) => {
         if(board.length !== 0) {
           this.boards = board;
@@ -30,9 +30,7 @@ export class BoardsComponent implements OnInit {
 
     this.inviteService.inviteBoard$(this._userId, this.boardService.isKeyBoard)
       .subscribe((board: any) => {
-        // console.log('this.inviteService.inviteBoard$', board);
         if(board !== 'Key not found') {
-          // console.log(board)
           this.boards.push(board);
         }
       });
@@ -64,7 +62,7 @@ export class BoardsComponent implements OnInit {
     if (!this.boardName.trim()) {
       return;
     }
-    this.boardService.createBoard$(this._userId, this.boardName)
+    this.boardService.createBoard$(this.boardName)
       .subscribe((board: IBoard) => {
         this.boards.push(board);
       })

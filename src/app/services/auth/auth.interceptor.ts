@@ -12,7 +12,7 @@ import {catchError, filter, switchMap, take} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {BehaviorSubject, Observable, throwError} from "rxjs";
 import {AuthService} from "./auth.service";
-import {IAuthResponse} from "../interfaces";
+import {IAuthResponse} from "../../interfaces";
 
 @Injectable({
   providedIn: 'root'

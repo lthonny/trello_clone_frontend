@@ -7,7 +7,7 @@ import {IAllArchiveTasks, IArchive} from "../interfaces";
 @Injectable({
   providedIn: 'root'
 })
-export class ArchiveTasksService {
+export class ArchiveService {
   public archivedTasks: IArchive[] = [];
 
   constructor(

@@ -8,12 +8,12 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
 import {MaterialModule} from "../material.module";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
-import {AuthGuard} from "../services/auth.guard";
+import {AuthGuard} from "../services/auth/auth.guard";
 
 import {AssignedService} from "../services/assigned.service";
 import {BoardService} from "../services/board.service";
 import {TaskService} from "../services/task.service";
-import {ArchiveTasksService} from "../services/archive.tasks.service";
+import {ArchiveService} from "../services/archive.service";
 import {InviteService} from "../services/invite.service";
 import {TransactionService} from "../services/transaction.service";
 
@@ -22,7 +22,7 @@ import {TaskDescriptionComponent} from "./dashboard-page/task-description/task-d
 import {DashboardPageComponent} from './dashboard-page/dashboard-page.component';
 import {AddBoardComponent, BoardsComponent} from './boards-page/boards.component';
 import {InvitePageComponent} from './invite-page/invite-page.component';
-import {AuthInterceptor} from "../services/auth.interceptor";
+import {AuthInterceptor} from "../services/auth/auth.interceptor";
 import {LoginComponent} from './auth/login-page/login.component';
 import {RegComponent} from './auth/signup-page/reg.component';
 import {MatDividerModule} from "@angular/material/divider";
@@ -70,7 +70,7 @@ import {SearchPipe} from "../pipes/search.pipe";
   providers: [
     BoardService,
     TaskService,
-    ArchiveTasksService,
+    ArchiveService,
     InviteService,
     AssignedService,
     TransactionService,

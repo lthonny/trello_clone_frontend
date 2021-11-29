@@ -8,8 +8,8 @@ import {switchMap} from "rxjs/operators";
 import {TaskService} from "../../services/task.service";
 import {BoardService} from "../../services/board.service";
 import {InviteService} from "../../services/invite.service";
-import {ArchiveTasksService} from "../../services/archive.tasks.service";
-import {AuthService} from "../../services/auth.service";
+import {ArchiveService} from "../../services/archive.service";
+import {AuthService} from "../../services/auth/auth.service";
 import {AssignedService} from "../../services/assigned.service";
 
 import {
@@ -79,7 +79,7 @@ export class DashboardPageComponent implements OnInit {
   constructor(
     public authService: AuthService,
     public boardService: BoardService,
-    public archiveService: ArchiveTasksService,
+    public archiveService: ArchiveService,
     private dialog: MatDialog,
     private inviteService: InviteService,
     private route: ActivatedRoute,

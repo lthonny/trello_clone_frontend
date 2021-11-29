@@ -3,10 +3,10 @@ import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {catchError, tap} from "rxjs/operators";
 import {BehaviorSubject, Observable} from "rxjs";
-import {ErrorService} from "./error.service";
+import {ErrorService} from "../error/error.service";
 import {TokenService} from "./token.service";
 
-import {IAuthResponse, ISingIn, ISingUp} from '../interfaces';
+import {IAuthResponse, ISingIn, ISingUp} from '../../interfaces';
 
 @Injectable({
   providedIn: 'root'

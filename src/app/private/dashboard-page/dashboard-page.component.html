@@ -49,7 +49,6 @@
 
       <div class="task_search">
         <input type="text" placeholder="Find task or user..." [(ngModel)]="searchTask">
-        <!--        <button class="btn-search">Найти</button>-->
       </div>
 
       <span class="leave-board" (click)="leaveBoard()" *ngIf="!owner"> покинуть доску </span>
@@ -82,7 +81,7 @@
                 <span (click)="openDialog(item)">{{ item.title }}</span>
                 <span *ngIf="owner" class="delete" (click)="removeTask(item.id, item.nameTaskList)">&#x2715;</span>
                 <div *ngIf="!owner">
-                  <div class="active-user" *ngFor="let active of item.active">
+                  <div class="active-user" *ngFor="let active of item.Users">
                     <mat-icon class="material-icons-outlined active-task">
                       push_pin
                     </mat-icon>

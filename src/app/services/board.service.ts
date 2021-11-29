@@ -19,17 +19,17 @@ export class BoardService {
   ) {
   }
 
-  public getBoards$(id: null | string): Observable<IBoard[]> {
-    return this.http.get<IBoard[]>(`/api/board/boards/${id}`);
+  public getBoards$(): Observable<IBoard[]> {
+    return this.http.get<IBoard[]>(`/api/board`);
   }
 
   public getTasksBoard$(id: number): Observable<IBoard> {
     return this.http.get<IBoard>(`/api/board/tasks/${id}`);
   }
 
-  public createBoard$(id: null | string, title: string): Observable<IBoard> {
+  public createBoard$(title: string): Observable<IBoard> {
     this._nameBoard = title;
-    return this.http.post<IBoard>(`/api/board/create/${id}`, {name: title});
+    return this.http.post<IBoard>(`/api/board/create`, {name: title});
   }
 
   public updateBoard$(idBoard: number, title: string): Observable<IUpdateBoardTitle> {

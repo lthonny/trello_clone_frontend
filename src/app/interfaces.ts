@@ -36,7 +36,7 @@ export interface ITask {
   updatedAt: Date,
   order: number
   archive: boolean,
-  active?: [
+  Users?: [
     {
       id: number,
       name: string,

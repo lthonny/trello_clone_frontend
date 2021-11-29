@@ -5,7 +5,7 @@ import {FormControl} from "@angular/forms";
 
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {TaskService} from "../../../services/task.service";
-import {ArchiveTasksService} from "../../../services/archive.tasks.service";
+import {ArchiveService} from "../../../services/archive.service";
 import {AssignedService} from "../../../services/assigned.service";
 import {TransactionService} from "../../../services/transaction.service";
 import {
@@ -47,7 +47,7 @@ export class TaskDescriptionComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute,
     public taskService: TaskService,
-    public archiveService: ArchiveTasksService,
+    public archiveService: ArchiveService,
     private assignedService: AssignedService,
     private transactionService: TransactionService
   ) {
