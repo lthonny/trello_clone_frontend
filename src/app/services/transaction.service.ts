@@ -11,7 +11,7 @@ export class TransactionService {
     private http: HttpClient,
   ) {}
 
-  public fetchTransaction(id: number, board_id: number): Observable<IResTransaction[]> {
-    return this.http.post<IResTransaction[]>(`/api/transaction/${id}`, { board_id });
+  public fetchTransaction$(id: number): Observable<IResTransaction[]> {
+    return this.http.get<IResTransaction[]>(`/api/transaction/${id}`);
   }
 }

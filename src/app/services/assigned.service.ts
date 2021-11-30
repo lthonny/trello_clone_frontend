@@ -9,17 +9,18 @@ import {IResAssigned, IUAssigned} from "../interfaces";
 export class AssignedService {
   constructor(
     private http: HttpClient
-  ) {}
-
-  public allUsers$(data: {taskId: number, boardId: number}): Observable<IResAssigned> {
-    return this.http.post<IResAssigned>(`/api/assigned/${data.taskId}`, { data })
+  ) {
   }
 
-  public assignUser$(data: {userId: number, taskId: number, boardId: number}): Observable<IUAssigned> {
-    return this.http.post<IUAssigned>(`/api/assigned/create/${data.taskId}`, { data });
+  public allUsers$(task_id: number, board_id: number): Observable<IResAssigned> {
+    return this.http.post<IResAssigned>(`/api/assigned/${task_id}`, {task_id, board_id});
   }
 
-  public removeAssignedUser$(data: {userId: number, taskId: number, boardId: number}): Observable<string> {
-    return this.http.post<string>(`/api/assigned/remove/${data.taskId}`, { data });
+  public assignUser$(user_id: number, task_id: number, board_id: number): Observable<IUAssigned> {
+    return this.http.post<IUAssigned>(`/api/assigned/create/${task_id}`, {user_id, task_id, board_id});
+  }
+
+  public removeAssignedUser$(user_id: number, task_id: number, board_id: number): Observable<string> {
+    return this.http.post<string>(`/api/assigned/remove/${task_id}`, {user_id, task_id, board_id});
   }
 }

@@ -62,26 +62,21 @@ export class TaskDescriptionComponent implements OnInit {
   }
 
   allUsersAssigned(): void {
-    this.assignedService.allUsers$({
-        taskId: this._taskId,
-        boardId: this._boardId
-      }
-    ).subscribe((data: IResAssigned) => {
-      console.log('data IResAssigned', data);
-
-      data.allUsers.forEach((user: IUAssigned) => {
-        if (user.name !== data.owner.name) {
-          this.users = this.users.filter((data: IUAssigned) => data.id !== user.id);
-          this.users.push(user);
-        }
-      });
-      data.userAssigned.forEach((user) => {
-        if (user.name !== data.owner.name) {
-          this.assignedUsers = this.assignedUsers.filter((data: IUAssigned) => data.id !== user.id);
-          this.assignedUsers.push(user);
-        }
+    this.assignedService.allUsers$(this._taskId, this._boardId)
+      .subscribe((data: IResAssigned) => {
+        data.allUsers.forEach((user: IUAssigned) => {
+          if (user.name !== data.owner.name) {
+            this.users = this.users.filter((data: IUAssigned) => data.id !== user.id);
+            this.users.push(user);
+          }
+        });
+        data.userAssigned.forEach((user) => {
+          if (user.name !== data.owner.name) {
+            this.assignedUsers = this.assignedUsers.filter((data: IUAssigned) => data.id !== user.id);
+            this.assignedUsers.push(user);
+          }
+        })
       })
-    })
   }
 
   close(): void {
@@ -89,31 +84,24 @@ export class TaskDescriptionComponent implements OnInit {
   }
 
   assignUser(user: IUAssigned): void {
-    this.assignedService.assignUser$(
-      {
-        userId: user.id,
-        taskId: this._taskId,
-        boardId: this._boardId
-      }).subscribe((user: IUAssigned) => {
-      if (!user.exist) {
-        this.assignedUsers.push(user);
-      }
-    })
+    this.assignedService.assignUser$(user.id, this._taskId, this._boardId)
+      .subscribe((user: IUAssigned) => {
+        if (!user.exist) {
+          this.assignedUsers.push(user);
+        }
+      })
   }
 
   removeAssignedUser(user: IUAssigned): void {
-    this.assignedService.removeAssignedUser$({
-      userId: user.id,
-      taskId: this._taskId,
-      boardId: this._boardId
-    }).subscribe((data: string) => {
-      this.assignedUsers = this.assignedUsers.filter((user: IUAssigned) => user.id !== user.id);
-    });
+    this.assignedService.removeAssignedUser$(user.id, this._taskId, this._boardId)
+      .subscribe((data: string) => {
+        this.assignedUsers = this.assignedUsers.filter((user: IUAssigned) => user.id !== user.id);
+      });
   }
 
   transaction(): void {
     this.transactionTask.length = 0;
-    this.transactionService.fetchTransaction(this._taskId, this._boardId)
+    this.transactionService.fetchTransaction$(this._taskId)
       .subscribe((data: IResTransaction[]) => {
         data.forEach((transaction: IResTransaction) => {
           if (transaction.transaction === 'creation') {
@@ -132,7 +120,6 @@ export class TaskDescriptionComponent implements OnInit {
               время: ${formatDate(transaction.createdAt, 'medium', 'ru', '+0300')}`
             });
           }
-
           if (transaction.transaction === 'moving') {
             this.transactionTask.push({
               id: transaction.id,
@@ -141,7 +128,6 @@ export class TaskDescriptionComponent implements OnInit {
               время: ${formatDate(transaction.createdAt, 'medium', 'ru', '+0300')}`
             });
           }
-
           if (transaction.transaction === 'assigned_users') {
             this.transactionTask.push({
               id: transaction.id,
@@ -194,7 +180,7 @@ export class TaskDescriptionComponent implements OnInit {
 
   archive(): void {
     const task: IArchive = this.data.item;
-    this.archiveService.archiveTask$(task)
+    this.archiveService.archiveTask$(task.id, task.archive)
       .subscribe(() => {
         this.dialogRef.close(this.data);
       })

@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {tap} from "rxjs/operators";
-import {IAllArchiveTasks, IArchive} from "../interfaces";
+import {IArchive} from "../interfaces";
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +15,16 @@ export class ArchiveService {
   ) {
   }
 
-  public getArchivedTasks$(id: number): Observable<IAllArchiveTasks> {
-    return this.http.get<IAllArchiveTasks>(`/api/archive/fetch/${id}`)
-      .pipe(tap((response: IAllArchiveTasks) => {
+  public getArchivedTasks$(id: number): Observable<IArchive[]> {
+    return this.http.get<IArchive[]>(`/api/archive/${id}`)
+      .pipe(tap((response: IArchive[]) => {
+        console.log(response);
         this.archivedTasks.length = 0;
-        response.tasks?.forEach((task: IArchive) => this.archivedTasks.push(task))
+        response?.forEach((task: IArchive) => this.archivedTasks.push(task))
       }));
   }
 
-  public archiveTask$(data: IArchive): Observable<IArchive> {
-    return this.http.post<IArchive>(`/api/archive/create`, data);
+  public archiveTask$(id: number, archive: boolean): Observable<IArchive> {
+    return this.http.post<IArchive>(`/api/archive/${id}`, {archive});
   }
 }

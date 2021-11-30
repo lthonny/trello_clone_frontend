@@ -23,8 +23,8 @@ export class InvitePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => this._key = params['key']);
-    this.inviteService.inviteBoard$(this._userId, this._key)
-      .subscribe(({ board, userId }) => {
+    this.inviteService.inviteBoard$(this._key)
+      .subscribe((board) => {
         this.boardName = board.title;
         this._boardId = board.id;
 

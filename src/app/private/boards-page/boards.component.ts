@@ -28,12 +28,12 @@ export class BoardsComponent implements OnInit {
         }
       });
 
-    this.inviteService.inviteBoard$(this._userId, this.boardService.isKeyBoard)
-      .subscribe((board: any) => {
-        if(board !== 'Key not found') {
-          this.boards.push(board);
-        }
-      });
+    // this.inviteService.inviteBoard$(this.boardService.isKeyBoard)
+    //   .subscribe((board) => {
+    //     // if(board !== 'Key not found') {
+    //       this.boards.push(board);
+    //     // }
+    //   });
   }
 
   addBoardDialog(): void {

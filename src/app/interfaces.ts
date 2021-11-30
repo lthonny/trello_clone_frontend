@@ -168,12 +168,6 @@ export interface IUAssigned {
   exist?: string
 }
 
-export interface IAllArchiveTasks {
-  idBoard: number,
-  nameBoard: string,
-  tasks?: IArchive[]
-}
-
 export interface IColumn {
   name: string,
   tasks: ITask[]
@@ -186,7 +180,6 @@ export interface IUpdateBoardTitle {
 }
 
 export interface IResInviteBoard {
-  userId: number,
   board: IBoard
 }
 

@@ -14,7 +14,6 @@ import {AssignedService} from "../../services/assigned.service";
 
 import {
   DialogData,
-  IAllArchiveTasks,
   IArchive,
   IBoard, IColumn,
   ICreateTask,
@@ -99,22 +98,17 @@ export class DashboardPageComponent implements OnInit {
   }
 
   getInvitedUsers(): void {
-    this.inviteService.invitedUsers$(this._boardId, this.authService.isUserId, this.authService.isNameUser)
-      .subscribe(({names, owner}) => {
-        names.forEach((user) => {
-          if (!user.owner) {
-            this.invitedUsers = this.invitedUsers.filter((data) => data.id !== user.id);
-            this.invitedUsers.push({id: user.id, name: user.name, owner: user.owner});
-          }
+    this.inviteService.invitedUsers$(this._boardId)
+      .subscribe((data: IInvitedUser[]) => {
+        data.forEach((user: any) => {
+          this.invitedUsers = this.invitedUsers.filter((data) => data.id !== user.id);
+          this.invitedUsers.push({id: user.id, name: user.name, owner: user.owner});
         })
       })
   }
 
   getOwner(): void {
-    this.inviteService.getOwner$({
-      userId: this.authService.isUserId,
-      boardId: this._boardId
-    }).subscribe(({title, userId, owner}) => {
+    this.inviteService.getOwner$(this._boardId).subscribe(({title, owner}) => {
       this.owner = owner;
       this._boardName = title;
     })
@@ -229,7 +223,8 @@ export class DashboardPageComponent implements OnInit {
       })
 
       this.sortTasks(event.container.data);
-      this.tasksService.updateOrder$(event.container.data).subscribe((data) => {})
+      this.tasksService.updateOrder$(event.container.data).subscribe((data) => {
+      })
 
       if (event.container.data.length >= 0) {
         let newTaskList: ITask[] = [];
@@ -238,7 +233,8 @@ export class DashboardPageComponent implements OnInit {
           newTaskList.push(task);
 
           if (task.nameTaskList !== nameColumn || task.order !== undefined) {
-            this.tasksService.update$(task, nameColumn).subscribe((data) => {});
+            this.tasksService.update$(task, nameColumn).subscribe((data) => {
+            });
           }
           return;
         })
@@ -309,13 +305,13 @@ export class DashboardPageComponent implements OnInit {
 
   fullMenu(): void {
     this.archiveService.getArchivedTasks$(this._boardId)
-      .subscribe((data: IAllArchiveTasks) => {
-        data.tasks?.forEach((task) => this.archivedTasks.push(task));
+      .subscribe((data: IArchive[]) => {
+        data?.forEach((task) => this.archivedTasks.push(task));
       })
   }
 
   unzip(task: IArchive): void {
-    this.archiveService.archiveTask$(task)
+    this.archiveService.archiveTask$(task.id, task.archive)
       .subscribe(() => {
         for (let i = 0; i < this.board.columns.length; i++) {
           if (this.board.columns[i].name === task.nameTaskList) {
@@ -333,10 +329,6 @@ export class DashboardPageComponent implements OnInit {
       .subscribe((key: IInviteKey) => {
         this._key = key.key;
         this.link = `http://localhost:4200/admin/invite/${this._boardId}/${key.key}`;
-        // this.inviteService.InviteUsers$(this._key)
-        //   .subscribe((key: string) => {
-        //     console.log('key', key)
-        //   });
       })
   }
 
@@ -375,21 +367,13 @@ export class DashboardPageComponent implements OnInit {
   }
 
   removeInvited(user: IInvitedUser): void {
-    const data = { board_id: this._boardId, user };
-
-    this.inviteService.removeInvitedUsers$(data).subscribe((data) => {
-      if (data === 'user removed from board') {
-        this.invitedUsers = this.invitedUsers.filter((data) => data.id !== user.id);
-      }
+    this.inviteService.removeInvitedUsers$(this._boardId, user.id).subscribe(() => {
+      this.invitedUsers = this.invitedUsers.filter((data) => data.id !== user.id);
     });
   }
 
   leaveBoard(): void {
-    const data = {
-      user_id: this._userId,
-      board_id: this._boardId
-    };
-    this.inviteService.leaveBoard$(data).subscribe(() => {
+    this.inviteService.leaveBoard$(this._boardId).subscribe(() => {
       this.router.navigate(['/admin', 'boards']);
     });
   }
