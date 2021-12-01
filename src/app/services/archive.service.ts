@@ -18,13 +18,12 @@ export class ArchiveService {
   public getArchivedTasks$(id: number): Observable<IArchive[]> {
     return this.http.get<IArchive[]>(`/api/archive/${id}`)
       .pipe(tap((response: IArchive[]) => {
-        console.log(response);
         this.archivedTasks.length = 0;
         response?.forEach((task: IArchive) => this.archivedTasks.push(task))
       }));
   }
 
-  public archiveTask$(id: number, archive: boolean): Observable<IArchive> {
-    return this.http.post<IArchive>(`/api/archive/${id}`, {archive});
+  public archiveTask$(id: number, archive: boolean, board_id: number): Observable<IArchive> {
+    return this.http.post<IArchive>(`/api/archive/${id}`, {archive, board_id});
   }
 }

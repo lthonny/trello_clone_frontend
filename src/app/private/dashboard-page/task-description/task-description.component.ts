@@ -180,7 +180,7 @@ export class TaskDescriptionComponent implements OnInit {
 
   archive(): void {
     const task: IArchive = this.data.item;
-    this.archiveService.archiveTask$(task.id, task.archive)
+    this.archiveService.archiveTask$(task.id, task.archive, task.board_id)
       .subscribe(() => {
         this.dialogRef.close(this.data);
       })

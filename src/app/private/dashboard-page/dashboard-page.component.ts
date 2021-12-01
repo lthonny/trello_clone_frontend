@@ -15,7 +15,7 @@ import {AssignedService} from "../../services/assigned.service";
 import {
   DialogData,
   IArchive,
-  IBoard, IColumn,
+  IColumn,
   ICreateTask,
   IInvitedUser,
   IInviteKey,
@@ -33,7 +33,6 @@ import {TaskDescriptionComponent} from "./task-description/task-description.comp
   styleUrls: ['./dashboard-page.component.scss']
 })
 export class DashboardPageComponent implements OnInit {
-  private _userId: string | null = localStorage.getItem('id');
   public owner: boolean = true;
   private _boardId!: number;
   public _boardName!: string;
@@ -98,12 +97,14 @@ export class DashboardPageComponent implements OnInit {
   }
 
   getInvitedUsers(): void {
-    this.inviteService.invitedUsers$(this._boardId)
+    this.inviteService.inviteUsers$(this._boardId)
       .subscribe((data: IInvitedUser[]) => {
-        data.forEach((user: any) => {
+        data.forEach((user: IInvitedUser) => {
           this.invitedUsers = this.invitedUsers.filter((data) => data.id !== user.id);
           this.invitedUsers.push({id: user.id, name: user.name, owner: user.owner});
-        })
+        });
+      }, (error) => {
+        console.log(error);
       })
   }
 
@@ -233,7 +234,8 @@ export class DashboardPageComponent implements OnInit {
           newTaskList.push(task);
 
           if (task.nameTaskList !== nameColumn || task.order !== undefined) {
-            this.tasksService.update$(task, nameColumn).subscribe((data) => {
+            this.tasksService.updateNameTaskList$(task, nameColumn).subscribe((data) => {
+              // console.log(data);
             });
           }
           return;
@@ -311,7 +313,7 @@ export class DashboardPageComponent implements OnInit {
   }
 
   unzip(task: IArchive): void {
-    this.archiveService.archiveTask$(task.id, task.archive)
+    this.archiveService.archiveTask$(task.id, task.archive, task.board_id)
       .subscribe(() => {
         for (let i = 0; i < this.board.columns.length; i++) {
           if (this.board.columns[i].name === task.nameTaskList) {

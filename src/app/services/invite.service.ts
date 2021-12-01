@@ -7,22 +7,20 @@ import {IBoard, IInitOwner, IInvitedUser, IInviteKey, IResInviteBoard} from "../
   providedIn: 'root'
 })
 export class InviteService {
-  public _key: string = '';
-
   constructor(
     private http: HttpClient
   ) {
   }
 
   public getInviteKey$(id: number): Observable<IInviteKey> {
-    return this.http.post<IInviteKey>(`/api/invite/create`, { id });
+    return this.http.get<IInviteKey>(`/api/invite/key/${id}`);
   }
 
-  public inviteBoard$(key: string): Observable<IBoard> {
-    return this.http.post<IBoard>(`/api/invite`, { key });
+  public inviteBoard$(key: string | null): Observable<IBoard> {
+    return this.http.get<IBoard>(`/api/invite/board/${key}`);
   }
 
-  public invitedUsers$(board_id: number): Observable<IInvitedUser[]> {
+  public inviteUsers$(board_id: number): Observable<IInvitedUser[]> {
     return this.http.get<IInvitedUser[]>(`/api/invite/users/${board_id}`);
   }
 

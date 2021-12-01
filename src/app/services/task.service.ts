@@ -20,7 +20,7 @@ export class TaskService {
   }
 
   public updateTitle$(id: number, title: string): Observable<ITask> {
-    return this.http.post<ITask>(`/api/task/updateTitle`, {id, title})
+    return this.http.post<ITask>(`/api/task/update/title`, {id, title})
       .pipe(
         tap((data) => {
           this._nameTask = data.title;
@@ -28,23 +28,23 @@ export class TaskService {
       );
   }
 
-  public update$(data: ITask, nameList: string): Observable<ITask> {
-    return this.http.post<ITask>(`/api/task/update`, {data, nameList});
+  public updateNameTaskList$(data: ITask, nameTaskList: string): Observable<ITask> {
+    return this.http.post<ITask>(`/api/task/update/column`, { task_id: data.id, nameTaskList, order: data.order });
   }
 
   public updateOrder$(data: any): Observable<string> {
-    return this.http.post<string>(`/api/task/order`, {data});
+    return this.http.post<string>(`/api/task/update/order`, {data});
   }
 
   public updateDescription$(post: IDescriptionUpdate): Observable<ITask> {
-    return this.http.post<ITask>(`/api/task/description`, {post});
+    return this.http.post<ITask>(`/api/task/update/description`, {post});
   }
 
   public delete$(id: number): Observable<undefined> {
     return this.http.delete<undefined>(`/api/task/${id}`);
   }
 
-  public tasksAllDelete$(id: number, nameTaskList: string): Observable<string> {
-    return this.http.post<string>(`/api/task/allDelete/${id}`, {nameTaskList});
+  public tasksAllDelete$(board_id: number, nameTaskList: string): Observable<string> {
+    return this.http.post<string>(`/api/task/allDelete/${board_id}`, { nameTaskList, board_id });
   }
 }

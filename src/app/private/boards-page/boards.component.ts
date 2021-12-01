@@ -10,7 +10,7 @@ import {IBoard} from "../../interfaces";
   styleUrls: ['./boards.component.scss']
 })
 export class BoardsComponent implements OnInit {
-  private readonly _userId: string | null = localStorage.getItem('id');
+  private readonly inviteKey: string | null = localStorage.getItem('key');
   public boardName: string = '';
   public boards: IBoard[] = [];
 
@@ -23,17 +23,18 @@ export class BoardsComponent implements OnInit {
   ngOnInit(): void {
     this.boardService.getBoards$()
       .subscribe((board: IBoard[]) => {
-        if(board.length !== 0) {
+        if (board.length !== 0) {
           this.boards = board;
         }
       });
 
-    // this.inviteService.inviteBoard$(this.boardService.isKeyBoard)
-    //   .subscribe((board) => {
-    //     // if(board !== 'Key not found') {
-    //       this.boards.push(board);
-    //     // }
-    //   });
+    if(this.inviteKey) {
+      this.inviteService.inviteBoard$(this.inviteKey)
+        .subscribe((board: IBoard) => {
+          // this.boards.push(board);
+        });
+      localStorage.removeItem('key');
+    }
   }
 
   addBoardDialog(): void {
@@ -54,8 +55,8 @@ export class BoardsComponent implements OnInit {
 
   remove(id: number): void {
     this.boardService.removeBoard$(id).subscribe(() => {
-        this.boards = this.boards.filter((board: IBoard) => board.id !== id);
-      });
+      this.boards = this.boards.filter((board: IBoard) => board.id !== id);
+    });
   }
 
   submit(): void {
