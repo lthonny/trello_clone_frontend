@@ -1,0 +1,25 @@
+<div class="content">
+  <div class="invite">
+    <h4>Hi you have been invited to a new board. Do you want to go?</h4>
+    <div class="invite-page-description">
+      Looks like you need to be logged into your <strong>Trello</strong> account to join this board.
+      If you are not yet registered in this application, then register and again follow the links and enter the
+      authorization.
+    </div>
+  </div>
+  <div>
+    <button
+      mat-raised-button
+      color="primary"
+      class="invite-join"
+      [routerLink]="['/admin', 'signup']"
+    >Sign up
+    </button>
+    <button
+      mat-raised-button
+      class="invite-join login"
+      [routerLink]="['/admin', 'login']"
+    >Log in
+    </button>
+  </div>
+</div>

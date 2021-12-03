@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AuthService} from "./services/auth/auth.service";
+import {AuthService} from "./main/auth/services/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -10,9 +10,5 @@ export class AppComponent {
 
   constructor(
     public auth: AuthService
-  ) {
-    // if (localStorage.getItem('token')) {
-    //   @angular-app-trello.refresh();
-    // }
-  }
+  ) {}
 }

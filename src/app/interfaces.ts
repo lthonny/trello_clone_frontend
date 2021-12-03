@@ -1,24 +1,3 @@
-export interface IAuthResponse {
-  accessToken: string;
-  refreshToken: string;
-  user: {
-    id: string,
-    name: string,
-    email: string
-  };
-}
-
-export interface ISingUp {
-  name: string,
-  email: string,
-  password?: string
-}
-
-export interface ISingIn {
-  email: string,
-  password: string
-}
-
 export interface IBoard {
   id: number,
   title: string,
@@ -45,10 +24,12 @@ export interface ITask {
   ]
 }
 
-export interface IResAllTasks {
-  id: number,
-  tasks: ITask[],
+export interface IResBoard {
+  board_id: number,
   title: string
+  owner: boolean,
+  users: [{ id: number, name: string, owner: boolean }]
+  tasks: ITask[],
 }
 
 export interface ICreateTask {
@@ -71,26 +52,6 @@ export interface IArchive {
   archive: boolean
 }
 
-export interface DialogData {
-  board: number,
-  ownerStatus: boolean,
-  invited: [{
-    name: string,
-    owner: boolean
-  }],
-  item: {
-    id: any,
-    title: string,
-    description: string,
-    nameTaskList: string,
-    board_id: number,
-    createdAt: any,
-    updatedAt: any,
-    order: number,
-    archive: boolean
-  }
-}
-
 export interface IDescriptionUpdate {
   id: number,
   description: string
@@ -98,23 +59,6 @@ export interface IDescriptionUpdate {
 
 export interface IInviteKey {
   key: string,
-}
-
-export interface IInvitedUsersName {
-  owner: [
-    {
-      id: number,
-      name: string,
-      owner: boolean
-    }
-  ],
-  names: [
-    {
-      id: number,
-      name: string,
-      owner: boolean
-    }
-  ]
 }
 
 export interface IInvitedUser {
@@ -134,7 +78,7 @@ export interface IInitOwner {
   owner: boolean
 }
 
-export interface IResTransaction {
+export interface IHistoryTask {
   id: number,
   task_id: number,
   column: string,
@@ -181,11 +125,4 @@ export interface IUpdateBoardTitle {
 
 export interface IResInviteBoard {
   board: IBoard
-}
-
-export interface IResBoardTasks {
-  id: number | string,
-  title: string,
-  tasks: ITask[],
-  error?: any
 }

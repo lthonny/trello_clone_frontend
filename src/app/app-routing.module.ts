@@ -1,18 +1,20 @@
 import {NgModule} from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
-
-import {HeaderPublicComponent} from './public/header-public/header-public.component';
-import {ErrorComponent} from "./shared/error/error.component";
+import {ErrorComponent} from "./core/error/error.component";
+import {HomeComponent} from "./main/modules/home/home.component";
 
 const routes: Routes = [
   {
-    path: '', component: HeaderPublicComponent, children: [
+    path: '', component: HomeComponent, children: [
       { path: '', redirectTo: '/', pathMatch: 'full' }
     ]
+
+    // path: '',
+    // loadChildren: () => import('./main/modules/home/home.module').then(mod => mod.HomeModule),
   },
   {
     path: 'admin',
-    loadChildren: () => import('./private/private.module').then(mod => mod.PrivateModule),
+    loadChildren: () => import('./main/private.module').then(mod => mod.PrivateModule),
   },
   {path: 'error', component: ErrorComponent},
   {path: '**', redirectTo: '/error'}
