@@ -79,5 +79,5 @@ import {ApiDataService} from "./board/services/api.data.service";
     }
   ]
 })
-export class PrivateModule {
+export class MainModule {
 }

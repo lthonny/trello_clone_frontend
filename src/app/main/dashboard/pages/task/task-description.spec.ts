@@ -6,7 +6,7 @@
 // import {HttpClientTestingModule} from "@angular/common/http/testing";
 // import {HttpClient, HttpClientModule} from "@angular/common/http";
 // import {RouterTestingModule} from "@angular/router/testing";
-// import {PrivateModule} from "../../main.module";
+// import {MainModule} from "../../main.module";
 //
 // describe('InvitePageComponent', () => {
 //   let component: TaskDescriptionComponent;
@@ -25,7 +25,7 @@
 //         RouterTestingModule,
 //         MatDialogModule,
 //         BrowserDynamicTestingModule,
-//       PrivateModule
+//       MainModule
 //       ]
 //     })
 //     .compileComponents();
