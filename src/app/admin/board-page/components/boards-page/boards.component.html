@@ -1,0 +1,20 @@
+<main class="main">
+  <div class="wrapper">
+    <ul class="board-list">
+      <li *ngFor="let board of boards" class="board-list-item">
+        <a [routerLink]="['/admin', 'board', board.id]" class="board-list-item-ref">
+          <div class="title">
+            {{board.title}}
+          </div>
+        </a>
+        <span class="delete" (click)=deleteBoard(board.id)>&#x2715;</span>
+      </li>
+      <li class="board-list-item board-add">
+        <button mat-button (click)="addBoardDialog()" class="board-add-btn">
+          Create new board
+        </button>
+      </li>
+    </ul>
+  </div>
+</main>
+
