@@ -1,3 +1,8 @@
+export interface IResBoards {
+  access: boolean,
+  boards: IBoard[]
+}
+
 export interface IBoard {
   id: number,
   title: string,

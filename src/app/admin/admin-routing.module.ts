@@ -26,11 +26,11 @@ const routes: Routes = [
     path: '',
     component: HeaderComponent,
     children: [
-      {
-        path: '',
-        redirectTo: '/admin/login',
-        pathMatch: 'full'
-      },
+      // {
+      //   path: '',
+      //   redirectTo: '/admin/login',
+      //   pathMatch: 'full'
+      // },
       {
         path: 'boards',
         component: BoardsComponent,
