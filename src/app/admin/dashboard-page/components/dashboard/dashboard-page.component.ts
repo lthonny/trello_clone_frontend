@@ -115,7 +115,7 @@ export class DashboardPageComponent implements OnInit {
         ownerStatus: this._owner,
         board: this._boardId,
         invited: this._users,
-        users: this._users
+        // users: this._users
       },
       height: '700px',
       width: '600px',

@@ -14,6 +14,7 @@ import {
 import {IDialogData} from "../../interfaces/dashboard.interfaces";
 import {ApiTaskService} from "../../../services/api.task.service";
 import {ApiBoardService} from "../../../services/api.board.service";
+import {TaskService} from "../../../services/task.service";
 
 
 @Component({
@@ -30,7 +31,7 @@ export class TaskDescriptionComponent implements OnInit {
 
   public showTitle: boolean = false;
   public users: IUAssigned[] = [];
-  public assignedUsers: IUAssigned[] = [];
+  public assignedUsers: any[] = [];
 
   public transactionTask: ITransaction[] = [];
   public transactionDialog: boolean = false;
@@ -44,10 +45,11 @@ export class TaskDescriptionComponent implements OnInit {
     public dialogRef: MatDialogRef<TaskDescriptionComponent>,
     public router: Router,
     public route: ActivatedRoute,
-    public taskService: ApiTaskService,
+    public apiTaskService: ApiTaskService,
+    public taskService: TaskService,
     public apiBoardService: ApiBoardService,
   ) {
-    this.users = data.users;
+    // this.users = data.users;
     this._taskId = data.item.id;
     this._boardId = this.data.board;
     this._title = data.item.title;
@@ -59,23 +61,21 @@ export class TaskDescriptionComponent implements OnInit {
   }
 
   public allUsersAssigned(): void {
-    // this.boardService.getAllAssignedUsers$(this._taskId, this._boardId)
-      // .subscribe((data: IResAssigned) => {
-        // console.log();
-        // data.allUsers.forEach((user: IUAssigned) => {
-        //   if (user.name !== data.owner.name) {
-        //     this.users = this.users.filter((data: IUAssigned) => data.id !== user.id);
-        //     this.users.push(user);
-        //   }
-        // });
-        // data.userAssigned.forEach((user) => {
-        //   if (user.name !== data.owner.name) {
-        //     this.assignedUsers = this.assignedUsers.filter((data: IUAssigned) => data.id !== user.id);
-        //     this.assignedUsers.push(user);
-        //   }
-        // })
-      // })
-    console.log(this.users)
+    this.apiTaskService.getAllAssignedUsers$(this._taskId, this._boardId)
+      .subscribe((data) => {
+        data.allUsers.forEach((user: IUAssigned) => {
+          if (user.name !== data.owner.name) {
+            this.users = this.users.filter((data: IUAssigned) => data.id !== user.id);
+            this.users.push(user);
+          }
+        });
+        data.userAssigned.forEach((user) => {
+          if (user.name !== data.owner.name) {
+            this.assignedUsers = this.assignedUsers.filter((data: IUAssigned) => data.id !== user.id);
+            this.assignedUsers.push(user);
+          }
+        })
+      })
   }
 
   public close(): void {
@@ -83,25 +83,24 @@ export class TaskDescriptionComponent implements OnInit {
   }
 
   public assignUser(user: IUAssigned): void {
-    // this.taskService.createAssignedUser$(user.id, this._taskId, this._boardId)
-    //   .subscribe((user: any) => {
-    //     console.log(user);
-    //     // if (!user.exist) {
-    //       this.assignedUsers.push(user);
-    //     // }
-    //   })
+    this.apiTaskService.createAssignedUser$(user.id, this._taskId, this._boardId)
+      .subscribe((user: any) => {
+        if (!user.exist) {
+          this.assignedUsers.push(user);
+        }
+      })
   }
 
   public removeAssignedUser(user: IUAssigned): void {
-    // this.assignedService.removeAssignedUser$(user.id, this._taskId, this._boardId)
-    //   .subscribe((data: string) => {
-    //     this.assignedUsers = this.assignedUsers.filter((user: IUAssigned) => user.id !== user.id);
-    //   });
+    this.apiTaskService.deleteAssignedUser$(user.id, this._taskId)
+      .subscribe((data) => {
+        this.assignedUsers = this.assignedUsers.filter((user: IUAssigned) => user.id !== user.id);
+      });
   }
 
   public transaction(): void {
     this.transactionTask.length = 0;
-    this.taskService.getHistory$(this._taskId)
+    this.apiTaskService.getHistory$(this._taskId)
       .subscribe((data: IHistoryTask[]) => {
         data.forEach((transaction: IHistoryTask) => {
           if (transaction.transaction === 'creation') {
@@ -159,7 +158,7 @@ export class TaskDescriptionComponent implements OnInit {
             titleBoard.innerHTML = input.value;
             this._title = input.value;
 
-            this.taskService.updateTitleTask$(this._taskId, this._title)
+            this.apiTaskService.updateTitleTask$(this._taskId, this._title)
               .subscribe((data) => {
                 this._title = data.title;
               })
@@ -188,7 +187,7 @@ export class TaskDescriptionComponent implements OnInit {
 
   public submit(): void {
     if (this.data.ownerStatus) {
-      this.taskService.updateDescriptionTask$(this._taskId, this.description.value)
+      this.apiTaskService.updateDescriptionTask$(this._taskId, this.description.value)
         .subscribe((task) => {
           this.data.item.description = task.description;
         });

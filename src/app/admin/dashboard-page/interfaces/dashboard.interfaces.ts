@@ -24,5 +24,5 @@ export interface IDialogData {
     order: number,
     archive: boolean
   },
-  users: any
+  users?: any
 }

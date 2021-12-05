@@ -43,15 +43,15 @@ export class ApiTaskService {
     return this.http.get<IHistoryTask[]>(`/api/task/${task_id}/history`);
   }
 
-  public getAllAssignedUsers$(task_id: number): Observable<IResAssigned> {
-    return this.http.get<IResAssigned>(`/api/task/${task_id}/assigned`);
+  public getAllAssignedUsers$(task_id: number, board_id: number): Observable<IResAssigned> {
+    return this.http.get<IResAssigned>(`/api/task/${task_id}/assigned/${board_id}`);
   }
 
-  // public createAssignedUser$(task_id: number): Observable<IResAssigned> {
-  //   return this.http.get<IResAssigned>(`/api/task/${task_id}/assigned`);
-  // }
-  //
-  // public deleteAssignedUser$(task_id: number): Observable<IResAssigned> {
-  //   return this.http.delete<IResAssigned>(`/api/task/${task_id}/assigned`);
-  // }
+  public createAssignedUser$(task_id: number, user_id: number, board_id: number): Observable<IResAssigned> {
+    return this.http.post<IResAssigned>(`/api/task/${task_id}/assigned/user/${user_id}`, {board_id});
+  }
+
+  public deleteAssignedUser$(user_id: number, task_id: number): Observable<any> {
+    return this.http.delete<any>(`/api/task/${task_id}/assigned/user/${user_id}`);
+  }
 }
