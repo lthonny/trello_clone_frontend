@@ -23,12 +23,20 @@ export class ApiTaskService {
       .pipe(tap((data) => this._nameTask = data.title));
   }
 
-  public updateNameColumnTask$(task_id: number, order: number, nameTaskList: string): Observable<ITask> {
-    return this.http.put<ITask>(`/api/task/${task_id}/column`, {nameTaskList, order});
+  // public updateNameColumnTask$(task_id: number, order: number, nameTaskList: string): Observable<ITask> {
+  //   return this.http.put<ITask>(`/api/task/${task_id}/column`, {nameTaskList, order});
+  // }
+
+  public newUpdateColumn$(task_id: number, data: any, nameTaskList: string): Observable<any> {
+    return this.http.put<ITask>(`/api/task/${task_id}/column`, {data, nameTaskList});
   }
 
-  public updateOrderTask$(data: any): Observable<string> {
-    return this.http.put<string>(`/api/task/${data.id}/order`, {data});
+  // public updateOrderTask$(data: any): Observable<string> {
+  //   return this.http.put<string>(`/api/task/${data.id}/order`, {data});
+  // }
+
+  public newUpdateOrder$(data: any): Observable<any> {
+    return this.http.put<any>(`/api/task/order`, {data});
   }
 
   public updateDescriptionTask$(task_id: number, description: string): Observable<ITask> {

@@ -142,6 +142,29 @@ export class DashboardPageComponent implements OnInit {
 
       if (event.previousContainer === event.container) {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+        const topItem = event.container.data[event.currentIndex - 1];
+        const currentItem = event.container.data[event.currentIndex];
+        const bottomItem = event.container.data[event.currentIndex + 1];
+
+        let data;
+
+        if (bottomItem && topItem) {
+          data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
+        }
+
+        if (!bottomItem) {
+          data = {topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: null};
+        }
+        if (!topItem) {
+          data = {topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id};
+        }
+
+        // console.log(data);
+
+        this.tasksService.newUpdateOrder$(data).subscribe((data) => {
+          console.log('data', data);
+        });
+
       } else {
         transferArrayItem(
           event.previousContainer.data,
@@ -149,30 +172,36 @@ export class DashboardPageComponent implements OnInit {
           event.previousIndex,
           event.currentIndex
         );
-        event.previousContainer.data.forEach((x: ITask, index) => {
-          x.order = index;
+        const task = event.container.data[event.currentIndex];
+
+        const topItem = event.container.data[event.currentIndex - 1];
+        const currentItem = event.container.data[event.currentIndex];
+        const bottomItem = event.container.data[event.currentIndex + 1];
+
+        let data;
+
+        if(!topItem && !bottomItem) {
+          console.log('top and bottom === null');
+          data = { topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: null };
+        }
+
+        if (!bottomItem && topItem) {
+          console.log('bottom === null');
+          data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: null };
+        }
+
+        if (!topItem && bottomItem) {
+          console.log('top === null');
+          data = { topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
+        }
+
+        if (bottomItem && topItem) {
+          data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
+        }
+
+        this.tasksService.newUpdateColumn$(task.id, data, nameColumn).subscribe((data) => {
+          console.log('data column Name', data);
         });
-      }
-
-      event.container.data.forEach((x: ITask, index) => {
-        x.order = index;
-      })
-
-      this.tasksService.updateOrderTask$(event.container.data).subscribe((data) => {
-      });
-
-      if (event.container.data.length >= 0) {
-        let newTaskList: ITask[] = [];
-
-        event.container.data.forEach((task: ITask) => {
-          newTaskList.push(task);
-
-          if (task.nameTaskList !== nameColumn || task.order !== undefined) {
-            this.tasksService.updateNameColumnTask$(task.id, task.order, nameColumn).subscribe((data) => {
-            });
-          }
-          return;
-        })
       }
     }
   }
@@ -284,7 +313,7 @@ export class DashboardPageComponent implements OnInit {
   }
 
   public deleteAccessUser(user_id: number): void {
-    if(this._owner) {
+    if (this._owner) {
       this.apiBoardService.deleteUserAccess$(this._boardId, user_id).subscribe(() => {
         this._users = this._users.filter((data) => data.id !== user_id);
       });
@@ -293,7 +322,7 @@ export class DashboardPageComponent implements OnInit {
 
   public leaveBoard(): void {
     this.apiBoardService.leaveBoard$(this._boardId).subscribe(() => {
-        this.router.navigate(['/admin', 'boards']);
+      this.router.navigate(['/admin', 'boards']);
     })
   }
 
