@@ -34,7 +34,7 @@ const routes: Routes = [
       {
         path: 'boards',
         component: BoardsComponent,
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
       {
         path: 'board/:id',

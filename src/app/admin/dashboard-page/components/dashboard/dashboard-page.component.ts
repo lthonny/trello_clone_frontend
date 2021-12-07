@@ -159,11 +159,7 @@ export class DashboardPageComponent implements OnInit {
           data = {topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id};
         }
 
-        // console.log(data);
-
-        this.tasksService.newUpdateOrder$(data).subscribe((data) => {
-          console.log('data', data);
-        });
+        this.tasksService.newUpdateOrder$(data).subscribe((data) => {});
 
       } else {
         transferArrayItem(
@@ -181,17 +177,14 @@ export class DashboardPageComponent implements OnInit {
         let data;
 
         if(!topItem && !bottomItem) {
-          console.log('top and bottom === null');
           data = { topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: null };
         }
 
         if (!bottomItem && topItem) {
-          console.log('bottom === null');
           data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: null };
         }
 
         if (!topItem && bottomItem) {
-          console.log('top === null');
           data = { topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
         }
 
@@ -199,9 +192,7 @@ export class DashboardPageComponent implements OnInit {
           data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
         }
 
-        this.tasksService.newUpdateColumn$(task.id, data, nameColumn).subscribe((data) => {
-          console.log('data column Name', data);
-        });
+        this.tasksService.newUpdateColumn$(task.id, data, nameColumn).subscribe((data) => {});
       }
     }
   }

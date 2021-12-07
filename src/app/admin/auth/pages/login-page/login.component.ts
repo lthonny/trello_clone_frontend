@@ -43,7 +43,12 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  submit() {
+  public signInWithGoogle() {
+    console.log('signInWithGoogle');
+    window.open("http://localhost:5000/auth/google", "_blank");
+  }
+
+  public submit() {
     if (this.form.invalid) {
       return;
     }
