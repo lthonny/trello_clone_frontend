@@ -20,7 +20,7 @@ const routes: Routes = [
   {
     path: 'invite/:id/:key',
     component: InviteComponent,
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   {
     path: '',
