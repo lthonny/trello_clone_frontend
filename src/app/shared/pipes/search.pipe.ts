@@ -1,31 +1,26 @@
 import {Pipe, PipeTransform} from "@angular/core";
-import {ITask} from "../../interfaces";
+import {ITask, ITaskUser} from "../../interfaces";
 
 @Pipe({
   name: 'searchTask'
 })
 export class SearchPipe implements PipeTransform {
-  transform(tasks: ITask[], search = ''): ITask[] {
-    if(!search.trim()) {
+  transform(tasks: ITask[], search = ''): any {
+    const normalizedSearchTerm = search.toLowerCase().trim();
+    if (!normalizedSearchTerm) {
       return tasks;
     }
-    return tasks.filter((task: any) => {
-      if(task.title === search) {
-        return task.title.toLowerCase().includes(search.toLowerCase());
+
+    return tasks.filter((task: ITask) => {
+      const taskTitleHasTerm = task.title.toLowerCase().includes(normalizedSearchTerm);
+      let taskUsersHaveTerm = false;
+      if(task.Users){
+        taskUsersHaveTerm = task.Users.findIndex((user: ITaskUser) => {
+          return user.email.toLowerCase().includes(normalizedSearchTerm) || user.name.toLowerCase().includes(normalizedSearchTerm)
+        }) !== -1
       }
 
-      if(task.description === search) {
-        return task.description.toLowerCase().includes(search.toLowerCase());
-      }
-
-      if(task.active) {
-        if(task.active[0].name === search) {
-          return task.active[0].name.toLowerCase().includes(search.toLowerCase());
-        }
-        if(task.active[0].email === search) {
-          return task.active[0].email.toLowerCase().includes(search.toLowerCase());
-        }
-      }
+      return taskTitleHasTerm || taskUsersHaveTerm;
     })
   }
 }

@@ -5,7 +5,7 @@
         <h4 class="sidenav-menu">Архив задач</h4>
         <div class="tasks-container">
           <div class="task card-body task-archive-view" *ngFor="let task of boardService.archivedTasks">
-            <span>{{ task.title }}</span>
+            <span class="task-archive-dialog" (click)="openArchiveTask(task)">{{ task.title }}</span>
             <mat-icon class="material-icons-outlined" (click)="unzip(task)" *ngIf="_owner">
               swipe_right
             </mat-icon>
@@ -34,9 +34,6 @@
       >invite people</span>
 
       <div [hidden]="invite">
-        <!--        <mat-form-field appearance="fill" class="add-task-form">-->
-        <!--          <textarea matInput>{{link}}</textarea>-->
-        <!--        </mat-form-field>-->
         <div class="btn-link" [cdkCopyToClipboard]="link">Copy link</div>
       </div>
 
@@ -83,7 +80,7 @@
                 <span (click)="openDialog(item)">{{ item.title }}</span>
                 <span *ngIf="_owner" class="delete" (click)="deleteTask(item.id, item.nameTaskList)">&#x2715;</span>
                 <div *ngIf="!_owner">
-                  <div class="active-user" *ngFor="let active of item.Users">
+                  <div class="active-user btns-invite-user" *ngFor="let active of item.Users">
                     <mat-icon class="material-icons-outlined active-task">
                       push_pin
                     </mat-icon>

@@ -19,6 +19,7 @@ import {Column} from "../../models/column.model";
 import {ApiBoardService} from "../../../services/api.board.service";
 import {ApiTaskService} from "../../../services/api.task.service";
 import {BoardService} from "../../../services/board.service";
+import {ArchiveDialogComponent, IColumnMatDialogRef} from "../archiveDialog/archive-dialog.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -108,32 +109,57 @@ export class DashboardPageComponent implements OnInit {
     })
   }
 
-  public openDialog(item: ITask): void {
-    const dialogRef = this.dialog.open(TaskDescriptionComponent, {
-      data: {
-        item,
-        ownerStatus: this._owner,
-        board: this._boardId,
-        invited: this._users,
-        // users: this._users
-      },
-      height: '700px',
-      width: '600px',
-    });
+  public openDialog(item: any): void {
+    if (item) {
+      // if (this._owner || item.Users && !this._owner || item.Users) {
+        const dialogRef = this.dialog.open(TaskDescriptionComponent, {
+          data: {
+            item,
+            ownerStatus: this._owner,
+            board: this._boardId,
+            invited: this._users,
+          },
+          height: '700px',
+          width: '600px',
+        });
 
-    dialogRef.afterClosed().subscribe((result: IDialogData) => {
-      if (result) {
-        this.taskLists.forEach((column: ITask[], i: number) => {
-          if (result.item.nameTaskList === IColumns[i]) {
-            const index = column.findIndex((task: ITask) => task.id === result.item.id);
-            if (index !== -1) {
-              column.splice(index, 1);
-              this.boardService.archivedTasks.push(result.item);
-            }
+        dialogRef.afterClosed().subscribe((result: IDialogData) => {
+          if (result) {
+            this.taskLists.forEach((column: ITask[], i: number) => {
+              if (result.item.nameTaskList === IColumns[i]) {
+                const index = column.findIndex((task: ITask) => task.id === result.item.id);
+                if (index !== -1) {
+                  column.splice(index, 1);
+                  this.boardService.archivedTasks.push(result.item);
+                }
+              }
+            })
           }
-        })
-      }
-    });
+        });
+      // } else  {
+      //   console.log('users task === undefined')
+      // }
+    }
+  }
+
+  public openArchiveTask(task: ITask): void {
+    if (this._owner) {
+      const dialogRef = this.dialog.open(ArchiveDialogComponent, {
+        data: {
+          owner: this._owner, task, columns: this.boardService.ColumnsType
+        }, height: '400px', width: '400px'
+      });
+
+      dialogRef.afterClosed().subscribe((data: IColumnMatDialogRef) => {
+        if (data) {
+          this.boardService.ColumnsType.forEach((column: string, i: number) => {
+            if (data.column === column) {
+              this.board.columns[i].tasks.push(data.task);
+            }
+          })
+        }
+      });
+    }
   }
 
   public drop(event: CdkDragDrop<ITask[]>, column: IColumn): void {
@@ -149,7 +175,7 @@ export class DashboardPageComponent implements OnInit {
         let data;
 
         if (bottomItem && topItem) {
-          data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
+          data = {topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id};
         }
 
         if (!bottomItem) {
@@ -180,23 +206,23 @@ export class DashboardPageComponent implements OnInit {
 
         let data;
 
-        if(!topItem && !bottomItem) {
+        if (!topItem && !bottomItem) {
           console.log('top and bottom === null');
-          data = { topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: null };
+          data = {topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: null};
         }
 
         if (!bottomItem && topItem) {
           console.log('bottom === null');
-          data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: null };
+          data = {topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: null};
         }
 
         if (!topItem && bottomItem) {
           console.log('top === null');
-          data = { topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
+          data = {topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id};
         }
 
         if (bottomItem && topItem) {
-          data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
+          data = {topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id};
         }
 
         this.tasksService.newUpdateColumn$(task.id, data, nameColumn).subscribe((data) => {

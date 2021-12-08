@@ -3,6 +3,7 @@ import {DashboardPageComponent} from "./components/dashboard/dashboard-page.comp
 import {TaskDescriptionComponent} from "./components/task/task-description.component";
 import {SharedModule} from "../../shared/shared.module";
 import {SearchPipe} from "../../shared/pipes/search.pipe";
+import {ArchiveDialogComponent} from "./components/archiveDialog/archive-dialog.component";
 
 @NgModule({
   imports: [
@@ -11,6 +12,7 @@ import {SearchPipe} from "../../shared/pipes/search.pipe";
   declarations: [
     DashboardPageComponent,
     TaskDescriptionComponent,
+    ArchiveDialogComponent,
     SearchPipe
   ]
 })

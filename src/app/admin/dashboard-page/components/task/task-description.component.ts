@@ -41,7 +41,7 @@ export class TaskDescriptionComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    public data: IDialogData,
+    public data: any,
     public dialogRef: MatDialogRef<TaskDescriptionComponent>,
     public router: Router,
     public route: ActivatedRoute,
@@ -54,6 +54,8 @@ export class TaskDescriptionComponent implements OnInit {
     this._boardId = this.data.board;
     this._title = data.item.title;
     this.description = new FormControl(this.data.item.description);
+
+    // console.log(this.data.item.Users[0].user_tasks)
   }
 
   ngOnInit(): void {
@@ -183,6 +185,14 @@ export class TaskDescriptionComponent implements OnInit {
       .subscribe(() => {
         this.dialogRef.close(this.data);
       })
+  }
+
+  public outTask(): void {
+    this.dialogRef.close();
+
+    this.apiTaskService.leaveTask$(this._taskId).subscribe((data: any) => {
+      console.log('res leave task', data);
+    });
   }
 
   public submit(): void {

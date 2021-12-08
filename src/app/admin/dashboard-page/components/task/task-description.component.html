@@ -58,4 +58,6 @@
       <div *ngFor="let transaction of transactionTask">{{transaction.data}}</div>
     </div>
   </div>
+
+  <span class="out-task" (click)="outTask()" *ngIf="data.item.Users[0]">покинуть задачу</span>
 </div>

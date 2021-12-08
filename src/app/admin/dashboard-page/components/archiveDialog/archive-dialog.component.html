@@ -1,0 +1,10 @@
+<div class="archive-tasks">
+  <h1>вернуть задачу в колонку: </h1>
+    <div class="columns">
+    <div *ngFor="let column of columns; let i = index">
+      <div class="column" (click)="returnColumn(column)">
+        {{i}}. {{ column }}
+      </div>
+    </div>
+  </div>
+</div>

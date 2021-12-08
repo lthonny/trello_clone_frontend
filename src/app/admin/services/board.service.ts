@@ -11,7 +11,6 @@ export class BoardService {
   public readonly ColumnsType = ['To Do', 'In Progress', 'Coded', 'Testing', 'Done'];
 
   constructor(
-    // private apiBoardService: ApiBoardService
   ) {
   }
 

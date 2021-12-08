@@ -10,6 +10,12 @@ export interface IBoard {
   updatedAt: Date
 }
 
+export interface ITaskUser {
+  id: number;
+  name: string;
+  email: string;
+}
+
 export interface ITask {
   id: number,
   title: string,
@@ -20,13 +26,7 @@ export interface ITask {
   updatedAt: Date,
   order: number
   archive: boolean,
-  Users?: [
-    {
-      id: number,
-      name: string,
-      email: string
-    }
-  ]
+  Users?: ITaskUser[]
 }
 
 export interface IResBoard {

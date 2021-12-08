@@ -23,17 +23,13 @@ export class ApiTaskService {
       .pipe(tap((data) => this._nameTask = data.title));
   }
 
-  // public updateNameColumnTask$(task_id: number, order: number, nameTaskList: string): Observable<ITask> {
-  //   return this.http.put<ITask>(`/api/task/${task_id}/column`, {nameTaskList, order});
-  // }
+  public leaveTask$(task_id: number): Observable<undefined> {
+    return this.http.delete<undefined>(`/api/task/${task_id}/leave`);
+  }
 
   public newUpdateColumn$(task_id: number, data: any, nameTaskList: string): Observable<any> {
     return this.http.put<ITask>(`/api/task/${task_id}/column`, {data, nameTaskList});
   }
-
-  // public updateOrderTask$(data: any): Observable<string> {
-  //   return this.http.put<string>(`/api/task/${data.id}/order`, {data});
-  // }
 
   public newUpdateOrder$(data: any): Observable<any> {
     return this.http.put<any>(`/api/task/order`, {data});
@@ -61,5 +57,9 @@ export class ApiTaskService {
 
   public deleteAssignedUser$(user_id: number, task_id: number): Observable<any> {
     return this.http.delete<any>(`/api/task/${task_id}/assigned/user/${user_id}`);
+  }
+
+  public returnColumn$(task_id: number, column: string): Observable<any> {
+    return this.http.post<any>(`/api/task/${task_id}/return/column`, { column });
   }
 }
