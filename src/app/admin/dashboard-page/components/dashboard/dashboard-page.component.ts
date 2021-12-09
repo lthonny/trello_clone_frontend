@@ -159,9 +159,7 @@ export class DashboardPageComponent implements OnInit {
           data = {topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id};
         }
 
-        this.tasksService.newUpdateOrder$(data).subscribe((data) => {
-          console.log('data', data);
-        });
+        this.tasksService.newUpdateOrder$(data).subscribe((data) => {});
 
       } else {
         transferArrayItem(
@@ -194,9 +192,7 @@ export class DashboardPageComponent implements OnInit {
           data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
         }
 
-        this.tasksService.newUpdateColumn$(task.id, data, nameColumn).subscribe((data) => {
-          console.log('data column Name', data);
-        });
+        this.tasksService.newUpdateColumn$(task.id, data, nameColumn).subscribe((data) => {});
       }
     }
   }
@@ -280,6 +276,26 @@ export class DashboardPageComponent implements OnInit {
     this.form.reset();
   }
 
+  public openArchiveTask(task: ITask): void {
+    if (this._owner) {
+      const dialogRef = this.dialog.open(ArchiveDialogComponent, {
+        data: {
+          owner: this._owner, task, columns: this.boardService.ColumnsType
+        }, height: '400px', width: '400px'
+      });
+
+      dialogRef.afterClosed().subscribe((data: IColumnMatDialogRef) => {
+        if (data) {
+          this.boardService.ColumnsType.forEach((column: string, i: number) => {
+            if (data.column === column) {
+              this.board.columns[i].tasks.push(data.task);
+            }
+          })
+        }
+      });
+    }
+  }
+
   public deleteTask(task_id: number, name: string): void {
     if (this._owner) {
       this.tasksService.deleteTask$(task_id).subscribe((data) => {
@@ -355,7 +371,6 @@ export class DashboardPageComponent implements OnInit {
           order: order
         }
 
-        // this.boardDataService.createTask(task);
         this.tasksService.createTask$(task).subscribe((task: ITask) => {
           this.taskLists.forEach((column: ITask[], i: number) => {
             if (task.nameTaskList === IColumns[i]) {
@@ -367,7 +382,6 @@ export class DashboardPageComponent implements OnInit {
         this.form.reset();
       }
       // else {
-      //   // ОБРАБОТАТЬ ОШИБКУ ПУСТОГО ПОЛЯ
       //   console.log('this field must not be empty');
       // }
     }
