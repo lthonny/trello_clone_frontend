@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from 'src/app/admin/auth/services/auth.service';
 import {IAuthResponse, ISingUp} from "../../interfaces/auth.interfaces";
+import {SingInGoogleService} from "../../services/singInGoogle.service";
 
 @Component({
   selector: 'app-reg',
@@ -29,8 +30,13 @@ export class RegComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private singInGoogleService: SingInGoogleService
   ) {
+  }
+
+  public signInWithGoogle(): void {
+    this.singInGoogleService.signIn();
   }
 
   submit() {

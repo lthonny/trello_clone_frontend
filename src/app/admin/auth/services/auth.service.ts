@@ -66,10 +66,6 @@ export class AuthService {
       )
   }
 
-  public google() {
-    // this._isAuthorized.next(true);
-  }
-
   public logout$(): Observable<string> {
     this.removeStorage();
     this._isAuthorized.next(false);

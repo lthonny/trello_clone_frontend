@@ -25,7 +25,6 @@ export class BoardsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.auth.google();
     this.getBoards();
     this.getInviteBoard();
   }

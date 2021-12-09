@@ -15,14 +15,7 @@ export class TokenService {
   ) {}
 
   public getToken(): string | null {
-    // if(localStorage.getItem('token')) {
-    //   return localStorage.getItem('token');
-    // } else {
-    //   const token = this.cookieService.get('refreshToken');
-    //   console.log(token)
-    //   localStorage.setItem('token', token);
       return localStorage.getItem('token');
-    // }
   }
 
   public setToken(token: string): void {

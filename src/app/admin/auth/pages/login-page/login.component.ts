@@ -5,6 +5,7 @@ import {AuthService} from 'src/app/admin/auth/services/auth.service';
 import {TokenService} from "../../services/token.service";
 import {ErrorService} from "../../../../shared/services/error/error.service";
 import {IAuthResponse, ISingIn} from "../../interfaces/auth.interfaces";
+import {SingInGoogleService} from "../../services/singInGoogle.service";
 
 @Component({
   selector: 'app-login',
@@ -31,7 +32,8 @@ export class LoginComponent implements OnInit {
     private tokenService: TokenService,
     public errorService: ErrorService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private singInGoogleService: SingInGoogleService
   ) {
   }
 
@@ -43,9 +45,8 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  public signInWithGoogle() {
-    console.log('signInWithGoogle');
-    window.open("http://localhost:5000/auth/google", "_blank");
+  public signInWithGoogle(): void {
+    this.singInGoogleService.signIn();
   }
 
   public submit() {

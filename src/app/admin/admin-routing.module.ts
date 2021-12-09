@@ -7,6 +7,7 @@ import {AuthGuard} from "../shared/guards/auth.guard";
 import {HeaderComponent} from "./header/components/header/header.component";
 import {BoardsComponent} from "./board-page/components/boards-page/boards.component";
 import {DashboardPageComponent} from "./dashboard-page/components/dashboard/dashboard-page.component";
+import {GoogleAuthComponent} from "./auth/pages/google-auth/google-auth.component";
 
 const routes: Routes = [
   {
@@ -40,7 +41,12 @@ const routes: Routes = [
         path: 'board/:id',
         component: DashboardPageComponent,
         canActivate: [AuthGuard]
-      }
+      },
+      {
+        path: 'google/auth/user/:id',
+        component: GoogleAuthComponent,
+        // canActivate: [AuthGuard]
+      },
     ]
   }
 ];

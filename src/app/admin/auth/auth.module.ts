@@ -2,6 +2,7 @@ import {NgModule} from "@angular/core";
 import {SharedModule} from "../../shared/shared.module";
 import {RegComponent} from "./pages/signup-page/reg.component";
 import {LoginComponent} from "./pages/login-page/login.component";
+import {GoogleAuthComponent} from "./pages/google-auth/google-auth.component";
 
 @NgModule({
   imports: [
@@ -9,7 +10,8 @@ import {LoginComponent} from "./pages/login-page/login.component";
   ],
   declarations: [
     RegComponent,
-    LoginComponent
+    LoginComponent,
+    GoogleAuthComponent
   ],
 })
 export class AuthModule {}
