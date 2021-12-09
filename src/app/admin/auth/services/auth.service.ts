@@ -48,7 +48,7 @@ export class AuthService {
 
   public isAuth$(): Observable<undefined> {
     const accessToken = this.tokenService.getToken();
-    return this.http.get<undefined>(`/api/user/isauth`, {headers: {Authorization: `Bearer ${accessToken}`}})
+    return this.http.get<undefined>(`/api/user/isauth`, {headers: {Authorization: `Bearer ${accessToken}`}});
   }
 
   public singUp$(user: ISingUp): Observable<IAuthResponse> {

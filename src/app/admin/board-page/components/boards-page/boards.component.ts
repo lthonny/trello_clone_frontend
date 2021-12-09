@@ -3,6 +3,7 @@ import { MatDialog } from "@angular/material/dialog";
 import {IBoard} from "../../../../interfaces";
 import {ApiBoardService} from "../../../services/api.board.service";
 import {AddBoardComponent} from "../add-board/add-board.component";
+import {AuthService} from "../../../auth/services/auth.service";
 
 @Component({
   selector: 'app-boards',

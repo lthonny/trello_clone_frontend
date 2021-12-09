@@ -15,7 +15,7 @@ export class TokenService {
   ) {}
 
   public getToken(): string | null {
-    return localStorage.getItem('token');
+      return localStorage.getItem('token');
   }
 
   public setToken(token: string): void {
