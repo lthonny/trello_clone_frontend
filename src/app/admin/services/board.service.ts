@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
 import {IArchive, ITask} from "../../interfaces";
-import {ApiBoardService} from "./api.board.service";
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +23,5 @@ export class BoardService {
       }
       return 0;
     })
-  }
-
-  public deleteAccessUser(board_id: number, user_id: number): void {
-    // this.apiBoardService.deleteUserAccess$(board_id, user_id).subscribe(() => {});
   }
 }

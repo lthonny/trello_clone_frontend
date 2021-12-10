@@ -1,8 +1,3 @@
-export interface IResBoards {
-  access: boolean,
-  boards: IBoard[]
-}
-
 export interface IBoard {
   id: number,
   title: string,
@@ -10,10 +5,12 @@ export interface IBoard {
   updatedAt: Date
 }
 
-export interface ITaskUser {
-  id: number;
-  name: string;
-  email: string;
+export interface IResBoard {
+  board_id: number,
+  title: string
+  owner: boolean,
+  users: [{ id: number, name: string, owner: boolean }]
+  tasks: ITask[],
 }
 
 export interface ITask {
@@ -29,12 +26,10 @@ export interface ITask {
   Users?: ITaskUser[]
 }
 
-export interface IResBoard {
-  board_id: number,
-  title: string
-  owner: boolean,
-  users: [{ id: number, name: string, owner: boolean }]
-  tasks: ITask[],
+export interface ITaskUser {
+  id: number;
+  name: string;
+  email: string;
 }
 
 export interface ICreateTask {
@@ -62,24 +57,9 @@ export interface IDescriptionUpdate {
   description: string
 }
 
-export interface IInviteKey {
-  key: string,
-}
-
 export interface IInvitedUser {
   id: number,
   name: string,
-  owner: boolean
-}
-
-export interface IOwner {
-  userId: string | null,
-  boardId: number
-}
-
-export interface IInitOwner {
-  title?: any,
-  userId: number,
   owner: boolean
 }
 
@@ -122,12 +102,8 @@ export interface IColumn {
   tasks: ITask[]
 }
 
-export interface IUpdateBoardTitle {
-  id: number,
-  title: string,
-  owner: boolean
-}
-
-export interface IResInviteBoard {
-  board: IBoard
+export interface ITaskPosition {
+  topTaskId: number | null;
+  currentTaskId: number | null;
+  bottomTaskId: number | null;
 }
