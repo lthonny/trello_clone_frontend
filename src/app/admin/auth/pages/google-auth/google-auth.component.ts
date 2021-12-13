@@ -22,15 +22,12 @@ export class GoogleAuthComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => this.email = params['id']);
 
-    console.log(this.email);
-
     const user: ISingIn = {
       email: this.email,
       password: 'google'
     }
 
     this.authService.singIn$(user).subscribe((response) => {
-      console.log('response', response);
       this.tokenService.setToken(response.accessToken);
       this.router.navigate(['/admin', 'boards']);
     })
