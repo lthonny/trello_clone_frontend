@@ -31,6 +31,8 @@
 
 .menu {
   display: flex;
+  flex-wrap: wrap;
+
   margin: 1rem 5px;
 
   .title-board {
@@ -444,3 +446,4 @@ form {
 .task-archive-dialog {
   cursor: pointer;
 }
+

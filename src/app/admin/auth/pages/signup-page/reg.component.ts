@@ -1,9 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from 'src/app/admin/auth/services/auth.service';
-import {IAuthResponse, ISingUp} from "../../interfaces/auth.interfaces";
+import {IAuthResponse, ISingIn, ISingUp} from "../../interfaces/auth.interfaces";
 import {SingInGoogleService} from "../../services/singInGoogle.service";
+import {TokenService} from "../../services/token.service";
 
 @Component({
   selector: 'app-reg',
@@ -31,7 +32,8 @@ export class RegComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private singInGoogleService: SingInGoogleService
+    private singInGoogleService: SingInGoogleService,
+    private tokenService: TokenService
   ) {
   }
 
@@ -53,9 +55,10 @@ export class RegComponent {
     }
 
     this.authService.singUp$(user)
-      .subscribe((user: IAuthResponse) => {
+      .subscribe((response: IAuthResponse) => {
+        this.tokenService.setToken(response.accessToken);
         this.form.reset();
-        this.router.navigate(['/admin', 'login']);
+        this.router.navigate(['/admin', 'boards']);
       });
   }
 }

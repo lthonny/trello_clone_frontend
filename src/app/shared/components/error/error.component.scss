@@ -1,51 +1,50 @@
-body {
+.error {
   color: #fff;
   background-color: #172b4d;
 
-  .error {
-    width: 10rem;
-    margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    .error-main {
-      width: 100%;
-      height: 3.5rem;
-
-      font-size: 18px;
-      font-weight: 500;
-      border: 1px solid #fff;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      cursor: pointer;
-
-      //position: relative;
-      //top: 0;
-      //left: 0;
-      //bottom: 0;
-    }
-    //.error-main:before {
-    //  content:'';
-    //  position: absolute;
-    //  top: 0;
-    //  left: 0;
-    //  width: 0;
-    //  height: 100%;
-    //  background: rgba(255,255,255,0.3);
-    //  transition: all 2s ease;
-    //}
-    //.error-main:before {
-    //  width: 100%;
-    //}
-  }
-
-  .error-title {
-    color: #ffffff;
-    text-align: center;
-    background-color: var(--danger-color);
-  }
-
+  height: 100vh;
 }
 
+.error-content {}
+
+.btn-home {
+  width: 10rem;
+  height: 3.5rem;
+
+  font-size: 18px;
+  font-weight: 500;
+  border: 1px solid #fff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  position: relative;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  margin: 0 auto;
+
+  &:before {
+    content:'';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: rgba(255,255,255,0.3);
+    transition: all 2s ease;
+  }
+
+  &:hover:before {
+    width: 100%;
+  }
+}
 

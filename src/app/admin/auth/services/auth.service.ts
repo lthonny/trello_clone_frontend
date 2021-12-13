@@ -52,7 +52,13 @@ export class AuthService {
   }
 
   public singUp$(user: ISingUp): Observable<IAuthResponse> {
-    return this.http.post<IAuthResponse>(`/api/user/signup`, user);
+    return this.http.post<IAuthResponse>(`/api/user/signup`, user).pipe(
+      catchError(err => this.error.handleError(err)),
+      tap((data) => {
+        this.setStorage(data.user.id, data.user.name, data.accessToken);
+        this._isAuthorized.next(true);
+      })
+    )
   }
 
   public singIn$(user: ISingIn): Observable<IAuthResponse> {
