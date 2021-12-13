@@ -18,7 +18,7 @@
   <div class="body">
     <div class="menu">
       <span class="title-board" (click)="updateTitleBoard()">{{_boardName}}</span>
-      <div class="avatar">{{ authService.isNameUser.charAt(0)}}</div>
+      <div class="avatar">{{ authService.isNameUser ? authService.isNameUser.charAt(0) : 'E' }}</div>
       <ng-container *ngIf="_owner">
         <div class="invited-users" *ngFor="let user of _users">
           {{user.name.charAt(0)}}
@@ -76,9 +76,9 @@
                  [cdkDropListData]="column.tasks"
                  (cdkDropListDropped)="drop($event, column)">
               <div class="task card-body" *ngFor="let item of column.tasks | searchTask: searchTask; let i = index"
-                   cdkDrag>
-                <span (click)="openDialog(item)">{{ item.title }}</span>
-                <span *ngIf="_owner" class="delete" (click)="deleteTask(item.id, item.nameTaskList)">&#x2715;</span>
+                   cdkDrag  (click)="openDialog(item)">
+                <span>{{ item.title }}</span>
+                <span *ngIf="_owner" class="delete" (click)="deleteTask(item.id, item.nameTaskList, $event)">&#x2715;</span>
                 <div *ngIf="!_owner">
                   <div class="active-user btns-invite-user" *ngFor="let active of item.Users">
                     <mat-icon class="material-icons-outlined active-task">

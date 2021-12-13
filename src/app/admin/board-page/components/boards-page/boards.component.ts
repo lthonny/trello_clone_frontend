@@ -68,9 +68,11 @@ export class BoardsComponent implements OnInit {
   }
 
   public deleteBoard(board_id: number): void {
-    this.apiBoardService.deleteBoard$(board_id).subscribe(() => {
-      this.boards = this.boards.filter((board: IBoard) => board.id !== board_id);
-    });
+    if(confirm("Are you sure to delete? ")) {
+      this.apiBoardService.deleteBoard$(board_id).subscribe(() => {
+        this.boards = this.boards.filter((board: IBoard) => board.id !== board_id);
+      });
+    }
   }
 
   public submit(): void {

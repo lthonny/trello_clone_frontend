@@ -20,6 +20,7 @@ import {ApiBoardService} from "../../../services/api.board.service";
 import {ApiTaskService} from "../../../services/api.task.service";
 import {BoardService} from "../../../services/board.service";
 import {ArchiveDialogComponent, IColumnMatDialogRef} from "../archiveDialog/archive-dialog.component";
+import {environment} from "../../../../../environments/environment";
 
 @Component({
   selector: 'app-dashboard',
@@ -27,6 +28,8 @@ import {ArchiveDialogComponent, IColumnMatDialogRef} from "../archiveDialog/arch
   styleUrls: ['./dashboard-page.component.scss']
 })
 export class DashboardPageComponent implements OnInit {
+  private readonly frontUrl = environment.frontUrl;
+
   public _owner: boolean = true;
   private _boardId!: number;
   public _boardName!: string;
@@ -268,7 +271,7 @@ export class DashboardPageComponent implements OnInit {
   public getInvitationLink(): void {
     this.invite = false;
     this.apiBoardService.getInviteKey$(this._boardId)
-      .subscribe((key: string) => this.link = `http://localhost:4200/admin/invite/${this._boardId}/${key}`);
+      .subscribe((key: string) => this.link = `${this.frontUrl}/admin/invite/${this._boardId}/${key}`);
   }
 
   public onClose(): void {
@@ -296,29 +299,36 @@ export class DashboardPageComponent implements OnInit {
     }
   }
 
-  public deleteTask(task_id: number, name: string): void {
-    if (this._owner) {
-      this.tasksService.deleteTask$(task_id).subscribe((data) => {
-        this.boardService.ColumnsType.forEach((taskName: string, i: number) => {
-          if (taskName === name) {
-            this.taskLists[i] = this.taskLists[i].filter((task: ITask) => task.id !== task_id);
-            this.board.columns[i].tasks = this.taskLists[i].filter((task: ITask) => task.id !== task_id);
-          }
-        });
-      })
+  public deleteTask(task_id: number, name: string, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if(confirm("Are you sure to delete? ")) {
+      if (this._owner) {
+        this.tasksService.deleteTask$(task_id).subscribe((data) => {
+          this.boardService.ColumnsType.forEach((taskName: string, i: number) => {
+            if (taskName === name) {
+              this.taskLists[i] = this.taskLists[i].filter((task: ITask) => task.id !== task_id);
+              this.board.columns[i].tasks = this.taskLists[i].filter((task: ITask) => task.id !== task_id);
+            }
+          });
+        })
+      }
     }
   }
 
   public deleteColumnTasks(columnName: string): void {
-    if (this._owner) {
-      if (columnName) {
-        this.apiBoardService.deleteTasksColumn$(this._boardId, columnName).subscribe((data) => {
-          this.boardService.ColumnsType.forEach((column: string, i: number) => {
-            if (columnName === column) {
-              this.taskLists[i].length = 0;
-            }
+    if(confirm("Are you sure to delete? ")) {
+      if (this._owner) {
+        if (columnName) {
+          this.apiBoardService.deleteTasksColumn$(this._boardId, columnName).subscribe((data) => {
+            this.boardService.ColumnsType.forEach((column: string, i: number) => {
+              if (columnName === column) {
+                this.taskLists[i].length = 0;
+              }
+            })
           })
-        })
+        }
       }
     }
   }
