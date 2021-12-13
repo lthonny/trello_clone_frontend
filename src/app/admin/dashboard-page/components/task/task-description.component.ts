@@ -11,7 +11,6 @@ import {
   ITransaction,
   IUAssigned,
 } from "../../../../interfaces";
-import {IDialogData} from "../../interfaces/dashboard.interfaces";
 import {ApiTaskService} from "../../../services/api.task.service";
 import {ApiBoardService} from "../../../services/api.board.service";
 import {TaskService} from "../../../services/task.service";

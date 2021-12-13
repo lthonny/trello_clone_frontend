@@ -7,7 +7,7 @@ import {AuthService} from "./admin/auth/services/auth.service";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-
+  title: string = 'TrelloClone';
   constructor(
     public auth: AuthService
   ) {}
