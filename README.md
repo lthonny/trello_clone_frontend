@@ -59,6 +59,8 @@ go to file `proxy.conf.json`
 ### Attention!
 Goggle authorization will not work on non-custom ports, since they are registered in the GOOGLE API SERVICES.
 
+![img_4.png](img_4.png)
+
 ### 🤝 Connect with me:
 
 [<img alt="thonny | telegram" src="https://img.shields.io/badge/telegram-4680C2.svg?&style=for-the-badge&logo=telegram&logoColor=fff" />][telegram]
