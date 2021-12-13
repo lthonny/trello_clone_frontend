@@ -48,13 +48,10 @@ export class TaskDescriptionComponent implements OnInit {
     public taskService: TaskService,
     public apiBoardService: ApiBoardService,
   ) {
-    // this.users = data.users;
     this._taskId = data.item.id;
     this._boardId = this.data.board;
     this._title = data.item.title;
     this.description = new FormControl(this.data.item.description);
-
-    // console.log(this.data.item.Users[0].user_tasks)
   }
 
   ngOnInit(): void {
