@@ -33,8 +33,17 @@ Repository backend https://github.com/lthonny/trello_clone_backend
     `npm run start`
 
 ### To change custom ports:
+Go to these files and me ports:
 
-go to file
+[PORT] - frontend port
+
+[PORT_API] - backend port
+
+package.json
+
+    "start": "ng serve --port [PORT] --proxy-config proxy.conf.json"
+
+
 `src/environments/environment.prod.ts ` && `src/environments/environment.ts`
 
   ``` 
