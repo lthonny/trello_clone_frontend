@@ -5,11 +5,9 @@ import {environment} from "../../../../environments/environment";
   providedIn: 'root'
 })
 export class SingInGoogleService {
-  private readonly api: string = environment.api;
-
   constructor() {}
 
   public signIn(): void {
-    window.open(`${this.api}/auth/google`, "_self");
+    window.open(`${environment.SERVER_URL}/auth/google`, "_self");
   }
 }

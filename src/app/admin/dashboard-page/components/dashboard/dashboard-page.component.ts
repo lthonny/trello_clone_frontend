@@ -28,7 +28,7 @@ import {environment} from "../../../../../environments/environment";
   styleUrls: ['./dashboard-page.component.scss']
 })
 export class DashboardPageComponent implements OnInit {
-  private readonly frontUrl = environment.frontUrl;
+  private readonly CLIENT_URL = environment.CLIENT_URL;
 
   public _owner: boolean = true;
   private _boardId!: number;
@@ -286,7 +286,7 @@ export class DashboardPageComponent implements OnInit {
   public getInvitationLink(): void {
     this.invite = false;
     this.apiBoardService.getInviteKey$(this._boardId)
-      .subscribe((key: string) => this.link = `${this.frontUrl}/admin/invite/${this._boardId}/${key}`);
+      .subscribe((key: string) => this.link = `${this.CLIENT_URL}/admin/invite/${this._boardId}/${key}`);
   }
 
   public onClose(): void {
