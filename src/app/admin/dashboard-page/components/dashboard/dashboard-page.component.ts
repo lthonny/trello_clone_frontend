@@ -323,8 +323,8 @@ export class DashboardPageComponent implements OnInit {
         this.tasksService.deleteTask$(task_id).subscribe((data) => {
           this.boardService.ColumnsType.forEach((taskName: string, i: number) => {
             if (taskName === name) {
-              this.taskLists[i] = this.taskLists[i].filter((task: ITask) => task.id !== task_id);
-              this.board.columns[i].tasks = this.taskLists[i].filter((task: ITask) => task.id !== task_id);
+              // this.taskLists[i] = this.taskLists[i].filter((task: ITask) => task.id !== task_id);
+              this.board.columns[i].tasks = this.board.columns[i].tasks.filter((task: ITask) => task.id !== task_id);
             }
           });
         })
@@ -337,11 +337,11 @@ export class DashboardPageComponent implements OnInit {
       if (this._owner) {
         if (columnName) {
           this.apiBoardService.deleteTasksColumn$(this._boardId, columnName).subscribe((data) => {
-            this.boardService.ColumnsType.forEach((column: string, i: number) => {
-              if (columnName === column) {
-                this.taskLists[i].length = 0;
+              for (let i = 0; i < this.board.columns.length; i++) {
+                if (this.board.columns[i].name === columnName) {
+                  this.taskLists[i].length = 0;
+                }
               }
-            })
           })
         }
       }
@@ -396,12 +396,12 @@ export class DashboardPageComponent implements OnInit {
           order: order
         }
 
-        this.tasksService.createTask$(task).subscribe((task: ITask) => {
-          this.taskLists.forEach((column: ITask[], i: number) => {
-            if (task.nameTaskList === IColumns[i]) {
-              column.push(task);
+        this.tasksService.createTask$(task).subscribe((data: ITask) => {
+          for (let i = 0; i < this.board.columns.length; i++) {
+            if (this.board.columns[i].name === data.nameTaskList) {
+              this.board.columns[i].tasks.push(data);
             }
-          })
+          }
         })
 
         this.form.reset();

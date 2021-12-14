@@ -51,9 +51,7 @@ export class BoardsComponent implements OnInit {
     const dialogRef = this.dialog.open(AddBoardComponent, {
       height: '200px',
       width: '300px',
-      data: {
-        title: this.boardName = ''
-      },
+      data: { title: this.boardName = '' },
     });
 
     dialogRef.afterClosed()
