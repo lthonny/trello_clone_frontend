@@ -3,7 +3,6 @@ import { MatDialog } from "@angular/material/dialog";
 import {IBoard} from "../../../../interfaces";
 import {ApiBoardService} from "../../../services/api.board.service";
 import {AddBoardComponent} from "../add-board/add-board.component";
-import {AuthService} from "../../../auth/services/auth.service";
 
 @Component({
   selector: 'app-boards',
@@ -40,8 +39,8 @@ export class BoardsComponent implements OnInit {
   public getInviteBoard(): void {
     if (this.inviteKey) {
       this.apiBoardService.getInviteBoard$(this.inviteKey, this.boardId)
-        .subscribe((board: any) => {
-          this.boards.push(board.board);
+        .subscribe((data: IBoard) => {
+          this.boards = this.boards.filter((board: IBoard) => board.id !== data.id);
         });
       localStorage.removeItem('board_id');
       localStorage.removeItem('key');
