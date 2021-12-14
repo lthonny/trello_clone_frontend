@@ -3,8 +3,8 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from 'src/app/admin/auth/services/auth.service';
 import {IAuthResponse, ISingIn, ISingUp} from "../../interfaces/auth.interfaces";
-import {SingInGoogleService} from "../../services/singInGoogle.service";
-import {TokenService} from "../../services/token.service";
+import {SingInGoogleService} from "../../services/google/singInGoogle.service";
+import {TokenService} from "../../services/storage/token.service";
 
 @Component({
   selector: 'app-reg',

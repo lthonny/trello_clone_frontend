@@ -1,9 +1,9 @@
 <div class="body">
-  <H1>Trello reg</H1>
+  <H1>Trello sing up</H1>
 
   <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="wrapper">
-      <h4>Register in to Trello</h4>
+      <h4>Sing up in to Trello</h4>
 
       <div class="mb-3" [ngClass]="{invalid: form.get('name')?.touched && form.get('name')?.invalid}">
         <input id="name" class="form-control bg-light" type="text" placeholder="Enter name" formControlName="name">
@@ -24,15 +24,15 @@
         </div>
       </div>
 
-      <button type="submit" class="btn bg-success bg-gradient" [disabled]="form.invalid || submitted">Log in
+      <button type="submit" class="btn bg-success bg-gradient" [disabled]="form.invalid || submitted">Sing up
       </button>
 
-      <div class="or">OR</div>
+<!--      <div class="or">OR</div>-->
 
-      <div class="google bg-light bg-gradient" (click)="signInWithGoogle()">
-        <img class="google-logo" src="../../../../../assets/google.logo.png" alt="">
-        <span>Continue with Google</span>
-      </div>
+<!--      <div class="google bg-light bg-gradient" (click)="signInWithGoogle()">-->
+<!--        <img class="google-logo" src="../../../../../assets/google.logo.png" alt="">-->
+<!--        <span>Continue with Google</span>-->
+<!--      </div>-->
     </div>
   </form>
 

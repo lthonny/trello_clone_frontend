@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {AuthService} from 'src/app/admin/auth/services/auth.service';
-import {TokenService} from "../../services/token.service";
+import {TokenService} from "../../services/storage/token.service";
 import {ErrorService} from "../../../../shared/services/error/error.service";
 import {IAuthResponse, ISingIn} from "../../interfaces/auth.interfaces";
-import {SingInGoogleService} from "../../services/singInGoogle.service";
+import {SingInGoogleService} from "../../services/google/singInGoogle.service";
 
 @Component({
   selector: 'app-login',

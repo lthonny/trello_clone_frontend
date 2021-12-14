@@ -29,12 +29,12 @@ const routes: Routes = [
       {
         path: 'boards',
         component: BoardsComponent,
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
       {
-        path: 'board/:id',
+        path: 'gg',
         component: DashboardPageComponent,
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
       {
         path: 'google/auth/user/:id',

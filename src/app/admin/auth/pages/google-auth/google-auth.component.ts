@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {ISingIn} from "../../interfaces/auth.interfaces";
-import {TokenService} from "../../services/token.service";
+import {TokenService} from "../../services/storage/token.service";
 import {subscribeOn} from "rxjs/operators";
 
 @Component({

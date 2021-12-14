@@ -2,7 +2,7 @@
   <mat-drawer #drawer class="example-sidenav" mode="side">
     <div class="sidenav">
       <div class="sidenav-body">
-        <h4 class="sidenav-menu">Архив задач</h4>
+        <h4 class="sidenav-menu">Archive tasks</h4>
         <div class="tasks-container">
           <div class="task card-body task-archive-view" *ngFor="let task of boardService.archivedTasks">
             <span class="task-archive-dialog" (click)="openArchiveTask(task)">{{ task.title }}</span>
@@ -37,7 +37,7 @@
         <div class="btn-link" [cdkCopyToClipboard]="link">Copy link</div>
       </div>
 
-      <div class="example-sidenav-content">
+      <div class="example-sidenav-content" *ngIf="_owner">
         <span class="full-menu" (click)="openFullMenu()">
           <button type="button" mat-button (click)="drawer.toggle()"> Menu
             <mat-icon class="material-icons-outlined" aria-hidden="false"

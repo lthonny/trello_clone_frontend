@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {catchError, tap} from "rxjs/operators";
 import {BehaviorSubject, Observable} from "rxjs";
 import {ErrorService} from "../../../shared/services/error/error.service";
-import {TokenService} from "./token.service";
+import {TokenService} from "./storage/token.service";
 import {IAuthResponse, ISingIn, ISingUp} from "../interfaces/auth.interfaces";
 
 @Injectable({

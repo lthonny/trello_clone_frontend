@@ -7,7 +7,7 @@ import {
   HttpRequest
 } from "@angular/common/http";
 
-import {TokenService} from "./token.service";
+import {TokenService} from "./storage/token.service";
 import {catchError, filter, switchMap, take} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {BehaviorSubject, Observable, throwError} from "rxjs";
