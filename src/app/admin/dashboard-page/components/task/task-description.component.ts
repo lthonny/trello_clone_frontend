@@ -186,9 +186,7 @@ export class TaskDescriptionComponent implements OnInit {
   public outTask(): void {
     this.dialogRef.close();
 
-    this.apiTaskService.leaveTask$(this._taskId).subscribe((data: any) => {
-      console.log('res leave task', data);
-    });
+    this.apiTaskService.leaveTask$(this._taskId).subscribe((data: any) => {});
   }
 
   public submit(): void {

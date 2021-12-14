@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {ISingIn} from "../../interfaces/auth.interfaces";
 import {TokenService} from "../../services/token.service";
+import {subscribeOn} from "rxjs/operators";
 
 @Component({
   selector: 'app-google-auth',
