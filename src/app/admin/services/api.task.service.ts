@@ -27,8 +27,8 @@ export class ApiTaskService {
     return this.http.delete<undefined>(`/api/task/${task_id}/leave`);
   }
 
-  public newUpdateColumn$(task_id: number, data: ITaskPosition | undefined, nameTaskList: string): Observable<[]> {
-    return this.http.put<[]>(`/api/task/${task_id}/column`, {data, nameTaskList});
+  public newUpdateColumn$(task_id: number, data: ITaskPosition | undefined, nameTaskList: string): Observable<ITask> {
+    return this.http.put<ITask>(`/api/task/${task_id}/column`, {data, nameTaskList});
   }
 
   public newUpdateOrder$(data: ITaskPosition | undefined): Observable<ITask> {

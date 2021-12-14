@@ -195,7 +195,21 @@ export class DashboardPageComponent implements OnInit {
           data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
         }
 
-        this.tasksService.newUpdateColumn$(task.id, data, nameColumn).subscribe((data) => {});
+        this.tasksService.newUpdateColumn$(task.id, data, nameColumn).subscribe((data: ITask) => {
+          this.board.columns.filter((column: {name: string, tasks: ITask[]}) => {
+            if(column.name === data.nameTaskList) {
+              if(column.tasks) {
+                column.tasks = column.tasks.filter((task: ITask) => task.nameTaskList === data.nameTaskList);
+              }
+            }
+          })
+
+          for (let i = 0; i < this.board.columns.length; i++) {
+            if (this.board.columns[i].name === data.nameTaskList) {
+              this.board.columns[i].tasks.push(data);
+            }
+          }
+        });
       }
     }
   }
