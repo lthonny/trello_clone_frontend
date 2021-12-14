@@ -207,6 +207,7 @@ export class DashboardPageComponent implements OnInit {
           for (let i = 0; i < this.board.columns.length; i++) {
             if (this.board.columns[i].name === data.nameTaskList) {
               this.board.columns[i].tasks.push(data);
+              this.boardService.sortTasks(this.board.columns[i].tasks);
             }
           }
         });
@@ -405,9 +406,6 @@ export class DashboardPageComponent implements OnInit {
 
         this.form.reset();
       }
-      // else {
-      //   console.log('this field must not be empty');
-      // }
     }
   }
 }
