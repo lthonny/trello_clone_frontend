@@ -48,10 +48,10 @@ export class AuthService {
 
   public isAuth$(): Observable<undefined> {
     const accessToken = this.tokenService.getToken();
-    if(!accessToken) {
-      this._isAuthorized.next(false);
-      return of(undefined);
-    }
+    // if(!accessToken) {
+    //   this._isAuthorized.next(false);
+    //   return of(undefined);
+    // }
     return this.http.get<undefined>(`/api/user/isauth`, {headers: {Authorization: `Bearer ${accessToken}`}});
   }
 
