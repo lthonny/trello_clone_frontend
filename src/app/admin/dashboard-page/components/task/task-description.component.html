@@ -35,14 +35,14 @@
   </div>
 
   <div class="invited">
-    <h4 class="users" *ngIf="users.length !== 0 && this.data.ownerStatus">Выбор пользователей на эту задачу:</h4>
+    <h4 class="users" *ngIf="users.length !== 0 && this.data.ownerStatus">Selecting users for this task:</h4>
     <div *ngIf="this.data.ownerStatus">
       <div class="invited-users" *ngFor="let user of users">
         {{ user.name }}
         <span class="btn-add" (click)="assignUser(user)">+</span>
       </div>
     </div>
-    <h4 class="archiving-title" *ngIf="assignedUsers.length !== 0">на эту задачу назначены пользователи:</h4>
+    <h4 class="archiving-title" *ngIf="assignedUsers.length !== 0">users assigned to this task:</h4>
     <div class="assigned-users" *ngFor="let assignedUser of assignedUsers">
       {{ assignedUser.name }}
       <span class="btn-remove" (click)="removeAssignedUser(assignedUser)" *ngIf="this.data.ownerStatus">&#x2715;</span>
