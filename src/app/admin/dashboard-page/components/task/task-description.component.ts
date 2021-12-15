@@ -7,7 +7,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 import {
   IArchive,
-  IHistoryTask,
+  IHistoryTask, ITask,
   ITransaction,
   IUAssigned,
 } from "../../../../interfaces";
@@ -47,7 +47,7 @@ export class TaskDescriptionComponent implements OnInit {
     public apiTaskService: ApiTaskService,
     public taskService: TaskService,
     public apiBoardService: ApiBoardService,
-  ) {
+    ) {
     this._taskId = data.item.id;
     this._boardId = this.data.board;
     this._title = data.item.title;
@@ -178,8 +178,8 @@ export class TaskDescriptionComponent implements OnInit {
   public archive(): void {
     const task: IArchive = this.data.item;
     this.apiBoardService.archiveTask$(task.id, task.archive, task.board_id)
-      .subscribe(() => {
-        this.dialogRef.close(this.data);
+      .subscribe((task: ITask) => {
+        this.dialogRef.close(task);
       })
   }
 

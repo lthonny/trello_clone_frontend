@@ -8,6 +8,7 @@ import {BoardsComponent} from "./board-page/components/boards-page/boards.compon
 import {DashboardPageComponent} from "./dashboard-page/components/dashboard/dashboard-page.component";
 import {GoogleAuthComponent} from "./auth/pages/google-auth/google-auth.component";
 import {InvitePageComponent} from "./invite-page/components/invite-page/invite-page.component";
+import {InviteResolver} from "./auth/services/resolver/invite.resolver";
 
 const routes: Routes = [
   {
@@ -21,6 +22,9 @@ const routes: Routes = [
   {
     path: 'invite/:id/:key',
     component: InvitePageComponent,
+    resolve: {
+      inviteBoard: InviteResolver
+    }
   },
   {
     path: '',
@@ -29,7 +33,10 @@ const routes: Routes = [
       {
         path: 'boards',
         component: BoardsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        // resolve: {
+        //   inviteBoard: InviteResolver
+        // }
       },
       {
         path: 'board/:id',

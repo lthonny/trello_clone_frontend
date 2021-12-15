@@ -63,13 +63,13 @@ export class AuthInterceptor implements HttpInterceptor {
             return next.handle(this.addTokenHeader(request, token.accessToken));
           }),
           catchError((err) => {
-            this.authService.logout$();
+            this.authService.logout$().subscribe(() => {});
             this.isRefreshing = false;
             return throwError(err);
           })
         )
       } else {
-        this.authService.logout$();
+        this.authService.logout$().subscribe(() => {});
         return throwError('Token missing');
       }
     }

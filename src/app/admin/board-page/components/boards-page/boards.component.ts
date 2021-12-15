@@ -39,8 +39,10 @@ export class BoardsComponent implements OnInit {
   public getInviteBoard(): void {
     if (this.inviteKey) {
       this.apiBoardService.getInviteBoard$(this.inviteKey, this.boardId)
-        .subscribe((data: IBoard) => {
-          this.boards = this.boards.filter((board: IBoard) => board.id !== data.id);
+        .subscribe((data: any) => {
+          if(data !== null) {
+            this.boards.push(data.board);
+          }
         });
       localStorage.removeItem('board_id');
       localStorage.removeItem('key');

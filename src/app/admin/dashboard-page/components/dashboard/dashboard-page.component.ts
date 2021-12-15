@@ -126,14 +126,15 @@ export class DashboardPageComponent implements OnInit {
       width: '600px',
     });
 
-    dialogRef.afterClosed().subscribe((result: IDialogData) => {
+    dialogRef.afterClosed().subscribe((result: ITask | undefined) => {
       if (result) {
         this.taskLists.forEach((column: ITask[], i: number) => {
-          if (result.item.nameTaskList === IColumns[i]) {
-            const index = column.findIndex((task: ITask) => task.id === result.item.id);
+          if (result.nameTaskList === IColumns[i]) {
+            const index = column.findIndex((task: ITask) => task.id === result.id);
             if (index !== -1) {
               column.splice(index, 1);
-              this.boardService.archivedTasks.push(result.item);
+
+              this.boardService.archivedTasks.push(result);
             }
           }
         })
@@ -154,7 +155,7 @@ export class DashboardPageComponent implements OnInit {
         let data;
 
         if (bottomItem && topItem) {
-          data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
+          data = {topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id};
         }
 
         if (!bottomItem && topItem) {
@@ -165,7 +166,7 @@ export class DashboardPageComponent implements OnInit {
         }
 
         this.tasksService.newUpdateOrder$(data).subscribe((data) => {
-
+          // this.boardService.sortTasks(this.board.columns[i].tasks);
         });
 
       } else {
@@ -183,26 +184,26 @@ export class DashboardPageComponent implements OnInit {
 
         let data;
 
-        if(!topItem && !bottomItem) {
-          data = { topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: null };
+        if (!topItem && !bottomItem) {
+          data = {topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: null};
         }
 
         if (!bottomItem && topItem) {
-          data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: null };
+          data = {topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: null};
         }
 
         if (!topItem && bottomItem) {
-          data = { topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
+          data = {topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id};
         }
 
         if (bottomItem && topItem) {
-          data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
+          data = {topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id};
         }
 
         this.tasksService.newUpdateColumn$(task.id, data, nameColumn).subscribe((data: ITask) => {
-          this.board.columns.filter((column: {name: string, tasks: ITask[]}) => {
-            if(column.name === data.nameTaskList) {
-              if(column.tasks) {
+          this.board.columns.filter((column: { name: string, tasks: ITask[] }) => {
+            if (column.name === data.nameTaskList) {
+              if (column.tasks) {
                 column.tasks = column.tasks.filter((task: ITask) => task.nameTaskList === data.nameTaskList);
               }
             }
@@ -293,7 +294,6 @@ export class DashboardPageComponent implements OnInit {
           owner: this._owner, task, columns: this.boardService.ColumnsType
         }, height: '400px', width: '400px'
       });
-
       dialogRef.afterClosed().subscribe((data: IColumnMatDialogRef) => {
         if (data) {
           this.boardService.ColumnsType.forEach((column: string, i: number) => {
@@ -310,7 +310,7 @@ export class DashboardPageComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    if(confirm("Are you sure to delete? ")) {
+    if (confirm("Are you sure to delete? ")) {
       if (this._owner) {
         this.tasksService.deleteTask$(task_id).subscribe((data) => {
           this.boardService.ColumnsType.forEach((taskName: string, i: number) => {
@@ -325,15 +325,15 @@ export class DashboardPageComponent implements OnInit {
   }
 
   public deleteColumnTasks(columnName: string): void {
-    if(confirm("Are you sure to delete? ")) {
+    if (confirm("Are you sure to delete? ")) {
       if (this._owner) {
         if (columnName) {
           this.apiBoardService.deleteTasksColumn$(this._boardId, columnName).subscribe((data) => {
-              for (let i = 0; i < this.board.columns.length; i++) {
-                if (this.board.columns[i].name === columnName) {
-                  this.taskLists[i].length = 0;
-                }
+            for (let i = 0; i < this.board.columns.length; i++) {
+              if (this.board.columns[i].name === columnName) {
+                this.board.columns[i].tasks = [];
               }
+            }
           })
         }
       }

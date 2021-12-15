@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ApiBoardService} from "../../../services/api.board.service";
+import {AuthService} from "../../../auth/services/auth.service";
 
 @Component({
   selector: 'app-invite-page',
@@ -13,12 +14,18 @@ export class InvitePageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private boardService: ApiBoardService
+    private router: Router,
+    private boardService: ApiBoardService,
+    private auth: AuthService
   ) {
   }
 
   ngOnInit(): void {
     this.getInviteBoard();
+
+    if(this.auth.isAuthorized) {
+      this.router.navigate(['/admin', 'boards']);
+    }
   }
 
   public getInviteBoard() {
@@ -27,10 +34,11 @@ export class InvitePageComponent implements OnInit {
       this._id = params['id']
     });
 
+    localStorage.setItem('board_id', this._id);
+    localStorage.setItem('key', this._key);
+
     this.boardService.getInviteBoard$(this._key, this._id)
       .subscribe((board) => {
-        localStorage.setItem('board_id', this._id);
-        localStorage.setItem('key', this._key);
       })
   }
 }

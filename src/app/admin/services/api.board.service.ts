@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {IArchive, IBoard, IResBoard} from "../../interfaces";
+import {IArchive, IBoard, IResBoard, ITask} from "../../interfaces";
 import {BoardService} from "./board.service";
 import {tap} from "rxjs/operators";
 
@@ -62,7 +62,7 @@ export class ApiBoardService {
       }));
   }
 
-  public archiveTask$(task_id: number, archive: boolean, board_id: number): Observable<IArchive> {
-    return this.http.post<IArchive>(`/api/board/${board_id}/archive/task/${task_id}`, {archive});
+  public archiveTask$(task_id: number, archive: boolean, board_id: number): Observable<ITask> {
+    return this.http.post<ITask>(`/api/board/${board_id}/archive/task/${task_id}`, {archive});
   }
 }

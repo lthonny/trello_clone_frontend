@@ -19,11 +19,10 @@ export class InviteResolver implements Resolve<boolean> {
 
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
+    if(!this.auth.isAuthorized) {
+      this.router.createUrlTree(['/admin', 'login']);
+    }
     return of(true);
-    // if(!this.auth.isAuthorized){
-    //   return this.router.createUrlTree(['/admin', 'login-page']);
-    // }
-    // return true;
   }
 }
