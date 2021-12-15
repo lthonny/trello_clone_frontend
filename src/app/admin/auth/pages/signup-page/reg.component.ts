@@ -58,13 +58,9 @@ export class RegComponent {
 
     this.authService.singUp$(user)
       .subscribe((response: IAuthResponse) => {
-        console.log('response', response);
-
         this.tokenService.setToken(response.accessToken);
         this.form.reset();
         this.router.navigate(['/admin', 'boards']);
-      }, error => {
-        console.log('error --->', error);
-      });
+      }, error => {});
   }
 }

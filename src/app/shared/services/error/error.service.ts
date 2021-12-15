@@ -19,7 +19,7 @@ export class ErrorService {
         this.error$.next('Incorrect password');
         break;
       case 'Incorrect email':
-        this.error$.next('Already exists');
+        this.error$.next('User already exists');
         break;
     }
 

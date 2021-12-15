@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {catchError, tap} from "rxjs/operators";
-import {BehaviorSubject, Observable, Subject, throwError} from "rxjs";
+import {BehaviorSubject, Observable, of, Subject, throwError} from "rxjs";
 import {ErrorService} from "../../../shared/services/error/error.service";
 import {TokenService} from "./storage/token.service";
 import {IAuthResponse, ISingIn, ISingUp} from "../interfaces/auth.interfaces";
@@ -48,6 +48,10 @@ export class AuthService {
 
   public isAuth$(): Observable<undefined> {
     const accessToken = this.tokenService.getToken();
+    if(!accessToken) {
+      this._isAuthorized.next(false);
+      return of(undefined);
+    }
     return this.http.get<undefined>(`/api/user/isauth`, {headers: {Authorization: `Bearer ${accessToken}`}});
   }
 
