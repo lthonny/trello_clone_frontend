@@ -4,8 +4,8 @@
 }
 
 .column-title {
-  cursor: pointer;
-  text-decoration: underline;
+  //cursor: pointer;
+  //text-decoration: underline;
 }
 
 h4 {
@@ -133,4 +133,19 @@ textarea {
 
 .out-task {
   cursor: pointer;
+}
+
+.out-task {
+  width: 9rem;
+  height: 2rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+
+  color: #fff;
+  border-radius: 5px;
+  background-color: #ac0e28;
 }

@@ -2,20 +2,20 @@
   <span class="dialog-column-title" (click)="updateTitle()" [hidden]="showTitle"> {{ _title }}</span>
 </h1>
 <div class="column">
-  <div>в колонке <span class="column-title">{{ data.item.nameTaskList }}</span></div>
+  <div>in column: <span class="column-title">{{ data.item.nameTaskList }}</span></div>
 </div>
 <div mat-dialog-content>
-  <form (click)="submit()">
+  <form>
     <div class="form">
       <div class="form-header">
         <span>
           <mat-icon class="material-icons-outlined">description</mat-icon>
         </span>
-        <span class="description">Описание</span>
+        <span class="description">Description</span>
       </div>
       <span class="dialog-column-description">
       <mat-form-field appearance="fill">
-        <mat-label>описание</mat-label>
+        <mat-label>description</mat-label>
         <textarea
           [readonly]="!this.data.ownerStatus"
           matInput
@@ -26,12 +26,12 @@
     </span>
     </div>
 
-    <button mat-raised-button type="submit" *ngIf="this.data.ownerStatus">Submit</button>
+    <button mat-raised-button type="submit" (click)="submit()" *ngIf="this.data.ownerStatus">Submit</button>
   </form>
 
   <div class="archiving" *ngIf="this.data.ownerStatus">
     <mat-icon class="material-icons-outlined">send_and_archive</mat-icon>
-    <h4 class="archiving-title" (click)="archive()">Архивация</h4>
+    <h4 class="archiving-title" (click)="archive()">Archive</h4>
   </div>
 
   <div class="invited">
@@ -52,12 +52,12 @@
   <div class="details-body">
     <div class="details">
     <mat-icon class="material-icons-outlined">loupe</mat-icon>
-    <h4 class="details-title" (click)="showDetails()">подробности</h4>
+    <h4 class="details-title" (click)="showDetails()">details</h4>
     </div>
     <div class="transaction-body" [hidden]="!transactionDialog">
       <div *ngFor="let transaction of transactionTask">{{transaction.data}}</div>
     </div>
   </div>
 
-  <span class="out-task" (click)="outTask()" *ngIf="data.item.Users?.length">покинуть задачу</span>
+  <div class="out-task" (click)="outTask()" *ngIf="data.item.Users?.length">leave the task</div>
 </div>

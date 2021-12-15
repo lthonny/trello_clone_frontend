@@ -5,8 +5,8 @@
         <h4 class="sidenav-menu">Archive tasks</h4>
         <div class="tasks-container">
           <div class="task card-body task-archive-view" *ngFor="let task of boardService.archivedTasks">
-            <span class="task-archive-dialog" (click)="openArchiveTask(task)">{{ task.title }}</span>
-            <mat-icon class="material-icons-outlined" (click)="unzip(task)" *ngIf="_owner">
+            <span class="task-archive-dialog">{{ task.title }}</span>
+            <mat-icon class="material-icons-outlined" (click)="openArchiveTask(task)" *ngIf="_owner">
               swipe_right
             </mat-icon>
           </div>
@@ -39,7 +39,7 @@
 
       <div class="example-sidenav-content" *ngIf="_owner">
         <span class="full-menu" (click)="openFullMenu()">
-          <button type="button" mat-button (click)="drawer.toggle()"> Menu
+          <button type="button" mat-button (click)="drawer.toggle()"> Archive
             <mat-icon class="material-icons-outlined" aria-hidden="false"
                       aria-label="Example home icon">more_horiz</mat-icon>
           </button>
@@ -50,7 +50,7 @@
         <input type="text" placeholder="Find task or user..." [(ngModel)]="searchTask">
       </div>
 
-      <span class="leave-board" (click)="leaveBoard()" *ngIf="!_owner"> покинуть доску </span>
+      <span class="leave-board" (click)="leaveBoard()" *ngIf="!_owner"> leave the board </span>
     </div>
 
     <main>

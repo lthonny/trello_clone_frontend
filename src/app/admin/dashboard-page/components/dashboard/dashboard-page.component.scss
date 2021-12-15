@@ -443,7 +443,19 @@ form {
   cursor: pointer;
 }
 
-.task-archive-dialog {
-  cursor: pointer;
-}
+.task-archive-dialog {}
 
+.leave-board {
+  width: 9rem;
+  height: 2rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+
+  color: #fff;
+  border-radius: 5px;
+  background-color: #ac0e28;
+}

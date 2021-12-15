@@ -109,6 +109,8 @@ export class DashboardPageComponent implements OnInit {
           }
         })
       }
+    }, error => {
+      this.router.navigate(['/admin', 'boards']);
     })
   }
 
@@ -155,14 +157,16 @@ export class DashboardPageComponent implements OnInit {
           data = { topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id };
         }
 
-        if (!bottomItem) {
+        if (!bottomItem && topItem) {
           data = {topTaskId: topItem.id, currentTaskId: currentItem.id, bottomTaskId: null};
         }
-        if (!topItem) {
+        if (!topItem && bottomItem) {
           data = {topTaskId: null, currentTaskId: currentItem.id, bottomTaskId: bottomItem.id};
         }
 
-        this.tasksService.newUpdateOrder$(data).subscribe((data) => {});
+        this.tasksService.newUpdateOrder$(data).subscribe((data) => {
+
+        });
 
       } else {
         transferArrayItem(
@@ -269,18 +273,6 @@ export class DashboardPageComponent implements OnInit {
       this.boardService.archivedTasks = [];
       data?.forEach((task) => this.boardService.archivedTasks.push(task));
     })
-  }
-
-  public unzip(task: ITask): void {
-    this.apiBoardService.archiveTask$(task.id, task.archive, task.board_id)
-      .subscribe(() => {
-        for (let i = 0; i < this.board.columns.length; i++) {
-          if (this.board.columns[i].name === task.nameTaskList) {
-            this.board.columns[i].tasks.push(task);
-          }
-        }
-        this.boardService.archivedTasks = this.boardService.archivedTasks.filter((data: IArchive) => data.id !== task.id);
-      })
   }
 
   public getInvitationLink(): void {
