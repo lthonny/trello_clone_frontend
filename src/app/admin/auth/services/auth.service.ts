@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {catchError, tap} from "rxjs/operators";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, Observable, Subject, throwError} from "rxjs";
 import {ErrorService} from "../../../shared/services/error/error.service";
 import {TokenService} from "./storage/token.service";
 import {IAuthResponse, ISingIn, ISingUp} from "../interfaces/auth.interfaces";

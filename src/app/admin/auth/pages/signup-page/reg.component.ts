@@ -5,6 +5,7 @@ import {AuthService} from 'src/app/admin/auth/services/auth.service';
 import {IAuthResponse, ISingIn, ISingUp} from "../../interfaces/auth.interfaces";
 import {SingInGoogleService} from "../../services/google/singInGoogle.service";
 import {TokenService} from "../../services/storage/token.service";
+import {ErrorService} from "../../../../shared/services/error/error.service";
 
 @Component({
   selector: 'app-reg',
@@ -30,10 +31,11 @@ export class RegComponent {
   });
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router,
     private singInGoogleService: SingInGoogleService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    public errorService: ErrorService
   ) {
   }
 
@@ -56,9 +58,13 @@ export class RegComponent {
 
     this.authService.singUp$(user)
       .subscribe((response: IAuthResponse) => {
+        console.log('response', response);
+
         this.tokenService.setToken(response.accessToken);
         this.form.reset();
         this.router.navigate(['/admin', 'boards']);
+      }, error => {
+        console.log('error --->', error);
       });
   }
 }
