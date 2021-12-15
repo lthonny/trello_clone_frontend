@@ -64,6 +64,8 @@ go to file `proxy.conf.json`
     }
    }
   ```
+  go to file https://github.com/lthonny/trello_clone_backend/tree/main/env
+  change in the file CLIENT_URL
 
 ### Attention!
 Goggle authorization will not work on non-custom ports, since they are registered in the GOOGLE API SERVICES.
