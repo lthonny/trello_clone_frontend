@@ -34,9 +34,6 @@ const routes: Routes = [
         path: 'boards',
         component: BoardsComponent,
         canActivate: [AuthGuard],
-        // resolve: {
-        //   inviteBoard: InviteResolver
-        // }
       },
       {
         path: 'board/:id',

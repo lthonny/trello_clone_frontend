@@ -1,8 +1,8 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from 'src/app/admin/auth/services/auth.service';
-import {IAuthResponse, ISingIn, ISingUp} from "../../interfaces/auth.interfaces";
+import {IAuthResponse, ISingUp} from "../../interfaces/auth.interfaces";
 import {SingInGoogleService} from "../../services/google/singInGoogle.service";
 import {TokenService} from "../../services/storage/token.service";
 import {ErrorService} from "../../../../shared/services/error/error.service";
@@ -37,10 +37,6 @@ export class RegComponent {
     private tokenService: TokenService,
     public errorService: ErrorService
   ) {
-  }
-
-  public signInWithGoogle(): void {
-    this.singInGoogleService.signIn();
   }
 
   submit() {

@@ -77,7 +77,7 @@ export class AuthService {
   }
 
   public logout$(): Observable<string> {
-    this.removeStorage();
+    localStorage.clear();
     this._isAuthorized.next(false);
     return this.http.post<string>(`/api/user/logout`, {});
   }
@@ -86,11 +86,5 @@ export class AuthService {
     localStorage.setItem('id', id);
     localStorage.setItem('name', name);
     localStorage.setItem('token', token);
-  }
-
-  private removeStorage() {
-    localStorage.removeItem('id');
-    localStorage.removeItem('name');
-    localStorage.removeItem('token');
   }
 }
