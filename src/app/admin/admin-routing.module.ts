@@ -24,7 +24,7 @@ const routes: Routes = [
     component: InvitePageComponent,
     resolve: {
       inviteBoard: InviteResolver
-    }
+    },
   },
   {
     path: '',

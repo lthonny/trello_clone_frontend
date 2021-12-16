@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {catchError, tap} from "rxjs/operators";
 import {BehaviorSubject, Observable, of, Subject, throwError} from "rxjs";
@@ -11,21 +11,12 @@ import {IAuthResponse, ISingIn, ISingUp} from "../interfaces/auth.interfaces";
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly _userId: any = localStorage.getItem('id');
   private readonly _userName: any = localStorage.getItem('name');
 
   private _isAuthorized = new BehaviorSubject<boolean>(false);
 
-  get isUserId() {
-    return this._userId;
-  }
-
   get isNameUser() {
     return this._userName;
-  }
-
-  get isAuthorized$(): Observable<boolean> {
-    return this._isAuthorized.asObservable();
   }
 
   get isAuthorized(): boolean {
@@ -48,10 +39,10 @@ export class AuthService {
 
   public isAuth$(): Observable<undefined> {
     const accessToken = this.tokenService.getToken();
-    if(!accessToken) {
-      this._isAuthorized.next(false);
-      return of(undefined);
-    }
+    // if(!accessToken) {
+    //   this._isAuthorized.next(false);
+    //   return of(undefined);
+    // }
     return this.http.get<undefined>(`/api/user/isauth`, {headers: {Authorization: `Bearer ${accessToken}`}});
   }
 

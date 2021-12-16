@@ -126,8 +126,10 @@ export class DashboardPageComponent implements OnInit {
       width: '600px',
     });
 
-    dialogRef.afterClosed().subscribe((result: ITask | undefined) => {
+    dialogRef.afterClosed().subscribe((result: ITask | undefined | any) => {
       if (result) {
+        item.title = result;
+
         this.taskLists.forEach((column: ITask[], i: number) => {
           if (result.nameTaskList === IColumns[i]) {
             const index = column.findIndex((task: ITask) => task.id === result.id);

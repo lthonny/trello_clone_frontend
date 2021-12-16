@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     public errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
-    private singInGoogleService: SingInGoogleService
+    private singInGoogleService: SingInGoogleService,
   ) {
   }
 

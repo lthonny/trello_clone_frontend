@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { MatDialog } from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {IBoard} from "../../../../interfaces";
 import {ApiBoardService} from "../../../services/api.board.service";
 import {AddBoardComponent} from "../add-board/add-board.component";
@@ -10,9 +10,6 @@ import {AddBoardComponent} from "../add-board/add-board.component";
   styleUrls: ['./boards.component.scss']
 })
 export class BoardsComponent implements OnInit {
-  private readonly inviteKey: string | null = localStorage.getItem('key');
-  private readonly boardId: string | null = localStorage.getItem('board_id');
-
   public boardName: string = '';
   public boards: IBoard[] = [];
 
@@ -23,8 +20,8 @@ export class BoardsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getBoards();
     this.getInviteBoard();
+    this.getBoards();
   }
 
   public getBoards(): void {
@@ -37,15 +34,16 @@ export class BoardsComponent implements OnInit {
   }
 
   public getInviteBoard(): void {
-    if (this.inviteKey) {
-      this.apiBoardService.getInviteBoard$(this.inviteKey, this.boardId)
+    const key: string | null = localStorage.getItem('key');
+    const boardId: string | null = localStorage.getItem('board_id');
+
+    if (key) {
+      this.apiBoardService.getInviteBoard$(key, boardId)
         .subscribe((data: any) => {
-          if(data !== null) {
-            this.boards.push(data.board);
-          }
+          localStorage.removeItem('key')
+          localStorage.removeItem('board_id')
         });
-      localStorage.removeItem('board_id');
-      localStorage.removeItem('key');
+      this.getBoards();
     }
   }
 
@@ -53,7 +51,7 @@ export class BoardsComponent implements OnInit {
     const dialogRef = this.dialog.open(AddBoardComponent, {
       height: '200px',
       width: '300px',
-      data: { title: this.boardName = '' },
+      data: {title: this.boardName = ''},
     });
 
     dialogRef.afterClosed()
@@ -66,7 +64,7 @@ export class BoardsComponent implements OnInit {
   }
 
   public deleteBoard(board_id: number): void {
-    if(confirm("Are you sure to delete? ")) {
+    if (confirm("Are you sure to delete? ")) {
       this.apiBoardService.deleteBoard$(board_id).subscribe(() => {
         this.boards = this.boards.filter((board: IBoard) => board.id !== board_id);
       });

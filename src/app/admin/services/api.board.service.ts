@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {IArchive, IBoard, IResBoard, ITask} from "../../interfaces";
 import {BoardService} from "./board.service";
 import {tap} from "rxjs/operators";
+import {TokenService} from "../auth/services/storage/token.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ import {tap} from "rxjs/operators";
 export class ApiBoardService {
   constructor(
     private http: HttpClient,
-    private boardService: BoardService
+    private boardService: BoardService,
+    private tokenService: TokenService
   ) {}
 
   public getBoards$(): Observable<IBoard[]> {
@@ -46,8 +48,9 @@ export class ApiBoardService {
     return this.http.get<string>(`/api/board/${board_id}/invite/key`);
   }
 
-  public getInviteBoard$(key: string | null, board_id: string | null | number): Observable<IBoard> {
-    return this.http.get<IBoard>(`/api/board/${board_id}/invite/key/${key}`);
+  public getInviteBoard$(key: any, board_id: any): Observable<IBoard> {
+    const accessToken = this.tokenService.getToken();
+    return this.http.get<IBoard>(`/api/board/${board_id}/invite/key/${key}`, {headers: {Authorization: `Bearer ${accessToken}`}});
   }
 
   public leaveBoard$(board_id: number): Observable<undefined> {

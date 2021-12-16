@@ -47,7 +47,7 @@ export class TaskDescriptionComponent implements OnInit {
     public apiTaskService: ApiTaskService,
     public taskService: TaskService,
     public apiBoardService: ApiBoardService,
-    ) {
+  ) {
     this._taskId = data.item.id;
     this._boardId = this.data.board;
     this._title = data.item.title;
@@ -135,6 +135,24 @@ export class TaskDescriptionComponent implements OnInit {
           }
         })
       })
+
+    this.sortHistory(this.transactionTask);
+    // // console.log(this.transactionTask);
+  }
+
+  public sortHistory(data: any): void {
+    console.log(data)
+    data.sort((a: IHistoryTask, b: IHistoryTask) => {
+      if (a.id < b.id) {
+        console.log('a.id < b.id');
+        return -1;
+      }
+      if (a.id > b.id) {
+        console.log('a.id > b.id');
+        return 1;
+      }
+      return 0;
+    })
   }
 
   public updateTitle(): void {
@@ -159,6 +177,7 @@ export class TaskDescriptionComponent implements OnInit {
             this.apiTaskService.updateTitleTask$(this._taskId, this._title)
               .subscribe((data) => {
                 this._title = data.title;
+                this.dialogRef.close(this._title);
               })
           });
         }
@@ -186,7 +205,8 @@ export class TaskDescriptionComponent implements OnInit {
   public outTask(): void {
     this.dialogRef.close();
 
-    this.apiTaskService.leaveTask$(this._taskId).subscribe((data: any) => {});
+    this.apiTaskService.leaveTask$(this._taskId).subscribe((data: any) => {
+    });
   }
 
   public submit(): void {
